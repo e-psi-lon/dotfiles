@@ -8,7 +8,7 @@ alias windows="cd /mnt/c"
 # Other aliases
 alias ls='ls --color=auto -F'
 alias cls=". ~/.bashrc"
-alias cdi="zoxide query -l -s"
+alias cdl="zoxide query -l -s"
 alias la="ls -A"
 if [ -f /etc/os-release ]; then
     . /etc/os-release
