@@ -1,10 +1,21 @@
 # Load from stow
-export current_path=$(pwd)
-cd ~/dotfiles && git pull && stow . && cd $current_path
-unset current_path
+current_path=$(pwd)
+cd ~/dotfiles
+output=$(git pull)
+cd $current_path
+
+if [[ $output != *"Already up to date."* ]]; then
+    source ~/.bashrc
+    unset current_path output
+    return
+fi
+unset current_path output
+
 
 # Alias for wsl
 alias windows="cd /mnt/c"
+# Alias for android
+alias android="cd /storage/emulated/0"
 # Other aliases
 alias ls='ls --color=auto -F'
 alias cls=". ~/.bashrc"
