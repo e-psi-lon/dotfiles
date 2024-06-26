@@ -111,5 +111,5 @@ if [ ! -d "$HOME/.sdkman/candidates/ktx" ]; then
     sdk install ktx
     . "$HOME/.bashrc"
 else
-    source "/home/e-psi-lon/.sdkman/candidates/ktx/0.1.2/.ktxrc"
+    source "$Home/.sdkman/candidates/ktx/0.1.2/.ktxrc"
 fi
