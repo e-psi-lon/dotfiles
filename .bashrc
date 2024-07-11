@@ -4,7 +4,7 @@ cd $HOME/dotfiles
 output=$(git pull)
 cd $current_path
 
-if [[ $output != *"Already up to date."* ]]; then
+if [[ $output != *"Already up to date."* ]] && [[ $output != *"Déjà à jour."* ]]; then
     source ~/.bashrc
     unset current_path output
     return
@@ -16,6 +16,7 @@ unset current_path output
 alias windows="cd /mnt/c"
 # Alias for android
 alias android="cd /storage/emulated/0"
+alias arch="proot-distro login archlinux"
 # Other aliases
 alias ls='ls --color=auto -F'
 alias cls=". $HOME/.bashrc"
@@ -44,7 +45,16 @@ parse_git_branch() {
   fi
   unset branch
 }
-export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;33m\]\$(parse_git_branch)\[\033[00m\]\$ "
+
+parse_git_commit() {
+  commit=$(git rev-parse --short HEAD 2>/dev/null)
+  if [ -n "$commit" ]; then
+    echo "[$commit]"
+  fi
+  unset commit
+}
+# Le commit en rouge
+export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;33m\]\$(parse_git_branch)\[\033[01;31m\]\$(parse_git_commit)\[\033[00m\]\$ "
 export HISTSIZE=10000
 export HISTFILESIZE=20000
 export HISTCONTROL=ignoredups:erasedups
