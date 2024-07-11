@@ -2,14 +2,20 @@
 current_path=$(pwd)
 cd $HOME/dotfiles
 output=$(git pull)
-cd $current_path
 
 if [[ $output != *"Already up to date."* ]] && [[ $output != *"Déjà à jour."* ]]; then
     source ~/.bashrc
     unset current_path output
     return
 fi
+stow .
+cd $current_path
 unset current_path output
+
+# Load local file
+if [ -f $HOME/local.sh ]; then
+    source $HOME/local.sh
+fi
 
 
 # Alias for wsl
