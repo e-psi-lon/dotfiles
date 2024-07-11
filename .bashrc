@@ -25,7 +25,7 @@ alias la="ls -A"
 alias grep="grep --color=auto"
 if [ -f /etc/os-release ]; then
     . /etc/os-release
-    if [ $ID = "ubuntu" ] || [ $ID = "debian" ] || [ $ID = "linuxmint" ]; then
+    if [ $ID = "ubuntu" ] || [ $ID = "linuxmint" ]; then
         alias fastfetch="neofetch"
     fi
 fi
