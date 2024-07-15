@@ -3,3 +3,9 @@
 [user]
 	name = e-psi-lon
 	email = theg41g@gmail.com
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential

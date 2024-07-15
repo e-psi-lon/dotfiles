@@ -66,6 +66,7 @@ export HISTFILESIZE=20000
 export HISTCONTROL=ignoredups:erasedups
 export HISTTIMEFORMAT='%F %T '
 export HISTIGNORE="&:ls:[bf]g:exit:clear:history"
+export EDITOR=nano
 shopt -s histappend 
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
