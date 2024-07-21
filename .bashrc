@@ -36,14 +36,24 @@ if [ -f /etc/os-release ]; then
     fi
 fi
 
+# Load completion
 if ! shopt -oq posix; then
 	if [ -f /usr/share/bash-completion/bash_completion ]; then
-		. usr/share/bash-completion/bash_completion 
+		. usr/share/bash-completion/bash_completion
 	elif [ -f /etc/bash_completion ]; then
 		. /etc/bash_completion
 	fi
 fi
 
+# Load nano coloration
+> $HOME/.nanorc
+for dir in /etc/share/nano /etc/share/nano/extra /data/data/com.termux/files/usr/share/nano /data/data/com.termux/files/usr/share/nano/extra; do
+	if [ -d "$dir" ]; then
+		for file in "$dir"/*.nanorc; do
+			[ -e "$file" ] && echo "include $file" >> $HOME/.nanorc
+		done
+	fi
+done
 
 # init
 clear
@@ -76,7 +86,7 @@ export HISTCONTROL=ignoredups:erasedups
 export HISTTIMEFORMAT='%F %T '
 export HISTIGNORE="&:ls:[bf]g:exit:clear:history"
 export EDITOR=nano
-shopt -s histappend 
+shopt -s histappend
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
 
@@ -87,14 +97,14 @@ function taskmanager() {
     if [ "$1" == "-c" ]; then
         while true; do
             tput civis
-            tput smcup 
+            tput smcup
             if [ -z "$2" ]; then
                 ps aux | grep -v grep | grep -v ps | grep -v awk | awk '{printf "\033[1;32m%-10s \033[1;34m%-8s \033[1;33m%-6s \033[1;35m%-6s \033[1;36m%-10s \033[0m%s\n", $2, $1, $3, $4, $9, $11}'
             else
                 ps aux | grep -v grep | grep -v ps | grep -v awk | grep -i -e "$2" | awk '{printf "\033[1;32m%-10s \033[1;34m%-8s \033[1;33m%-6s \033[1;35m%-6s \033[1;36m%-10s \033[0m%s\n", $2, $1, $3, $4, $9, $11}'
             fi
             tput rmcup
-            tput cnorm 
+            tput cnorm
             sleep $interval
         done
     else
