@@ -91,9 +91,9 @@ bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
 
 # Functions
-source $HOME/functions/tasks.sh
-source $HOME/functions/extract.sh
-source $HOME/functions/symlink.sh
+source $HOME/.functions/tasks.sh
+source $HOME/.functions/extract.sh
+source $HOME/.functions/symlink.sh
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
