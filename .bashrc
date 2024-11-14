@@ -3,7 +3,7 @@ current_path=$(pwd)
 cd $HOME/dotfiles
 output=$(git pull)
 
-if ! ping -q -c 1 -W 1 google.com >/devnull; then
+if ping -q -c 1 -W 1 google.com > /dev/null; then
   if [[ $output != *"Already up to date."* ]] && [[ $output != *"Déjà à jour."* ]]; then
       source ~/.bashrc
       unset current_path output
