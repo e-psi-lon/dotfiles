@@ -73,6 +73,7 @@ clear
 fastfetch
 eval "$(fzf --bash)"
 eval "$(zoxide init bash --cmd cd)"
+eval "$(gh copilot alias -- bash)"
 shopt -s cdspell
 
 # Better input and history
@@ -91,7 +92,7 @@ parse_git_commit() {
   fi
   unset commit
 }
-# Le commit en rouge
+
 export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;33m\]\$(parse_git_branch)\[\033[01;31m\]\$(parse_git_commit)\[\033[00m\]\$ "
 export HISTSIZE=10000
 export HISTFILESIZE=20000
@@ -100,8 +101,6 @@ export HISTTIMEFORMAT='%F %T '
 export HISTIGNORE="&:ls:[bf]g:exit:clear:history"
 export EDITOR=nano
 shopt -s histappend
-bind '"\e[A": history-search-backward'
-bind '"\e[B": history-search-forward'
 
 # Functions
 for func in $HOME/.functions/*; do
