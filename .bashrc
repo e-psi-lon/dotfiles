@@ -16,8 +16,8 @@ cd $current_path
 unset current_path output
 
 # Load local file
-if [ -f $HOME/local.sh ]; then
-    source $HOME/local.sh
+if [ -f $HOME/local ]; then
+    source $HOME/local
 fi
 
 
@@ -104,9 +104,9 @@ bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
 
 # Functions
-source $HOME/.functions/tasks.sh
-source $HOME/.functions/extract.sh
-source $HOME/.functions/symlink.sh
+for func in $HOME/.functions/*; do
+  [ -f "$func" ] && source "$func"
+done
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
