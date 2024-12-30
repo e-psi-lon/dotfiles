@@ -9,3 +9,13 @@
 [credential "https://gist.github.com"]
 	helper = 
 	helper = !gh auth git-credential
+[alias]
+	graph = log --all --graph --decorate --oneline
+	undo = reset HEAD~1
+	gh = !gh repo create $(basename $(pwd)) --public && \
+	git remote add origin https://github.com/e-psi-lon/$(basename $(pwd)) && \
+	git push -u origin main
+	ghp = !gh repo create $(basename $(pwd)) --private && \
+	git remote add origin https://github.com/e-psi-lon/$(basename $(pwd)) && \
+	git push -u origin main
+	
