@@ -117,3 +117,5 @@ if [ ! -d "$HOME/.sdkman/candidates/ktx" ]; then
 else
     source "$HOME/.sdkman/candidates/ktx/0.1.2/.ktxrc"
 fi
+eval "$(uv generate-shell-completion bash)"
+eval "$(uvx --generate-shell-completion bash)"
