@@ -112,6 +112,12 @@ for func in $HOME/.functions/*; do
   [ -f "$func" ] && source "$func"
 done
 
+fzfd() {
+  local path="${1:-$(pwd)}"  # Default to current directoryif no path is provided
+  find "$path" -type d 2>/dev/null | fzf
+}
+
+
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
