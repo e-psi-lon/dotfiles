@@ -1,7 +1,7 @@
 [init]
 	defaultBranch = main
 [user]
-	name = e-psi-lon
+	name = Lilian Maulny (e_ψ_lon)
 	email = theg41g@gmail.com
 [credential "https://github.com"]
 	helper = 
@@ -18,4 +18,4 @@
 	ghp = !gh repo create $(basename $(pwd)) --private && \
 	git remote add origin https://github.com/e-psi-lon/$(basename $(pwd)) && \
 	git push -u origin main
-	
+
