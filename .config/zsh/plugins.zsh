@@ -11,4 +11,7 @@ plug "marlonrichert/zsh-autocomplete"
 plug "ryutok/rust-zsh-completions"
 
 # custom commands located in .config/zsh/commands/
-
+# Use a loop in this directory to load all of them
+for file in $HOME/.config/zsh/commands/*; do
+    source $file
+done

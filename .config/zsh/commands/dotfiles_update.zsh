@@ -13,6 +13,7 @@ dotfiles_update() {
     if [ "$LOCAL" != "$REMOTE" ]; then
       echo -e "  󰚰 Updates available. Pulling changes..."
       git pull --quiet --ff-only
+      stow DOTFILES_DIR
       echo -e "  󰄬 Dotfiles updated successfully."
     else
       echo -e "  󰄬 Dotfiles already up to date."
