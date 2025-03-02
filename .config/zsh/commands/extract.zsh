@@ -1,4 +1,3 @@
-#!/bin/bash
 extract() {
   if [ -z "$1" ]; then
     echo "Usage: extract <file> [output_directory]"

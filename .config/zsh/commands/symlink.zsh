@@ -1,4 +1,3 @@
-#!/bin/bash
 symlink() {
   # Check if the correct number of arguments is provided
   if [ "$#" -ne 2 ]; then

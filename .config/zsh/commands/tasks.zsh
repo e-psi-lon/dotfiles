@@ -1,4 +1,3 @@
-#!/bin/bash
 tasks() {
     local interval=2
     local filter="$1"
