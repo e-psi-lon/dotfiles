@@ -2,7 +2,7 @@
 	"$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
 	"console_title_template": "{{ .UserName }}{{ if .HostName }}@{{ .HostName }}{{ end }} : {{ .Path }}",
 	"transient_prompt": {
-		"template": "<p:white,transparent></><p:blue,p:white>{{ .UserName }}</><p:black,p:white>@</><p:red,p:white>{{ .HostName }}</><p:white,p:blue></><,p:blue>  {{ .Folder }}</><p:blue></>",
+		"template": "<p:white,transparent></><p:blue,p:white>{{ .UserName }}</><p:black,p:white>@</><p:red,p:white>{{ .HostName }}</><p:white,p:blue></><p:white,p:blue>  {{ .Folder }}</><p:blue></>",
 		"foreground": "p:black",
 		"background": "transparent"
 	},
@@ -39,7 +39,8 @@
 						"opensuse": "",
 						"ubuntu": "",
 						"windows": "",
-						"android": ""       
+						"android": "",
+						"nixos": ""
 					}
 				},
 				{
@@ -162,7 +163,7 @@
 		"white": "#ffffff",
 		"green": "#50a14f",
 		
-		"bg_blue": "#0077c2",
+		"bg_blue": "#0078c2",
 		"bg_orange": "#ff9248",
 		"bg_red": "#cc2222",
 		"bg_turquoise": "#30d5c8",
