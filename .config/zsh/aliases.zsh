@@ -1,8 +1,21 @@
-# define zsh aliases
-alias windows="cd /mnt/c"
+# WSL specific aliases
+if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
+    # Navigate to Windows drives
+    alias windows="cd /mnt/c"
+    # Open files/folders in Windows
+    alias explorer="explorer.exe ."
+    alias vscode="code.exe"
+    
+    # Convert paths between WSL and Windows
+    alias wslpath="wslpath -w"  # WSL to Windows path
+    alias winpath="wslpath -u"  # Windows to WSL path
+fi
 # Alias for android
-alias android="cd /storage/emulated/0"
-alias arch="proot-distro login archlinux"
+if [[ -d /data/data/com.termux || -n "$(command -v termux-info 2>/dev/null)" ]]; then
+    # Basic navigation
+    alias android="cd /storage/emulated/0"
+    alias fedora="proot-distro login fedora"
+fi
 # Other aliases
 alias cls="clear; fastfetch"
 alias cdl="zoxide query -l -s"
