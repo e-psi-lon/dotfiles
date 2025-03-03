@@ -10,6 +10,8 @@ alias cdl="zoxide query -l -s"
 alias la="ls --all"
 alias grep="grep --color=auto"
 alias act="gh act"
+# It's important to be kind with your computer :)
+alias please="sudo"
 # Define an alias for fastfech because on some
 # systems, it doesn't exists and neofetch is used
 if [ -f /etc/os-release ]; then
