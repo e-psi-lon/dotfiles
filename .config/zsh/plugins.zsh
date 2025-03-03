@@ -1,3 +1,6 @@
+# useful
+plug "zap-zsh/exa"
+
 # visual
 plug "zsh-users/zsh-syntax-highlighting"
 plug "zdharma-continuum/fast-syntax-highlighting"

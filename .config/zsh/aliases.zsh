@@ -4,10 +4,8 @@ alias windows="cd /mnt/c"
 alias android="cd /storage/emulated/0"
 alias arch="proot-distro login archlinux"
 # Other aliases
-alias ls='eza --color=auto -F --icons=auto'
 alias cls="clear; fastfetch"
 alias cdl="zoxide query -l -s"
-alias la="ls --all"
 alias grep="grep --color=auto"
 alias act="gh act"
 # It's important to be kind with your computer :)
