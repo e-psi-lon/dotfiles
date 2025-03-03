@@ -24,10 +24,10 @@
 					"foreground": "p:blue",
 					"leading_diamond": "",
 					"style": "diamond",
-					"template": "{{ if eq .Code 0 }}{{.Icon}}{{ else }}{{ .Code }}{{ end }}",
+					"template": "{{ if eq .Code 0 }}{{.Icon}}{{ else }}{{ .Code }}{{ end }} ",
 					"type": "os",
 					"foreground_templates": [
-						"{{ if and (eq .Code 0) (eq .Os \"arch\") }}p:blue{{ else if and (eq .Code 0) (eq .Os \"debian\") }}p:dark_red{{ else if and (eq .Code 0) (eq .Os \"fedora\") }}p:blue{{ else if and (eq .Code 0) (eq .Os \"linux\") }}p:black{{ else if and (eq .Code 0) (eq .Os \"macos\") }}p:white{{ else if and (eq .Code 0) (eq .Os \"manjaro\") }}p:green{{ else if and (eq .Code 0) (eq .Os \"opensuse\") }}p:green{{ else if and (eq .Code 0) (eq .Os \"ubuntu\") }}p:red{{ else if and (eq .Code 0) (eq .Os \"windows\") }}p:blue{{ else if and (eq .Code 0) (eq .Os \"android\") }}p:green{{ else }}p:dark_red{{ end }}"
+						"{{ if and (eq .Code 0) (eq .Os \"arch\") }}p:blue{{ else if and (eq .Code 0) (eq .Os \"debian\") }}p:dark_red{{ else if and (eq .Code 0) (eq .Os \"fedora\") }}p:blue{{ else if and (eq .Code 0) (eq .Os \"linux\") }}p:black{{ else if and (eq .Code 0) (eq .Os \"macos\") }}p:white{{ else if and (eq .Code 0) (eq .Os \"manjaro\") }}p:green{{ else if and (eq .Code 0) (eq .Os \"opensuse\") }}p:green{{ else if and (eq .Code 0) (eq .Os \"ubuntu\") }}p:red{{ else if and (eq .Code 0) (eq .Os \"windows\") }}p:blue{{ else if and (eq .Code 0) (eq .Os \"android\") }}p:green{{ else }}p:dark_red{{ end }} "
 					],
 					"properties": {
 						"arch": "",
