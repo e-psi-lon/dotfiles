@@ -8,6 +8,9 @@ alias cls="clear; fastfetch"
 alias cdl="zoxide query -l -s"
 alias grep="grep --color=auto"
 alias act="gh act"
+alias edit="$EDITOR"
+alias reload="source $HOME/.zshrc"
+alias shrug="echo '¯\_(ツ)_/¯'"
 # It's important to be kind with your computer :)
 alias please="sudo"
 # Define an alias for fastfech because on some
