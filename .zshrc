@@ -17,6 +17,7 @@ eval "$(gh copilot alias -- zsh)"
 eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/themes/e-psi-lon.omp.json)"
 . "$HOME/.atuin/bin/env"
 eval "$(atuin init zsh)"
+eval "$(atuin gen-completions --shell zsh)"
 eval "$(uv generate-shell-completion zsh)"
 eval "$(uvx --generate-shell-completion zsh)"
 
