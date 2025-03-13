@@ -26,11 +26,11 @@ alias reload="source $HOME/.zshrc"
 alias shrug="echo '¯\_(ツ)_/¯'"
 # It's important to be kind with your computer :)
 alias please="sudo"
-# Define an alias for fastfech because on some
-# systems, it doesn't exists and neofetch is used
+# Define an alias for fastfetch because on some
+# systems, it doesn't exist and neofetch is used
 if [ -f /etc/os-release ]; then
     . /etc/os-release
-    if [ $ID = "ubuntu" ] || [ $ID = "linuxmint" ]; then
+    if [[ "$ID_LIKE" == *"debian"* || "$ID_LIKE" == *"ubuntu"*  || $ID == "debian" ]]; then
         alias fastfetch="neofetch"
     fi
 fi
