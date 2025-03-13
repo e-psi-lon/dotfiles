@@ -15,6 +15,23 @@ if [[ -d /data/data/com.termux || -n "$(command -v termux-info 2>/dev/null)" ]];
     # Basic navigation
     alias android="cd /storage/emulated/0"
     alias fedora="proot-distro login fedora"
+    
+    # Termux:API utilities (if installed)
+    if [ -n "$(command -v termux-battery-status 2>/dev/null)" ]; then
+        alias battery="termux-battery-status"
+        alias clipboard="termux-clipboard-get"
+        alias copy="termux-clipboard-set"
+        alias brightness="termux-brightness"
+        alias vibrate="termux-vibrate"
+        alias notify="termux-notification"
+    fi
+
+    # Termux:x11 utilities (if installed)
+    if [ -n "$(command -v x11-xpra 2>/dev/null)" ]; then
+        alias x11="x11-xpra"
+        alias x11start="x11-xpra start :1"
+        alias x11stop="x11-xpra stop :1"
+    fi
 fi
 # Other aliases
 alias cls="clear; fastfetch"
