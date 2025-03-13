@@ -9,26 +9,29 @@
     "uptime",
     "packages",
     "shell",
-    "display",
     "de",
     "wm",
-    "wmtheme",
     "theme",
     "icons",
-    "font",
     "cursor",
+    "font",
     "terminal",
-    "terminalfont",
     "cpu",
     "gpu",
     "memory",
     "swap",
     "disk",
+    "display",
+    "wifi",
     "localip",
     "battery",
-    "poweradapter",
-    "locale",
+    "weather",
     "break",
     "colors"
-  ]
+  ],
+  "display": {
+    "key": {
+      "type": "both"
+    }
+  }
 }
