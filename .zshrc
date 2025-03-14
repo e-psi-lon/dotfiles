@@ -15,7 +15,7 @@ eval "$(fzf --zsh)"
 eval "$(zoxide init zsh --cmd cd)"
 eval "$(gh copilot alias -- zsh)"
 eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/themes/e-psi-lon.omp.json)"
-. "$HOME/.atuin/bin/env"
+[ -f "$HOME/.atuin/bin/env" ] && . "$HOME/.atuin/bin/env"
 eval "$(atuin init zsh)"
 eval "$(atuin gen-completions --shell zsh)"
 eval "$(uv generate-shell-completion zsh)"
@@ -42,5 +42,4 @@ if [[ -z "$EDITOR" || "$EDITOR" == "nano" ]]; then
 fi
 export EDITOR=nano
 
-clear
-fastfetch
+cls
