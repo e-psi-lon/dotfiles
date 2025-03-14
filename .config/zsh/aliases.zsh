@@ -7,11 +7,11 @@ if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
     alias vscode="code.exe"
     
     # Convert paths between WSL and Windows
-    alias wslpath="wslpath -w"  # WSL to Windows path
-    alias winpath="wslpath -u"  # Windows to WSL path
+    alias wslpath="wslpath -w"  # Convert WSL path to Windows path
+    alias winpath="wslpath -u"  # Convert Windows path to WSL path
 fi
 # Alias for android
-if [[ -d /data/data/com.termux || -n "$(command -v termux-info 2>/dev/null)" ]]; then
+if [[ -d /data/data/com.termux ]] || [ -n "$(command -v termux-info 2>/dev/null)" ]; then
     # Basic navigation
     alias android="cd /storage/emulated/0"
     alias fedora="proot-distro login fedora"
@@ -47,7 +47,7 @@ alias please="sudo"
 # systems, it doesn't exist and neofetch is used
 if [ -f /etc/os-release ]; then
     . /etc/os-release
-    if [[ "$ID_LIKE" == *"debian"* || "$ID_LIKE" == *"ubuntu"*  || $ID == "debian" ]]; then
+    if [[ "$ID_LIKE" == *"debian"* || "$ID_LIKE" == *"ubuntu"* || "$ID" == "debian" ]]; then
         alias fastfetch="neofetch"
     fi
 fi
