@@ -2,7 +2,7 @@
 dotfiles_update() {
   local DOTFILES_DIR="$HOME/dotfiles"
   
-  echo -e "\n  Checking for dotfiles updates..."
+  printf "\nChecking for dotfiles updates...\n"
   
   if cd "$DOTFILES_DIR" 2>/dev/null; then
     git fetch --quiet
@@ -11,17 +11,17 @@ dotfiles_update() {
     REMOTE=$(git rev-parse @{u} 2>/dev/null || echo $LOCAL)
     
     if [ "$LOCAL" != "$REMOTE" ]; then
-      echo -e "  󰚰 Updates available. Pulling changes..."
+      printf "󰚰 Updates available. Pulling changes...\n"
       git pull --quiet --ff-only
-      stow "$DOTFILES_DIR"
-      echo -e "  󰄬 Dotfiles updated successfully."
+      stow .
+      printf "󰄬 Dotfiles updated successfully.\n"
     else
-      echo -e "  󰄬 Dotfiles already up to date."
+      printf "󰄬 Dotfiles already up to date.\n"
     fi
     
     cd - > /dev/null
   else
-    echo -e "  󰅙 Error: Dotfiles directory not found at $DOTFILES_DIR"
+    printf "󰅙 Error: Dotfiles directory not found at %s\n" "$DOTFILES_DIR"
   fi
 }
 
