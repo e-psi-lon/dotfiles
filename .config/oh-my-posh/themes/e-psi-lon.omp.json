@@ -7,7 +7,7 @@
 		"background": "transparent"
 	},
 	"secondary_prompt": {
-		"template": "<p:white,transparent></><,p:white>></><p:w,transparent></> ",
+		"template": "<p:white,transparent></><,p:white>></><p:white,transparent></> ",
 		"foreground": "p:black",
 		"background": "transparent"
 	},
