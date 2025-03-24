@@ -35,6 +35,7 @@ if [[ -d /data/data/com.termux ]] || [ -n "$(command -v termux-info 2>/dev/null)
 fi
 # Other aliases
 alias cls="clear; fastfetch"
+alias lla="ll -a"
 alias cdl="zoxide query -l -s"
 alias grep="grep --color=auto"
 alias act="gh act"
