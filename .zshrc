@@ -21,6 +21,9 @@ eval "$(atuin gen-completions --shell zsh)"
 eval "$(uv generate-shell-completion zsh)"
 eval "$(uvx --generate-shell-completion zsh)"
 
+# Fix key bind for Delete key
+bindkey '^[[3~' delete-char
+
 # Load and initialise completion system
 autoload -Uz compinit
 compinit
