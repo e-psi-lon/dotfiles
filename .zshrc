@@ -41,7 +41,9 @@ if command -v uv &>/dev/null; then
 else
   echo " uv not found. Disabling uv auto-completion."
 fi
-
+if command -v tailscale &>/dev/null; then
+  eval "$(tailscale completion zsh)"
+fi
 # Fix key bind for Delete key
 bindkey '^[[3~' delete-char
 # Fix key bind for Ctrl+Left and Ctrl+Right (should move cursor word by word)
