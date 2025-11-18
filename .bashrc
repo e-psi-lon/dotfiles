@@ -1,20 +1,3 @@
-# Load from stow
-current_path=$(pwd)
-cd $HOME/dotfiles
-output=$(git pull)
-
-if ping -q -c 1 -W 1 google.com > /dev/null; then
-  if [[ $output != *"Already up to date."* ]] && [[ $output != *"Déjà à jour."* ]]; then
-      source ~/.bashrc
-      unset current_path output
-      return
-  fi
-fi
-
-stow .
-cd $current_path
-unset current_path output
-
 # Load local file
 if [ -f $HOME/local ]; then
     source $HOME/local
@@ -58,16 +41,6 @@ if ! shopt -oq posix; then
 	fi
 fi
 
-# Load nano coloration
-> $HOME/.nanorc
-for dir in /etc/share/nano /etc/share/nano/extra /data/data/com.termux/files/usr/share/nano /data/data/com.termux/files/usr/share/nano/extra; do
-	if [ -d "$dir" ]; then
-		for file in "$dir"/*.nanorc; do
-			[ -e "$file" ] && echo "include $file" >> $HOME/.nanorc
-		done
-	fi
-done
-
 # init
 clear
 fastfetch
@@ -107,26 +80,11 @@ export HISTIGNORE="&:ls:[bf]g:exit:clear:history"
 export EDITOR=nano
 shopt -s histappend
 
-# Functions
-for func in $HOME/.functions/*; do
-  [ -f "$func" ] && source "$func"
-done
 
 fzfd() {
   local path="${1:-$(pwd)}"  # Default to current directoryif no path is provided
-  find "$path" -type d 2>/dev/null | fzf
+  find "$path" -type d 2>/dev/null | fzf 
 }
 
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-# Vérifie si ktx est installé
-if [ ! -d "$HOME/.sdkman/candidates/ktx" ]; then
-    sdk install ktx
-    . "$HOME/.bashrc"
-else
-    source "$HOME/.sdkman/candidates/ktx/0.1.2/.ktxrc"
-fi
 eval "$(uv generate-shell-completion bash)"
 eval "$(uvx --generate-shell-completion bash)"
