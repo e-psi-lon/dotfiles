@@ -18,7 +18,7 @@ dotfiles_update() {
     
     if [ "$LOCAL" != "$REMOTE" ]; then
       printf "󰚰 Updates available. Pulling changes...\n"
-      timeout $TIMEOUT_SECONDS git pull --quiet --ff-only
+      git pull --quiet --ff-only
       stow .
       printf "󰄬 Dotfiles updated successfully.\n"
     else
