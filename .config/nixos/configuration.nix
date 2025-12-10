@@ -4,6 +4,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./common.nix
   ];
 
   boot.loader = {
@@ -16,7 +17,7 @@
   };
 
   networking = {
-    hostName = "nixos-laptop"; # Define your hostname.
+    hostName = "nixos-laptop";
     networkmanager.enable = true;
 
     resolvconf.enable = false;
@@ -42,18 +43,6 @@
 
   # Configure keymap in X11 (French AZERTY)
   services = {
-    xserver = {
-      enable = true;
-      xkb = {
-        layout = "fr";
-        variant = "";
-      };
-      # Enable LXQt desktop environment
-      desktopManager.lxqt.enable = true;
-    };
-    displayManager = {
-      sddm.enable = true;
-    };
     
     tailscale = {
       enable = true;
@@ -137,7 +126,7 @@
     description = "Lilian Maulny";
     extraGroups = [ "networkmanager" "wheel" "audio" "video" "input" "storage" ];
     shell = pkgs.zsh;
-    initialHashedPassword = "$6$UeD2moIWjO4alet3$dwuUSswjqgFzZ//HTrm7fMSQ5JAsDPGAWvcU9OAoaUdT98tNihS.okJ.MflmLSiIwfYJMISKPdHlp3UnU8YLi0";
+    initialHashedPassword = "$6$RuWluSDrWlxlvRqQ$JCiJFbeooSAfaKV0BkcCx6g/wxxSH9oDpUbAn5EG6Ee/aG5hZ3zt9UVKUnRxbF6ELDFj71yvUdEpi/.aglaj1/";
     createHome = true;
   };
 
@@ -210,13 +199,6 @@
       unzip
       openvpn
 
-      # LXQt specific tools
-      lxqt.qterminal
-      lxqt.pcmanfm-qt
-      lxqt.lxqt-runner
-      lxqt.lxqt-wayland-session
-      labwc
-      openbox
     ];
  };
 
@@ -249,12 +231,6 @@
     DefaultMemoryAccounting=yes
   '';
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It's perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this value to
-  # understand what choosing a different value implies.
-  system.stateVersion = "25.05"; # Don't change this after installation
 
+  system.stateVersion = "25.05"; 
 }
