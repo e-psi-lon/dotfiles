@@ -17,6 +17,14 @@
                     ./hosts/nixos-asus.nix
                 ];
             };
+            nixos-asus-stable = nixpkgs-stable.lib.nixosSystem {
+                system = "x86_64-linux";
+                modules = [
+                    ./modules/common.nix
+                    ./modules/desktop-kde.nix
+                    ./hosts/nixos-asus.nix
+                ];
+            };
             nixos-hp = nixpkgs-stable.lib.nixosSystem {
                 system = "x86_64-linux";
                 modules = [
