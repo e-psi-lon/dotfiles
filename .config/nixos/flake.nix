@@ -2,13 +2,14 @@
     description = "e-psi-lon's NixOS config accross all my devices";
     
     inputs = {
-        nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-        zen-browser.url = "github:youwen5/zen-browser-flake";
+        nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+	nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
+	zen-browser.url = "github:youwen5/zen-browser-flake";
     };
 
-    outputs = { self, nixpkgs }: {
+    outputs = { self, nixpkgs-unstable, nixpkgs-stable, zen-browser, ... }: {
         nixosConfigurations = {
-            nixos-asus = nixpkgs.lib.nixosSystem {
+            nixos-asus = nixpkgs-unstable.lib.nixosSystem {
                 system = "x86_64-linux";
                 modules = [
                     ./modules/common.nix
@@ -16,7 +17,7 @@
                     ./hosts/nixos-asus.nix
                 ];
             };
-            nixos-hp = nixpkgs.lib.nixosSystem {
+            nixos-hp = nixpkgs-stable.lib.nixosSystem {
                 system = "x86_64-linux";
                 modules = [
                     ./modules/common.nix
