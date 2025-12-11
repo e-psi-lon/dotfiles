@@ -23,6 +23,7 @@
                     ./modules/common.nix
                     ./modules/desktop-lxqt.nix
                     ./hosts/nixos-hp.nix
+		    ./hosts/nixos-hp/hardware-configuration.nix
                 ];
 
             };
