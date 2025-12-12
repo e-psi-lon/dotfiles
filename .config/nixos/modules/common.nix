@@ -122,8 +122,6 @@
 
     nixpkgs.config.allowUnfree = true;
 
-    zramSwap.enable = true;
-
     nix = {
         gc.automatic = true;
 

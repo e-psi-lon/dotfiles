@@ -13,9 +13,10 @@
 
     outputs = { self, nixpkgs-unstable, nixpkgs-stable, zen-browser, minegrub-world-sel-theme, ... }:
     let
-      mkNixosSystem = { pkgs, modules, hostName }:
+      mkNixosSystem = { pkgs, modules, hostName, extraArgs ? {} }:
         pkgs.lib.nixosSystem {
           system = "x86_64-linux";
+          specialArgs = extraArgs;
           modules = modules ++ [
             { networking.hostName = hostName; }
           ];
@@ -39,12 +40,14 @@
                 pkgs = nixpkgs-unstable;
                 modules = asusModules;
                 hostName = "nixos-asus";
+                extraArgs = {  zen-browser = zen-browser;  };
             };
 
             nixos-asus-stable = mkNixosSystem {
                 pkgs = nixpkgs-stable;
                 modules = asusModules;
                 hostName = "nixos-asus";
+                extraArgs = {  zen-browser = zen-browser;  };
             };
 
             nixos-hp = mkNixosSystem {
