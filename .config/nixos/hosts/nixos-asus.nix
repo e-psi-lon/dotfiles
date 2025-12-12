@@ -1,13 +1,6 @@
 { config, pkgs, ... }:
 
 {
-    imports = [
-        /etc/nixos/hardware-configuration.nix
-    ];
-
-    
-    networking.hostName = "nixos-asus";
-
     environment = {
         systemPackages = with pkgs; [
             jetbrains-toolbox
@@ -15,7 +8,10 @@
         ];
     };
 
-    hardware = {
-        graphics.enable = true;
-    };
+    hardware.nvidia.prime = {
+        sync.enable = true;
+
+        amdgpuBusId = "PCI:6:0:0";
+        nvidiaBusId = "PCI:1:0:0";
+    }
 }

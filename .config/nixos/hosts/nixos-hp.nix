@@ -2,8 +2,6 @@
 
 {
 
-    networking.hostName = "nixos-hp";
-
     boot.loader.systemd-boot = {
         enable = true;
         configurationLimit = 2;
@@ -29,6 +27,8 @@
             SystemMaxUse=10M
             RuntimeMaxUse=50M
         '';
+
+        xserver.videoDrivers = [ "intel" ];
     };
 
     environment = {

@@ -1,39 +1,60 @@
 {
-    description = "e-psi-lon's NixOS config accross all my devices";
+    description = "e-psi-lon's NixOS config across all my devices";
     
     inputs = {
         nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-	nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
-	zen-browser.url = "github:youwen5/zen-browser-flake";
+        nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
+        zen-browser.url = "github:youwen5/zen-browser-flake";
+        minegrub-world-sel-theme = {
+            url = "github:Lxtharia/minegrub-world-sel-theme";
+            inputs.nixpkgs.follows = "nixpkgs-stable";
+        };
     };
 
-    outputs = { self, nixpkgs-unstable, nixpkgs-stable, zen-browser, ... }: {
+    outputs = { self, nixpkgs-unstable, nixpkgs-stable, zen-browser, minegrub-world-sel-theme, ... }:
+    let
+      mkNixosSystem = { pkgs, modules, hostName }:
+        pkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = modules ++ [
+            { networking.hostName = hostName; }
+          ];
+        };
+      commonModules = [
+        ./modules/common.nix
+      ];
+      asusModules = commonModules ++ [
+        ./modules/desktop-kde.nix
+        ./modules/grub.nix
+        ./modules/nvidia.nix
+        ./modules/zen-browser.nix
+        ./hosts/nixos-asus.nix
+        # ./hosts/nixos-asus/hardware-configuration.nix
+        minegrub-world-sel-theme.nixosModules.default
+      ];
+    in
+    {
         nixosConfigurations = {
-            nixos-asus = nixpkgs-unstable.lib.nixosSystem {
-                system = "x86_64-linux";
-                modules = [
-                    ./modules/common.nix
-                    ./modules/desktop-kde.nix
-                    ./hosts/nixos-asus.nix
-                ];
+            nixos-asus = mkNixosSystem {
+                pkgs = nixpkgs-unstable;
+                modules = asusModules;
+                hostName = "nixos-asus";
             };
-            nixos-asus-stable = nixpkgs-stable.lib.nixosSystem {
-                system = "x86_64-linux";
-                modules = [
-                    ./modules/common.nix
-                    ./modules/desktop-kde.nix
-                    ./hosts/nixos-asus.nix
-                ];
+
+            nixos-asus-stable = mkNixosSystem {
+                pkgs = nixpkgs-stable;
+                modules = asusModules;
+                hostName = "nixos-asus";
             };
-            nixos-hp = nixpkgs-stable.lib.nixosSystem {
-                system = "x86_64-linux";
-                modules = [
-                    ./modules/common.nix
+
+            nixos-hp = mkNixosSystem {
+                pkgs = nixpkgs-stable;
+                modules = commonModules ++ [
                     ./modules/desktop-lxqt.nix
                     ./hosts/nixos-hp.nix
-		    ./hosts/nixos-hp/hardware-configuration.nix
+                    ./hosts/nixos-hp/hardware-configuration.nix
                 ];
-
+                hostName = "nixos-hp";
             };
         };
     };
