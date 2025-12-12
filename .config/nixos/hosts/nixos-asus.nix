@@ -8,6 +8,8 @@
         ];
     };
 
+    boot.loader.efi.efiSysMountPoint = "/boot/efi";
+
     hardware.nvidia.prime = {
         sync.enable = true;
 

@@ -30,7 +30,7 @@
         ./modules/nvidia.nix
         ./modules/zen-browser.nix
         ./hosts/nixos-asus.nix
-        # ./hosts/nixos-asus/hardware-configuration.nix
+        ./hosts/nixos-asus/hardware-configuration.nix
         minegrub-world-sel-theme.nixosModules.default
       ];
     in
