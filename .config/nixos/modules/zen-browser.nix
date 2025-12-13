@@ -2,6 +2,6 @@
 
 {
     environment.systemPackages = [
-        zen-browser.packages.${pkgs.system}.default
+        zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
 }

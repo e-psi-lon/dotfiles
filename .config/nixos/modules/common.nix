@@ -103,7 +103,6 @@
             openvpn
             zoxide
             oh-my-posh
-            
         ];
     };
 
@@ -118,7 +117,16 @@
         createHome = true;
     };
 
-    fonts.fontconfig.enable = true;
+    fonts.fontconfig = {
+        enable = true;
+
+        defaultFonts = {
+            sansSerif = [ "NotoSansM Nerd Font" "NotoSerif Nerd Font" ];
+            monospace = [ "JetBrainsMono Nerd Font" ];
+            serif = [ "NotoSerif Nerd Font" ];
+            emoji = [ "NotoColorEmoji" ];
+        };
+    };
 
     nixpkgs.config.allowUnfree = true;
 
@@ -132,4 +140,9 @@
             experimental-features = [ "nix-command" "flakes" ];
         };
     };
+
+    fonts.packages = with pkgs; [
+        nerd-fonts.jetbrains-mono
+        nerd-fonts.noto
+    ];
 }
