@@ -68,9 +68,7 @@
         "vm.vfs_cache_pressure" = 60;
     };
 
-    systemd.extraConfig = ''
-        DefaultMemoryAccounting=yes
-    '';
+    systemd.settings.Manager.DefaultMemoryAccounting = true;
 
     system.stateVersion = "25.05";
     
