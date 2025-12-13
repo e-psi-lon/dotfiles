@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
     environment = {
@@ -8,7 +8,16 @@
         ];
     };
 
+    users = {
+        groups.data = {};
+        users.e-psi-lon.extraGroups = lib.mkAfter [ "data" ];
+    };
+
     boot.loader.efi.efiSysMountPoint = "/boot/efi";
+    systemd.tmpfiles.rules = [
+        "d /mnt/data 0775 root data - -"
+    ];
+
 
     hardware.nvidia.prime = {
         sync.enable = true;
