@@ -4,7 +4,12 @@
     environment = {
         systemPackages = with pkgs; [
             jetbrains-toolbox
-
+            bat
+            glow
+            ripgrep
+            fd
+            jq
+            dust
         ];
     };
 
