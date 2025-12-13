@@ -24,6 +24,7 @@
         tailscale = {
             enable = true;
             useRoutingFeatures = "both";
+            permitCertUid = "e-psi-lon";
         };
 
         xserver.xkb = {
@@ -115,6 +116,10 @@
         shell = pkgs.zsh;
         hashedPassword = "$6$RuWluSDrWlxlvRqQ$JCiJFbeooSAfaKV0BkcCx6g/wxxSH9oDpUbAn5EG6Ee/aG5hZ3zt9UVKUnRxbF6ELDFj71yvUdEpi/.aglaj1/";
         createHome = true;
+        openssh.authorizedKeys.keys = [
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMj8zKRB39dPABSBPDkRU+yrgFP2iQaCkJvNLJ9D4/7X e-psi-lon@nixos-hp"
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEdsCJp/3BQiAzscw2PT8rmfVWYwd7gVJca0QKWkpnSm e-psi-lon@home"
+        ];
     };
 
     fonts.fontconfig = {
