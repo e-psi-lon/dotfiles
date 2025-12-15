@@ -8,12 +8,6 @@
     networking = {
         networkmanager.enable = true;
         resolvconf.enable = false;
-
-        firewall = {
-            allowedTCPPorts = [ 22 80 443 ];
-            allowedUDPPorts = [ 22 ];
-            enable = true;
-        };
     };
 
     time.timeZone = "Europe/Paris";

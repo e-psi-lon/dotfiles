@@ -28,6 +28,7 @@
         ./modules/desktop-kde.nix
         ./modules/grub.nix
         ./modules/nvidia.nix
+        ./modules/gaming.nix
         ./modules/zen-browser.nix
         ./hosts/nixos-asus.nix
         ./hosts/nixos-asus/hardware-configuration.nix
