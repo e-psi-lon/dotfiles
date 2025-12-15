@@ -117,14 +117,17 @@
         ];
     };
 
+    programs.appimage.enable = true;
+    programs.appimage.binfmt = true;
+
     fonts.fontconfig = {
         enable = true;
 
         defaultFonts = {
-            sansSerif = [ "NotoSansM Nerd Font" "NotoSerif Nerd Font" ];
+            sansSerif = [ "NotoSans Nerd Font" "NotoSans Nerd Font" ];
             monospace = [ "JetBrainsMono Nerd Font" ];
             serif = [ "NotoSerif Nerd Font" ];
-            emoji = [ "NotoColorEmoji" ];
+            emoji = [ "Noto Color Emoji" ];
         };
     };
 
