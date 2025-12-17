@@ -9,31 +9,33 @@
             url = "github:Lxtharia/minegrub-world-sel-theme";
             inputs.nixpkgs.follows = "nixpkgs-stable";
         };
+        spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     };
 
-    outputs = { self, nixpkgs-unstable, nixpkgs-stable, zen-browser, minegrub-world-sel-theme, ... }:
+    outputs = { self, nixpkgs-unstable, nixpkgs-stable, zen-browser, minegrub-world-sel-theme, spicetify-nix, ... }:
     let
-      mkNixosSystem = { pkgs, modules, hostName, extraArgs ? {} }:
-        pkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = extraArgs;
-          modules = modules ++ [
-            { networking.hostName = hostName; }
-          ];
-        };
-      commonModules = [
-        ./modules/common.nix
-      ];
-      asusModules = commonModules ++ [
-        ./modules/desktop-kde.nix
-        ./modules/grub.nix
-        ./modules/nvidia.nix
-        ./modules/gaming.nix
-        ./modules/zen-browser.nix
-        ./hosts/nixos-asus.nix
-        ./hosts/nixos-asus/hardware-configuration.nix
-        minegrub-world-sel-theme.nixosModules.default
-      ];
+        mkNixosSystem = { pkgs, modules, hostName, extraArgs ? {} }:
+            pkgs.lib.nixosSystem {
+                system = "x86_64-linux";
+                specialArgs = extraArgs;
+                modules = modules ++ [
+                    { networking.hostName = hostName; }
+                ];
+            };
+        commonModules = [
+            ./modules/common.nix
+        ];
+        asusModules = commonModules ++ [
+            ./modules/desktop-kde.nix
+            ./modules/grub.nix
+            ./modules/nvidia.nix
+            ./modules/gaming.nix
+            ./modules/spicetify.nix
+            ./modules/zen-browser.nix
+            ./hosts/nixos-asus.nix
+            ./hosts/nixos-asus/hardware-configuration.nix
+            minegrub-world-sel-theme.nixosModules.default
+        ];
     in
     {
         nixosConfigurations = {
@@ -41,14 +43,14 @@
                 pkgs = nixpkgs-unstable;
                 modules = asusModules;
                 hostName = "nixos-asus";
-                extraArgs = {  zen-browser = zen-browser;  };
+                extraArgs = {  zen-browser = zen-browser;  isUnstable = true;  spicetify-nix = spicetify-nix; };
             };
 
             nixos-asus-stable = mkNixosSystem {
                 pkgs = nixpkgs-stable;
                 modules = asusModules;
                 hostName = "nixos-asus";
-                extraArgs = {  zen-browser = zen-browser;  };
+                extraArgs = {  zen-browser = zen-browser;  isUnstable = false;  spicetify-nix = spicetify-nix; };
             };
 
             nixos-hp = mkNixosSystem {
