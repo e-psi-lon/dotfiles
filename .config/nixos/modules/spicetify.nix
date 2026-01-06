@@ -4,11 +4,30 @@ let
     spicePkgs = spicetify-nix.legacyPackages.${pkgs.stdenv.system};
 in
 {
+    imports = [
+        spicetify-nix.nixosModules.spicetify
+    ];
+
     programs.spicetify = {
         enable = true;
         alwaysEnableDevTools = true;
         
         enabledExtensions = with spicePkgs.extensions; [
+            adblock
+            shuffle
+            hidePodcasts
+            powerBar
+            queueTime
+            volumePercentage
+            beautifulLyrics
+            copyToClipboard
+            showQueueDuration
+            fullAlbumDate
+            wikify
+            phraseToPlaylist
+            songStats
+            history
+            betterGenres
         ];
         
         enabledCustomApps = with spicePkgs.apps; [
@@ -16,10 +35,11 @@ in
             lyricsPlus
         ];
         
-        enabledSnippets = [
+        enabledSnippets = with spicePkgs.snippets; [
             pokemonAdventure
             nyanCatProgressBar
             circularAlbumArt
+            rotatingCoverart
         ];
         
         windowManagerPatch = true;
