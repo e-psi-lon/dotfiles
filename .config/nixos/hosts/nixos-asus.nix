@@ -6,19 +6,31 @@
             jetbrains-toolbox
             bat
             glow
-            ripgrep
-            fd
-            jq
-            dust
             vesktop
+	        (discord.override {
+                withOpenASAR = true;
+                withVencord = true;
+            })
             bash
             pciutils
+            nodejs_25
+            gource
+
 
             # JDKs
             jdk8
             jdk11
             jdk21
             jdk25
+
+            # Misc utilities
+            ripgrep
+            fd
+            jq
+            dust
+            usbutils
+            proton-pass
+
         ];
     };
     hardware = {
