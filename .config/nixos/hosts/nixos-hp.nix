@@ -7,8 +7,12 @@
         configurationLimit = 2;
     };
 
-    hardware = {
-        graphics.enable = true;
+    hardware.graphics = {
+        enable = true;
+	extraPackages = with pkgs; [
+	    intel-vaapi-driver
+	    libvdpau-va-gl
+	];
     };
 
     services = {
@@ -32,9 +36,13 @@
     };
 
     environment = {
+        sessionVariables = {
+            LIBVA_DRIVER_NAME = "i965";
+	};
         enableDebugInfo = false;
 
         systemPackages = with pkgs; [
+	    moonlight-qt
             (
                 retroarch.withCores(cores: with cores; [
                     nestopia
@@ -67,6 +75,9 @@
         "vm.swappiness" = 5;
         "vm.vfs_cache_pressure" = 60;
     };
+
+    boot.blacklistedKernelModules = [ "intel-spi" ];
+
 
     systemd.settings.Manager.DefaultMemoryAccounting = true;
 
