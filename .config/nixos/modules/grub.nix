@@ -5,7 +5,7 @@
         grub = {
             minegrub-world-sel = {
                 enable = true;
-		customIcons = [];
+		        customIcons = [];
             };
 
             useOSProber = true;
