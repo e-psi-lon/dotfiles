@@ -1,6 +1,11 @@
 { config, pkgs, lib, ... }:
 
 {
+
+    imports = [
+      ./hardware-configuration.nix
+    ];
+    
     environment = {
         systemPackages = with pkgs; [
             jetbrains-toolbox

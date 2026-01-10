@@ -41,8 +41,7 @@
             ./modules/gaming.nix
             ./modules/spicetify.nix
             ./modules/zen-browser.nix
-            ./hosts/nixos-asus.nix
-            ./hosts/nixos-asus/hardware-configuration.nix
+            ./hosts/nixos-asus
             minegrub-world-sel-theme.nixosModules.default
         ];
     in
@@ -66,8 +65,7 @@
                 pkgs = nixpkgs-stable;
                 modules = commonModules ++ [
                     ./modules/desktop-lxqt.nix
-                    ./hosts/nixos-hp.nix
-                    ./hosts/nixos-hp/hardware-configuration.nix
+                    ./hosts/nixos-hp
                 ];
                 hostName = "nixos-hp";
             };
