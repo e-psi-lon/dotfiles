@@ -85,6 +85,16 @@
                 autoStart = false;
             };
         };
+        udev.packages = [
+            (pkgs.writeTextFile {
+                name = "numworks-udev-rule";
+                destination = "/etc/udev/rules.d/50-numworks-calculator.rules";
+                text = builtins.readFile (builtins.fetchurl {
+                    url = "https://cdn.numworks.com/f2be8a48/50-numworks-calculator.rules";
+                    sha256 = "c7895e432b9274db17c2965164f5095a424d643465d9686a0b73c78b30a17bcc";
+                });
+            })
+        ];
     };
 
     nix = {
