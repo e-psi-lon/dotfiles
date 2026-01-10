@@ -1,5 +1,5 @@
 {
-    description = "e-psi-lon's NixOS config across all my devices";
+    description = "My NixOS configuration flake. Do I really need to say more??";
     
     inputs = {
         nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -10,9 +10,17 @@
             inputs.nixpkgs.follows = "nixpkgs-stable";
         };
         spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+        home-manager-unstable = {
+            url = "github:nix-community/home-manager";
+            inputs.nixpkgs.follows = "nixpkgs-unstable";
+        };
+        home-manager-stable = {
+            url = "github:nix-community/home-manager";
+            inputs.nixpkgs.follows = "nixpkgs-stable";
+        };
     };
 
-    outputs = { self, nixpkgs-unstable, nixpkgs-stable, zen-browser, minegrub-world-sel-theme, spicetify-nix, ... }:
+    outputs = { self, nixpkgs-unstable, nixpkgs-stable, zen-browser, minegrub-world-sel-theme, spicetify-nix, home-manager-unstable, home-manager-stable, ... }:
     let
         mkNixosSystem = { pkgs, modules, hostName, extraArgs ? {} }:
             pkgs.lib.nixosSystem {
@@ -23,7 +31,8 @@
                 ];
             };
         commonModules = [
-            ./modules/common.nix
+            ./modules/common
+            ./modules/packages.nix
         ];
         asusModules = commonModules ++ [
             ./modules/desktop-kde.nix
