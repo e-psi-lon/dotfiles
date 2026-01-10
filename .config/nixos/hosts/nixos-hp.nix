@@ -1,7 +1,6 @@
 { config, pkgs, ... }:
 
 {
-
     boot.loader.systemd-boot = {
         enable = true;
         configurationLimit = 2;
@@ -9,10 +8,10 @@
 
     hardware.graphics = {
         enable = true;
-	extraPackages = with pkgs; [
-	    intel-vaapi-driver
-	    libvdpau-va-gl
-	];
+        extraPackages = with pkgs; [
+            intel-vaapi-driver
+            libvdpau-va-gl
+        ];
     };
 
     services = {
@@ -38,19 +37,17 @@
     environment = {
         sessionVariables = {
             LIBVA_DRIVER_NAME = "i965";
-	};
+	    };
         enableDebugInfo = false;
 
         systemPackages = with pkgs; [
-	    moonlight-qt
-            (
-                retroarch.withCores(cores: with cores; [
-                    nestopia
-                    gambatte
-                    mgba
-                    melonds
-                ])
-            )
+	        moonlight-qt
+            (retroarch.withCores(cores: with cores; [
+                nestopia
+                gambatte
+                mgba
+                melonds
+            ]))
         ];
     };
 
