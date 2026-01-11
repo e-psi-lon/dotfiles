@@ -6,7 +6,7 @@ in
 {
 
   imports = [
-    (modules + /common.nix)
+    (modules + /common)
   ];
 
 

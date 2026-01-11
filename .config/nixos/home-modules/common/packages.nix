@@ -1,14 +1,11 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-  home.username = "e-psi-lon";
-  home.homeDirectory = "/home/e-psi-lon";
-  home.stateVersion = "26.05";
-
   home.packages = with pkgs; [
     wget
     fzf
     fastfetch
+    file
     atuin
     gh
     eza
