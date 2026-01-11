@@ -3,15 +3,15 @@
 {
   fonts.fontconfig = {
     enable = lib.mkDefault true;
-    defaultFonts = {
-      sansSerif = lib.mkDefault [ "NotoSans Nerd Font" "NotoSans Nerd Font" ];
-      monospace = lib.mkDefault [ "JetBrainsMono Nerd Font" ];
-      serif = lib.mkDefault [ "NotoSerif Nerd Font" ];
-      emoji = lib.mkDefault [ "Noto Color Emoji" ];
+    defaultFonts = lib.mkDefault {
+      sansSerif = [ "NotoSans Nerd Font" "NotoSans Nerd Font" ];
+      monospace = [ "JetBrainsMono Nerd Font" ];
+      serif = [ "NotoSerif Nerd Font" ];
+      emoji = [ "Noto Color Emoji" ];
     };
   };
 
-  fonts.packages = lib.mkDefault (with pkgs; [
+  fonts.packages = (with pkgs; [
     nerd-fonts.jetbrains-mono
     nerd-fonts.noto
   ]);
