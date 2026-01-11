@@ -1,10 +1,12 @@
 { config, pkgs, zen-browser, spicetify-nix, ... }:
 
-{
+let 
+  modules = ../home-modules;
+in {
 
   imports = [
-    ../home-modules/common.nix
-    ../home-modules/spicetify.nix
+    (modules + /common.nix)
+    (modules + /spicetify.nix)
   ];
 
 
