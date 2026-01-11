@@ -37,11 +37,9 @@
                     }
                 ];
             };
-        commonModules = [
-            ./modules/common
-            ./modules/packages.nix
-        ];
-        asusModules = commonModules ++ [
+        commonModule = ./modules/common;
+        asusModules = [
+            commonModule
             ./modules/desktop-kde.nix
             ./modules/grub.nix
             ./modules/nvidia.nix
@@ -74,7 +72,8 @@
                 pkgs = nixpkgs-stable;
                 home-manager = home-manager-stable;
                 home = ./home/home-hp.nix;
-                modules = commonModules ++ [
+                modules = [
+                    commonModule
                     ./modules/desktop-lxqt.nix
                     ./hosts/nixos-hp
                 ];
