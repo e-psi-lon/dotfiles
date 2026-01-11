@@ -22,17 +22,18 @@
 
     outputs = { self, nixpkgs-unstable, nixpkgs-stable, zen-browser, minegrub-world-sel-theme, spicetify-nix, home-manager-unstable, home-manager-stable, ... }:
     let
-        mkNixosSystem = { pkgs, home-manager, modules, hostName, extraArgs ? {}, home }:
+        mkNixosSystem = { pkgs, home-manager, modules, machineName, extraArgs ? {} }:
             pkgs.lib.nixosSystem {
                 system = "x86_64-linux";
                 specialArgs = extraArgs;
                 modules = modules ++ [
-                    { networking.hostName = hostName; }
+                    ./hosts/nixos-${machineName}
+                    { networking.hostName = "nixos-${machineName}"; }
                     home-manager.nixosModules.home-manager
                     {
                         home-manager.useGlobalPkgs = true;
                         home-manager.useUserPackages = true;
-                        home-manager.users.e-psi-lon = home;
+                        home-manager.users.e-psi-lon = ./home/home-${machineName}.nix;
                         home-manager.extraSpecialArgs = extraArgs;
                     }
                 ];
@@ -44,9 +45,9 @@
             ./modules/grub.nix
             ./modules/nvidia.nix
             ./modules/steam.nix
-            ./hosts/nixos-asus
             minegrub-world-sel-theme.nixosModules.default
         ];
+        asusArgs = { zen-browser = zen-browser; spicetify-nix = spicetify-nix; };
     in
     {
         nixosConfigurations = {
@@ -54,30 +55,26 @@
                 pkgs = nixpkgs-unstable;
                 home-manager = home-manager-unstable;
                 modules = asusModules;
-                hostName = "nixos-asus";
-                home = ./home/home-asus.nix;
-                extraArgs = {  zen-browser = zen-browser;  isUnstable = true;  spicetify-nix = spicetify-nix; };
+                machineName = "asus";
+                extraArgs = asusArgs // { isUnstable = true; };
             };
 
             nixos-asus-stable = mkNixosSystem {
                 pkgs = nixpkgs-stable;
                 home-manager = home-manager-stable;
                 modules = asusModules;
-                hostName = "nixos-asus";
-                home = ./home/home-asus.nix;
-                extraArgs = {  zen-browser = zen-browser;  isUnstable = false;  spicetify-nix = spicetify-nix; };
+                machineName = "asus";
+                extraArgs = asusArgs // { isUnstable = false; };
             };
 
             nixos-hp = mkNixosSystem {
                 pkgs = nixpkgs-stable;
                 home-manager = home-manager-stable;
-                home = ./home/home-hp.nix;
                 modules = [
                     commonModule
                     ./modules/desktop-lxqt.nix
-                    ./hosts/nixos-hp
                 ];
-                hostName = "nixos-hp";
+                machineName = "hp";
             };
         };
     };
