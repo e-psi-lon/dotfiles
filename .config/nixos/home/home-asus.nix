@@ -23,9 +23,10 @@ in {
       withVencord = true;
     })
 
-    # IDEs and text editor
+    # IDEs and text editor and other dev tools
     vscode
     jetbrains-toolbox
+    gource
 
     libreoffice-qt
     prismlauncher

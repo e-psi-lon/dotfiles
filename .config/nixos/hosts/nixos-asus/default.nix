@@ -6,25 +6,12 @@
     ./boot.nix
     ./nix-ld.nix
     ./hardware-configuration.nix
+    ./services.nix
   ];
   
   environment = {
     systemPackages = with pkgs; [
-      jetbrains-toolbox
-      vesktop
-      nodejs_25
-      gource
-
-
-      # JDKs
-      jdk8
-      jdk11
-      jdk21
-      jdk25
-
-      # Misc utilities
-      proton-pass
-
+      asusctl
     ];
   };
 
