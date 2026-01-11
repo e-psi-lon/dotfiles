@@ -11,7 +11,8 @@
     modesetting.enable = true;
     open = true;
 
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    # TODO: Downgrade to latest when possible
+    package = config.boot.kernelPackages.nvidiaPackages.beta;
   };
 
   nix.settings = {

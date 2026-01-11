@@ -9,5 +9,7 @@
         customIcons = [];
       };
     };
+    
+    kernelPackages = pkgs.linuxPackages_latest;
   };
 }
