@@ -5,6 +5,7 @@
     ./locale-time.nix
     ./networking.nix
     ./services.nix
+    ./packages.nix
     ./fonts.nix
     ./programs.nix
   ];
