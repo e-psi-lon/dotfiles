@@ -5,10 +5,8 @@ let
 in {
 
   imports = [
-    (modules + /common.nix)
+    (modules + /common)
     (modules + /spicetify.nix)
-    (modules + /vpn.nix)
-    (modules + /sunshine.nix)
   ];
 
 
