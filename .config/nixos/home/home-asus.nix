@@ -10,7 +10,7 @@
 
   home.packages = with pkgs; [
     zen-browser.packages.${stdenv.hostPlatform.system}.default
-    vscodew
+    vscode
     ungoogled-chromium # Required for some APIs Firefox doesn't support...
     libreoffice-qt
     prismlauncher
