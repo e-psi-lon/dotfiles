@@ -45,7 +45,7 @@
             ./modules/desktop-kde.nix
             ./modules/grub.nix
             ./modules/nvidia.nix
-            ./modules/gaming.nix
+            ./modules/steam.nix
             ./hosts/nixos-asus
             minegrub-world-sel-theme.nixosModules.default
         ];
