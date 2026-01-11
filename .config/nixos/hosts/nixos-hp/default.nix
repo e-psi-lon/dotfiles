@@ -31,16 +31,6 @@
             LIBVA_DRIVER_NAME = "i965";
 	    };
         enableDebugInfo = false;
-
-        systemPackages = with pkgs; [
-	        moonlight-qt
-            (retroarch.withCores(cores: with cores; [
-                nestopia
-                gambatte
-                mgba
-                melonds
-            ]))
-        ];
     };
 
     system.stateVersion = "25.05";

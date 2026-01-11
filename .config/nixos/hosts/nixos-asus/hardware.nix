@@ -1,23 +1,23 @@
 { lib, ... }:
 {
     hardware = {
-    nvidia.prime = {
-      sync.enable = true;
-      amdgpuBusId = "PCI:6:0:0";
-      nvidiaBusId = "PCI:1:0:0";
-    };
-    bluetooth = {
-      enable = true;
-      powerOnBoot = true;
-      settings = {
-          General = {
-              Experimental = true;
-          };
-          Policy = {
-              AutoEnable = true;
-          };
+      nvidia.prime = {
+        sync.enable = true;
+        amdgpuBusId = "PCI:6:0:0";
+        nvidiaBusId = "PCI:1:0:0";
       };
-    };
+      bluetooth = {
+        enable = true;
+        powerOnBoot = true;
+        settings = {
+            General = {
+                Experimental = true;
+            };
+            Policy = {
+                AutoEnable = true;
+            };
+        };
+      };
   };
 
   users = {

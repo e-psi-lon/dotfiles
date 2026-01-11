@@ -11,13 +11,7 @@
   environment = {
     systemPackages = with pkgs; [
       jetbrains-toolbox
-      bat
-      glow
       vesktop
-      (discord.override {
-        withOpenASAR = true;
-        withVencord = true;
-      })
       nodejs_25
       gource
 
@@ -29,11 +23,6 @@
       jdk25
 
       # Misc utilities
-      ripgrep
-      fd
-      jq
-      dust
-      usbutils
       proton-pass
 
     ];

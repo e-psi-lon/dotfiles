@@ -18,6 +18,7 @@
     zoxide
     oh-my-posh
     bat
+    glow
     ripgrep
     fd
     jq
@@ -28,7 +29,6 @@
     neovim
     uv
     python3
-    php
     gcc
     nasm
 
