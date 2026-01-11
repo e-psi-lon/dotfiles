@@ -1,18 +1,13 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
     boot.loader = {
         grub = {
-            minegrub-world-sel = {
-                enable = true;
-		        customIcons = [];
-            };
-
-            useOSProber = true;
-            efiSupport = true;
-            efiInstallAsRemovable = true;
-            device = "nodev";
-            configurationLimit = 5;
+            useOSProber = lib.mkDefault true;
+            efiSupport = lib.mkDefault true;
+            efiInstallAsRemovable = lib.mkDefault true;
+            device = lib.mkDefault "nodev";
+            configurationLimit = lib.mkDefault 5;
         };
 
         efi.canTouchEfiVariables = false;
