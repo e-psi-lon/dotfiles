@@ -7,6 +7,7 @@ in {
   imports = [
     (modules + /common)
     (modules + /spicetify.nix)
+    (modules + /direnv.nix)
   ];
 
 
