@@ -12,6 +12,7 @@
   };
 
   programs = {
+    zsh.enable = true;
     git.lfs.enable = true;
   };
 }
