@@ -1,13 +1,23 @@
-{ config, pkgs, zen-browser, spicetify-nix, ... }:
+{ config, pkgs, ... }:
 
+let 
+  modules = ../home-modules;
+in
 {
 
   imports = [
-    ../home-modules/common.nix
+    (modules + /common.nix)
   ];
 
 
   home.packages = with pkgs; [
     firefox
+    moonlight-qt
+    # CONSIDER: Keep some local RetroArch vs. 100% remote streaming. Local might not be useful
+    (retroarch.withCores(cores: with cores; [
+        nestopia
+        gambatte
+        mgba
+    ]))
   ];
 }

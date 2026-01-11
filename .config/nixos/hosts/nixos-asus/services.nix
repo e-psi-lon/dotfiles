@@ -10,6 +10,7 @@
       };
       openvpn.servers = {
         univ-tours = { 
+          # TODO: Use a more appropriate location for the ovpn file
           config = '' config /home/e-psi-lon/.config/openvpn/vpnfr-etu-TCP4-443.ovpn '';
           up = ''( pkgs, ... ):
             ${pkgs.systemd}/bin/resolvectl dns tun0 10.195.2.1 10.196.20.10 10.195.2.2
