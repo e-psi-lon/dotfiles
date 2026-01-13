@@ -9,8 +9,8 @@ in {
     (modules + /spicetify.nix)
     (modules + /direnv.nix)
   ];
-
-
+  
+  home.stateVersion = "26.05";
   home.packages = with pkgs; [
     # Web browser
     zen-browser.packages.${stdenv.hostPlatform.system}.default
@@ -26,6 +26,8 @@ in {
 
     # IDEs and text editor and other dev tools
     vscode
+    nixfmt
+    nixd
     jetbrains-toolbox
     gource
 

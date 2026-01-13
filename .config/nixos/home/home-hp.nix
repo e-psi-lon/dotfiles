@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 let 
   modules = ../home-modules;
@@ -9,6 +9,7 @@ in
     (modules + /common)
   ];
 
+  home.stateVersion = "25.11";
 
   home.packages = with pkgs; [
     firefox
