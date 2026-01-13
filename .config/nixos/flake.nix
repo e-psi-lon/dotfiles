@@ -6,7 +6,7 @@
         nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
         zen-browser.url = "github:youwen5/zen-browser-flake";
         spicetify-nix.url = "github:Gerg-L/spicetify-nix";
-        nixcord.url = "github:kaylorben/nixcord";
+        nixcord.url = "github:FlameFlag/nixcord";
         minegrub-world-sel-theme = {
             url = "github:Lxtharia/minegrub-world-sel-theme";
             inputs.nixpkgs.follows = "nixpkgs-stable";
@@ -21,7 +21,7 @@
         };
     };
 
-    outputs = { self, nixpkgs-unstable, nixpkgs-stable, zen-browser, spicetify-nix, nixcord, minegrub-world-sel-theme, home-manager-unstable, home-manager-stable, ... }:
+    outputs = { nixpkgs-unstable, nixpkgs-stable, zen-browser, spicetify-nix, nixcord, minegrub-world-sel-theme, home-manager-unstable, home-manager-stable, ... }:
     let
         mkNixosSystem = { pkgs, home-manager, modules, machineName, extraArgs ? {} }:
             pkgs.lib.nixosSystem {
@@ -48,7 +48,7 @@
             ./modules/steam.nix
             minegrub-world-sel-theme.nixosModules.default
         ];
-        asusArgs = { zen-browser = zen-browser; spicetify-nix = spicetify-nix; };
+        asusArgs = { zen-browser = zen-browser; spicetify-nix = spicetify-nix; nixcord = nixcord; };
     in
     {
         nixosConfigurations = {

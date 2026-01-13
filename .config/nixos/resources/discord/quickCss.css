@@ -1,0 +1,134 @@
+/* ===== VARIABLES ===== */
+:root {
+  --list-item-transition: 0.2s ease;
+}
+
+/* ===== CHANNEL LIST ===== */
+/* Channel hover animation */
+li[data-dnd-name] [class*="-wrapper"] [class*="-link"] {
+  will-change: transform;
+  transition: transform var(--list-item-transition);
+}
+
+li[data-dnd-name] [class*="-wrapper"]:hover [class*="-link"] {
+  transform: translateX(10px);
+}
+
+/* Unread indicator */
+[class*="-unread"] {
+  transition: var(--list-item-transition);
+}
+
+li[data-dnd-name] [class*="-wrapper"]:hover [class*="-unread"] {
+  width: 12px;
+  height: 12px;
+  margin-top: -6px;
+  margin-left: 3px;
+  background: url('https://discord.com/assets/4b6781044811b929.svg?size=48') center / 12px no-repeat transparent;
+}
+
+/* Muted channels */
+[class*="-modeMuted"] [class*="-name"] {
+  color: var(--channel-icon);
+  opacity: 40%;
+}
+
+/* ===== SERVER BANNER ===== */
+[class^="container_"]:not([class*="bannerVisible_"]) > [class^="animatedContainer_"] {
+  top: 3px;
+}
+
+[class*="animatedContainer_"] {
+  opacity: 1 !important;
+}
+
+[class*="headerContent_"] {
+  filter: drop-shadow(0 1px 1px var(--bg-backdrop));
+}
+
+/* ===== MEMBER LIST ===== */
+/* Compact member count */
+.vc-membercount-member-list {
+  justify-content: space-between !important;
+  margin-top: 0 !important;
+  margin-bottom: -16px !important;
+  padding-inline: 0 !important;
+  background: var(--bg-overlay-4, var(--background-base-lowest));
+  border-bottom: 1.5px solid var(--border-subtle);
+  border-right: 1.5px solid var(--border-subtle);
+}
+
+.vc-membercount-member-list .vc-membercount-online-dot,
+.vc-membercount-member-list .vc-membercount-total-dot {
+  margin: 0 !important;
+}
+
+.vc-membercount-member-list > div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 0;
+}
+
+.vc-membercount-member-list > div::after {
+  display: inline;
+  font-size: 0.8em;
+  margin-top: 2px;
+}
+
+.vc-membercount-member-list > div:nth-child(1) {
+  margin-left: 20px;
+}
+
+.vc-membercount-member-list > div:nth-child(1)::after {
+  content: "online";
+  color: var(--color-online);
+}
+
+.vc-membercount-member-list > div:nth-child(3) {
+  padding-right: 20px;
+}
+
+.vc-membercount-member-list > div:nth-child(3)::after {
+  content: "total";
+  color: var(--color-total);
+}
+
+/* ===== MISC FIXES ===== */
+.followButton_f75fb0,
+.topicClickTarget__6ec1a {
+  -webkit-app-region: no-drag !important;
+}
+
+.base_c48ade:has(.bar_c38106[data-windows="true"]) .title_f75fb0 {
+  width: calc(100vw - 240px) !important;
+}
+
+.children__9293f::after {
+  background: linear-gradient(to right, transparent 0, var(--bg-base-tertiary) 100%) !important;
+}
+
+.topic__6ec1a {
+  flex: none;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1100px) {
+  [class*="-sidebar"] {
+    width: 200px;
+
+    .vc-typing-indicator,
+    .vc-channelemojis-emoji,
+    [class*="-guildIconV2Container"] {
+      display: none;
+    }
+
+    [class*="-containerDefault"] [role="img"] {
+      display: none;
+    }
+  }
+  
+  [class*="chat_"] [class*="membersWrap_"] {
+    display: none;
+  }
+}
