@@ -1,13 +1,15 @@
-{ config, pkgs, zen-browser, spicetify-nix, ... }:
+{ pkgs, zen-browser, nixcord, ... }:
 
 let 
   modules = ../home-modules;
 in {
 
   imports = [
+    nixcord.homeModules.nixcord
     (modules + /common)
     (modules + /spicetify.nix)
     (modules + /direnv.nix)
+    (modules + /discord.nix)
   ];
   
   home.stateVersion = "26.05";
@@ -18,11 +20,6 @@ in {
     
 
     # Discord
-    vesktop
-    (discord.override {
-      withOpenASAR = true;
-      withVencord = true;
-    })
 
     # IDEs and text editor and other dev tools
     vscode
