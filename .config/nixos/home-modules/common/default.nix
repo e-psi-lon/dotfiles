@@ -8,7 +8,6 @@
   home = {
     username = "e-psi-lon";
     homeDirectory = "/home/e-psi-lon";
-    stateVersion = "26.05";
   };
 
   programs = {
