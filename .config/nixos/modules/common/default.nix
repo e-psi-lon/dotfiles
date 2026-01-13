@@ -15,6 +15,7 @@
   users.users.e-psi-lon = {
       isNormalUser = true;
       description = "e_ψ_lon";
+      shell = pkgs.zsh;
       extraGroups = [ "wheel" "networkmanager" "audio" "video" "input" "storage" ];
       hashedPassword = "$6$RuWluSDrWlxlvRqQ$JCiJFbeooSAfaKV0BkcCx6g/wxxSH9oDpUbAn5EG6Ee/aG5hZ3zt9UVKUnRxbF6ELDFj71yvUdEpi/.aglaj1/";
       createHome = true;
