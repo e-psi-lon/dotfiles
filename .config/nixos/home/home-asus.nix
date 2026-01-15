@@ -26,6 +26,10 @@ in {
     nixfmt
     nixd
     jetbrains-toolbox
+    jetbrains.idea
+    jetbrains.pycharm
+    jetbrains.webstorm
+    jetbrains.clion
     gource
 
     libreoffice-qt
