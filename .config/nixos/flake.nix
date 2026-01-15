@@ -19,9 +19,13 @@
             url = "github:nix-community/home-manager/release-25.11";
             inputs.nixpkgs.follows = "nixpkgs-stable";
         };
+        nix-on-droid = {
+            url = "github:nix-community/nix-on-droid/prerelease-25.11";
+            inputs.nixpkgs.follows = "nixpkgs-stable";
+        };
     };
 
-    outputs = { nixpkgs-unstable, nixpkgs-stable, zen-browser, spicetify-nix, nixcord, minegrub-world-sel-theme, home-manager-unstable, home-manager-stable, ... }:
+    outputs = { nixpkgs-unstable, nixpkgs-stable, zen-browser, spicetify-nix, nixcord, minegrub-world-sel-theme, home-manager-unstable, home-manager-stable, nix-on-droid, ... }:
     let
         mkNixosSystem = { pkgs, home-manager, modules, machineName, extraArgs ? {} }:
             pkgs.lib.nixosSystem {
@@ -76,6 +80,13 @@
                     ./modules/desktop-lxqt.nix
                 ];
                 machineName = "hp";
+            };
+
+            nixOnDroidConfiguration = nix-on-droid.lib.nixOnDroidConfiguration {
+                pkgs = import nixpkgs-stable { system = "aarch64-linux"; };
+                modules = [
+                    ./hosts/nix-on-droid
+                ];
             };
         };
     };
