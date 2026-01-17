@@ -66,7 +66,11 @@
       ];
       initContent =
         let
-          zshConfigExtra = lib.mkOrder 1000 ''
+          zshConfigEarlyInit = lib.mkOrder 500 ''
+            ${builtins.readFile ../../resources/zsh/extract.zsh}
+            ${builtins.readFile ../../resources/zsh/fzfd.zsh}
+          '';
+          zshConfig = lib.mkOrder 1000 ''
             # Fix key bind for Delete key
             bindkey '^[[3~' delete-char
             # Fix key bind for Ctrl+Left and Ctrl+Right (should move cursor word by word)
@@ -78,7 +82,8 @@
           '';
         in
         lib.mkMerge [
-          zshConfigExtra
+          zshConfigEarlyInit
+          zshConfig
           zshConfigAfter
         ];
     };
