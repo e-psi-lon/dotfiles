@@ -1,8 +1,14 @@
-{ pkgs, zen-browser, nixcord, ... }:
+{
+  pkgs,
+  zen-browser,
+  nixcord,
+  ...
+}:
 
-let 
+let
   modules = ../home-modules;
-in {
+in
+{
 
   imports = [
     nixcord.homeModules.nixcord
@@ -11,13 +17,14 @@ in {
     (modules + /direnv.nix)
     (modules + /discord.nix)
   ];
-  
+
+  programs.tmux.enable = true;
+
   home.stateVersion = "26.05";
   home.packages = with pkgs; [
     # Web browser
     zen-browser.packages.${stdenv.hostPlatform.system}.default
     ungoogled-chromium # Required for some APIs Firefox (and forks) doesn't support...
-    
 
     # Discord
 
@@ -35,7 +42,7 @@ in {
     libreoffice-qt
     prismlauncher
 
-    # Misc 
+    # Misc
     proton-pass
 
     # Global languages
