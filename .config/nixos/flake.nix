@@ -1,93 +1,126 @@
 {
-    description = "My NixOS configuration flake. Do I really need to say more??";
-    
-    inputs = {
-        nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-        nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
-        zen-browser.url = "github:youwen5/zen-browser-flake";
-        spicetify-nix.url = "github:Gerg-L/spicetify-nix";
-        nixcord.url = "github:FlameFlag/nixcord";
-        minegrub-world-sel-theme = {
-            url = "github:Lxtharia/minegrub-world-sel-theme";
-            inputs.nixpkgs.follows = "nixpkgs-stable";
-        };
-        home-manager-unstable = {
-            url = "github:nix-community/home-manager";
-            inputs.nixpkgs.follows = "nixpkgs-unstable";
-        };
-        home-manager-stable = {
-            url = "github:nix-community/home-manager/release-25.11";
-            inputs.nixpkgs.follows = "nixpkgs-stable";
-        };
-        nix-on-droid = {
-            url = "github:nix-community/nix-on-droid/prerelease-25.11";
-            inputs.nixpkgs.follows = "nixpkgs-stable";
-        };
-    };
+  description = "My NixOS configuration flake. Do I really need to say more??";
 
-    outputs = { nixpkgs-unstable, nixpkgs-stable, zen-browser, spicetify-nix, nixcord, minegrub-world-sel-theme, home-manager-unstable, home-manager-stable, nix-on-droid, ... }:
+  inputs = {
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
+    zen-browser.url = "github:youwen5/zen-browser-flake";
+    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+    nixcord.url = "github:FlameFlag/nixcord";
+    nixos-hardware.url = "github:e-psi-lon/nixos-hardware/feat/asus-fa706ic";
+    minegrub-world-sel-theme = {
+      url = "github:Lxtharia/minegrub-world-sel-theme";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
+    home-manager-unstable = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    home-manager-stable = {
+      url = "github:nix-community/home-manager/release-25.11";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
+    nix-on-droid = {
+      url = "github:nix-community/nix-on-droid/prerelease-25.11";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
+  };
+
+  outputs =
+    {
+      nixpkgs-unstable,
+      nixpkgs-stable,
+      zen-browser,
+      spicetify-nix,
+      nixcord,
+      minegrub-world-sel-theme,
+      home-manager-unstable,
+      home-manager-stable,
+      nix-on-droid,
+      nixos-hardware,
+      ...
+    }:
     let
-        mkNixosSystem = { pkgs, home-manager, modules, machineName, extraArgs ? {} }:
-            pkgs.lib.nixosSystem {
-                system = "x86_64-linux";
-                specialArgs = extraArgs;
-                modules = modules ++ [
-                    ./hosts/nixos-${machineName}
-                    { networking.hostName = "nixos-${machineName}"; }
-                    home-manager.nixosModules.home-manager
-                    {
-                        home-manager.useGlobalPkgs = true;
-                        home-manager.useUserPackages = true;
-                        home-manager.users.e-psi-lon = ./home/home-${machineName}.nix;
-                        home-manager.extraSpecialArgs = extraArgs;
-                    }
-                ];
-            };
-        commonModule = ./modules/common;
-        asusModules = [
-            commonModule
-            ./modules/desktop-kde.nix
-            ./modules/grub.nix
-            ./modules/nvidia.nix
-            ./modules/steam.nix
-            minegrub-world-sel-theme.nixosModules.default
-        ];
-        asusArgs = { zen-browser = zen-browser; spicetify-nix = spicetify-nix; nixcord = nixcord; };
+      mkNixosSystem =
+        {
+          pkgs,
+          home-manager,
+          modules,
+          machineName,
+          extraArgs ? { },
+        }:
+        pkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = extraArgs;
+          modules = modules ++ [
+            ./hosts/nixos-${machineName}
+            { networking.hostName = "nixos-${machineName}"; }
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.e-psi-lon = ./home/home-${machineName}.nix;
+              home-manager.extraSpecialArgs = extraArgs;
+            }
+          ];
+        };
+      commonModule = ./modules/common;
+      asusModules = [
+        commonModule
+        ./modules/desktop-kde.nix
+        ./modules/grub.nix
+        ./modules/nvidia.nix
+        ./modules/steam.nix
+        minegrub-world-sel-theme.nixosModules.default
+        nixos-hardware.nixosModules.asus-fa706ic
+      ];
+      asusArgs = {
+        zen-browser = zen-browser;
+        spicetify-nix = spicetify-nix;
+        nixcord = nixcord;
+      };
     in
     {
-        nixosConfigurations = {
-            nixos-asus = mkNixosSystem {
-                pkgs = nixpkgs-unstable;
-                home-manager = home-manager-unstable;
-                modules = asusModules;
-                machineName = "asus";
-                extraArgs = asusArgs // { isUnstable = true; };
-            };
-
-            nixos-asus-stable = mkNixosSystem {
-                pkgs = nixpkgs-stable;
-                home-manager = home-manager-stable;
-                modules = asusModules;
-                machineName = "asus";
-                extraArgs = asusArgs // { isUnstable = false; };
-            };
-
-            nixos-hp = mkNixosSystem {
-                pkgs = nixpkgs-stable;
-                home-manager = home-manager-stable;
-                modules = [
-                    commonModule
-                    ./modules/desktop-lxqt.nix
-                ];
-                machineName = "hp";
-            };
-
-            nixOnDroidConfiguration = nix-on-droid.lib.nixOnDroidConfiguration {
-                pkgs = import nixpkgs-stable { system = "aarch64-linux"; };
-                modules = [
-                    ./hosts/nix-on-droid
-                ];
-            };
+      nixosConfigurations = {
+        nixos-asus = mkNixosSystem {
+          pkgs = nixpkgs-unstable;
+          home-manager = home-manager-unstable;
+          modules = asusModules;
+          machineName = "asus";
+          extraArgs = asusArgs // {
+            isUnstable = true;
+          };
         };
+
+        nixos-asus-stable = mkNixosSystem {
+          pkgs = nixpkgs-stable;
+          home-manager = home-manager-stable;
+          modules = asusModules;
+          machineName = "asus";
+          extraArgs = asusArgs // {
+            isUnstable = false;
+          };
+        };
+
+        nixos-hp = mkNixosSystem {
+          pkgs = nixpkgs-stable;
+          home-manager = home-manager-stable;
+          modules = [
+            commonModule
+            ./modules/desktop-lxqt.nix
+            nixos-hardware.nixosModules.common-pc-laptop
+            nixos-hardware.nixosModules.common-pc-ssd
+            "${nixos-hardware}/common/cpu/intel/brasswell"
+          ];
+          machineName = "hp";
+        };
+
+        nixOnDroidConfiguration = nix-on-droid.lib.nixOnDroidConfiguration {
+          pkgs = import nixpkgs-stable { system = "aarch64-linux"; };
+          modules = [
+            ./hosts/nix-on-droid
+          ];
+        };
+      };
     };
 }
