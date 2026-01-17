@@ -24,6 +24,7 @@
       please = "sudo";
     };
   };
+  xdg.enable = true;
 
   programs = {
     zsh = {
@@ -76,7 +77,26 @@
         '';
       in lib.mkMerge [ zshConfigExtra zshConfigAfter ];
     };
-    git.lfs.enable = true;
+    git = {
+      lfs.enable = true;
+      settings = {
+        init.defaultBranch = "main";
+        user = {
+          name = "Lilian Maulny (e_ψ_lon)";
+          email = "theg41g@gmail.com";
+        };
+        credential = {
+          "https://github.com".helper = "!gh auth git-credential";
+          "https://gist.github.com".helper = "!gh auth git-credential";
+          # TODO: Add gitlab CLI and its credential helper
+          # "https://gitlab.com".helper = "";
+        };
+        alias = {
+          graph = "log --oneline --all --decorate --graph";
+          undo = "reset HEAD~1";
+        };
+      };
+    };
     atuin = {
       enable = true;
       enableZshIntegration = true;

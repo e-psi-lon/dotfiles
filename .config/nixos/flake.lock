@@ -186,6 +186,22 @@
         "type": "github"
       }
     },
+    "nixos-hardware": {
+      "locked": {
+        "lastModified": 1768591252,
+        "narHash": "sha256-4IBm0cpaIKTi0J5WNkB1BDaBiGIkVqObW0RVLGsqzoQ=",
+        "owner": "e-psi-lon",
+        "repo": "nixos-hardware",
+        "rev": "c073e276b13cd02e6e9dc2c2d6a4d66d894bd96a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "e-psi-lon",
+        "ref": "feat/asus-fa706ic",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1766885793,
@@ -358,6 +374,7 @@
         "minegrub-world-sel-theme": "minegrub-world-sel-theme",
         "nix-on-droid": "nix-on-droid",
         "nixcord": "nixcord",
+        "nixos-hardware": "nixos-hardware",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "spicetify-nix": "spicetify-nix",
