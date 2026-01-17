@@ -53,29 +53,34 @@
             rev = "master";
             sha256 = "sha256-gYyLML7tTRtMskKks/cxHXZL4MxAfGb1T7GJJCQUFTk=";
           };
-        } 
+        }
         {
           name = "colored-man-pages";
           src = fetchFromGitHub {
             owner = "ael-code";
             repo = "zsh-colored-man-pages";
-            rev = "master"; 
+            rev = "master";
             sha256 = "sha256-087bNmB5gDUKoSriHIjXOVZiUG5+Dy9qv3D69E8GBhs=";
           };
         }
       ];
-      initContent = let 
-        zshConfigExtra = lib.mkOrder 1000 ''
-          # Fix key bind for Delete key
-          bindkey '^[[3~' delete-char
-          # Fix key bind for Ctrl+Left and Ctrl+Right (should move cursor word by word)
-          bindkey '^[[1;5D' backward-word
-          bindkey '^[[1;5C' forward-word
-        '';
-        zshConfigAfter = lib.mkOrder 1500 ''
-          cls
-        '';
-      in lib.mkMerge [ zshConfigExtra zshConfigAfter ];
+      initContent =
+        let
+          zshConfigExtra = lib.mkOrder 1000 ''
+            # Fix key bind for Delete key
+            bindkey '^[[3~' delete-char
+            # Fix key bind for Ctrl+Left and Ctrl+Right (should move cursor word by word)
+            bindkey '^[[1;5D' backward-word
+            bindkey '^[[1;5C' forward-word
+          '';
+          zshConfigAfter = lib.mkOrder 1500 ''
+            cls
+          '';
+        in
+        lib.mkMerge [
+          zshConfigExtra
+          zshConfigAfter
+        ];
     };
     git = {
       lfs.enable = true;
@@ -104,7 +109,9 @@
     oh-my-posh = {
       enable = true;
       enableZshIntegration = true;
-      settings = builtins.fromJSON (builtins.unsafeDiscardStringContext (builtins.readFile ../../resources/oh-my-posh/theme.json));
+      settings = builtins.fromJSON (
+        builtins.unsafeDiscardStringContext (builtins.readFile ../../resources/oh-my-posh/theme.json)
+      );
     };
     fzf = {
       enable = true;
@@ -120,7 +127,10 @@
     zoxide = {
       enable = true;
       enableZshIntegration = true;
-      options = [ "--cmd" "cd" ];
+      options = [
+        "--cmd"
+        "cd"
+      ];
     };
 
   };

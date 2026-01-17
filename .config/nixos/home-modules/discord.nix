@@ -55,43 +55,43 @@
         # moreCommands.enable = true;
         # moreUserTags = {
         #  enable = true;
-          # extraConfig = {
-          #  WEBHOOK = {
-          #    text = "Webhook";
-          #    showInChat = true;
-          #    showInNotChat = true;
-          #  };
-          #  OWNER = {
-          #    text = "Owner";
-          #    showInChat = false;
-          #    showInNotChat = true;
-          #  };
-          #  ADMINISTRATOR = {
-          #    text = "Admin";
-          #    showInChat = false;
-          #    showInNotChat = true;
-          #  };
-          #  MODERATOR_STAFF = {
-          #    text = "Staff";
-          #    showInChat = false;
-          #    showInNotChat = true;
-          #  };
-          #  MODERATOR = {
-          #    text = "Mod";
-          #    showInChat = false;
-          #    showInNotChat = true;
-          #  };
-          #  VOICE_MODERATOR = {
-          #    text = "VC Mod";
-          #    showInChat = false;
-          #    showInNotChat = true;
-          #  };
-          #  CHAT_MODERATOR = {
-          #    text = "Chat Mod";
-          #    showInChat = false;
-          #    showInNotChat = true;
-          #  };
-          # };
+        # extraConfig = {
+        #  WEBHOOK = {
+        #    text = "Webhook";
+        #    showInChat = true;
+        #    showInNotChat = true;
+        #  };
+        #  OWNER = {
+        #    text = "Owner";
+        #    showInChat = false;
+        #    showInNotChat = true;
+        #  };
+        #  ADMINISTRATOR = {
+        #    text = "Admin";
+        #    showInChat = false;
+        #    showInNotChat = true;
+        #  };
+        #  MODERATOR_STAFF = {
+        #    text = "Staff";
+        #    showInChat = false;
+        #    showInNotChat = true;
+        #  };
+        #  MODERATOR = {
+        #    text = "Mod";
+        #    showInChat = false;
+        #    showInNotChat = true;
+        #  };
+        #  VOICE_MODERATOR = {
+        #    text = "VC Mod";
+        #    showInChat = false;
+        #    showInNotChat = true;
+        #  };
+        #  CHAT_MODERATOR = {
+        #    text = "Chat Mod";
+        #    showInChat = false;
+        #    showInNotChat = true;
+        #  };
+        # };
         # };
         MutualGroupDMs.enable = true;
         CustomRPC.enable = true;

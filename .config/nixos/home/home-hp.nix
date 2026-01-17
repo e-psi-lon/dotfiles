@@ -1,6 +1,6 @@
 { pkgs, ... }:
 
-let 
+let
   modules = ../home-modules;
 in
 {
@@ -15,10 +15,12 @@ in
     firefox
     moonlight-qt
     # CONSIDER: Keep some local RetroArch vs. 100% remote streaming. Local might not be useful
-    (retroarch.withCores(cores: with cores; [
+    (retroarch.withCores (
+      cores: with cores; [
         nestopia
         gambatte
         mgba
-    ]))
+      ]
+    ))
   ];
 }

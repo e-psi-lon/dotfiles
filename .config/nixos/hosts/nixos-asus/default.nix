@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
 
@@ -8,7 +13,7 @@
     ./hardware-configuration.nix
     ./services.nix
   ];
-  
+
   environment = {
     systemPackages = with pkgs; [ ];
   };
@@ -22,8 +27,6 @@
       options = "--delete-older-than 14d";
     };
   };
-
-
 
   system.stateVersion = "26.05";
 }

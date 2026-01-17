@@ -1,15 +1,15 @@
 { pkgs, ... }:
 
 {
-  boot = { 
+  boot = {
     loader = {
       efi.efiSysMountPoint = "/boot/efi";
       grub.minegrub-world-sel = {
         enable = true;
-        customIcons = [];
+        customIcons = [ ];
       };
     };
-    
+
     kernelPackages = pkgs.linuxPackages_latest;
   };
 }
