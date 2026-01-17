@@ -10,9 +10,7 @@
   ];
   
   environment = {
-    systemPackages = with pkgs; [
-      asusctl
-    ];
+    systemPackages = with pkgs; [ ];
   };
 
   nix = {

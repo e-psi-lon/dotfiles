@@ -2,17 +2,12 @@
 {
 
   services = {
-      sunshine = {
-        enable = true;
-        autoStart = true;
-        capSysAdmin = true;
-        openFirewall = true;
-      };
-
-      asusd = {
-        enable = true;
-        enableUserService = true;
-      };
+    sunshine = {
+      enable = true;
+      autoStart = true;
+      capSysAdmin = true;
+      openFirewall = true;
+    };
 
       openvpn.servers = {
         univ-tours = { 

@@ -16,13 +16,7 @@
         blacklistedKernelModules = [ "intel-spi" ];
     };
 
-    hardware.graphics = {
-        enable = true;
-        extraPackages = with pkgs; [
-            intel-vaapi-driver
-            libvdpau-va-gl
-        ];
-    };
+    hardware.graphics.enable = true;
 
     services.xserver.videoDrivers = [ "intel" ];
 
