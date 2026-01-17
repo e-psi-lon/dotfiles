@@ -3,17 +3,12 @@
 {
   home.packages = with pkgs; [
     wget
-    fzf
     fastfetch
     file
-    atuin
-    gh
     eza
     zip
     unzip
     htop
-    zoxide
-    oh-my-posh
     bat
     glow
     ripgrep
