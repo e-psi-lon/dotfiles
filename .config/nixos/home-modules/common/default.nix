@@ -112,18 +112,14 @@
     };
     git = {
       lfs.enable = true;
+      enable = true;
       settings = {
         init.defaultBranch = "main";
         user = {
           name = "Lilian Maulny (e_ψ_lon)";
           email = "theg41g@gmail.com";
         };
-        credential = {
-          "https://github.com".helper = "!gh auth git-credential";
-          "https://gist.github.com".helper = "!gh auth git-credential";
-          # TODO: Add gitlab CLI and its credential helper
-          # "https://gitlab.com".helper = "";
-        };
+        credential."https://gitlab.com".helper = "!${pkgs.glab}/bin/glab auth git-credential";
         alias = {
           graph = "log --oneline --all --decorate --graph";
           undo = "reset HEAD~1";
