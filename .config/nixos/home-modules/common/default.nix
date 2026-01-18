@@ -12,10 +12,10 @@
       enableZshIntegration = true;
     };
     shellAliases = {
-      cls = "clear; fastfetch";
+      cls = "clear; ${pkgs.fastfetch}/bin/fastfetch";
       la = "ls -a";
       lla = "ls -la";
-      cdl = "zoxide query -l -s";
+      cdl = "${pkgs.zoxide}/bin/zoxide query -l -s";
       grep = "grep --color=auto";
       # act = "gh act";
       edit = "$EDITOR";
@@ -83,13 +83,13 @@
             bindkey '^[[1;5C' forward-word
 
             # Setup github copilot cli
-            eval "$(gh copilot alias -- zsh)"
+            eval "$(${pkgs.gh}/bin/gh copilot alias -- zsh)"
 
             # Setup completions
-            eval "$(atuin gen-completions --shell zsh)"
-            eval "$(uv generate-shell-completion zsh)"
-            eval "$(uvx --generate-shell-completion zsh)"
-            eval "$(tailscale completion zsh)"
+            eval "$(${pkgs.uv}/bin/uv generate-shell-completion zsh)"
+            eval "$(${pkgs.uv}/bin/uvx --generate-shell-completion zsh)"
+            eval "$(${pkgs.tailscale}/bin/tailscale completion zsh)"
+            eval "$(${pkgs.atuin}/bin/atuin gen-completions --shell zsh)"
           '';
           zshConfigAfter = lib.mkOrder 1500 ''
             cls
