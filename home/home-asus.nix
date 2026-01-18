@@ -2,20 +2,18 @@
   pkgs,
   zen-browser,
   nixcord,
+  paths,
+  subPath,
   ...
 }:
 
-let
-  modules = ../home-modules;
-in
 {
-
   imports = [
     nixcord.homeModules.nixcord
-    (modules + /common)
-    (modules + /spicetify.nix)
-    (modules + /direnv.nix)
-    (modules + /discord.nix)
+    (subPath paths.home-modules "common")
+    (subPath paths.home-modules "spicetify.nix")
+    (subPath paths.home-modules "direnv.nix")
+    (subPath paths.home-modules "discord.nix")
   ];
 
   programs.tmux.enable = true;

@@ -1,12 +1,13 @@
-{ pkgs, ... }:
+{ 
+  pkgs,
+  paths,
+  subPath,
+  ...
+}:
 
-let
-  modules = ../home-modules;
-in
 {
-
   imports = [
-    (modules + /common)
+    (subPath paths.home-modules "common")
   ];
 
   home.stateVersion = "25.11";

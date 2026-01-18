@@ -41,14 +41,16 @@
       ...
     }:
     let
-      inherit (import ./lib/mkNixosSystem.nix) mkNixosSystem;
-      commonModule = ./modules/common;
+      paths = import ./lib/paths.nix;
+      subPath = paths.sub;
+      inherit (import subPath paths.lib "mkNixosSystem.nix") mkNixosSystem;
+      commonModule = subPath paths.modules "common";
       asusModules = [
         commonModule
-        ./modules/desktop-kde.nix
-        ./modules/grub.nix
-        ./modules/nvidia.nix
-        ./modules/steam.nix
+        (subPath paths.modules "desktop-kde.nix")
+        (subPath paths.modules "grub.nix")
+        (subPath paths.modules "nvidia.nix")
+        (subPath paths.modules "steam.nix")
         minegrub-world-sel-theme.nixosModules.default
         nixos-hardware.nixosModules.asus-fa706ic
       ];
@@ -65,6 +67,7 @@
           home-manager = home-manager-unstable;
           modules = asusModules;
           machineName = "asus";
+          inherit paths subPath;
           extraArgs = asusArgs // {
             isUnstable = true;
           };
@@ -75,6 +78,7 @@
           home-manager = home-manager-stable;
           modules = asusModules;
           machineName = "asus";
+          inherit paths subPath;
           extraArgs = asusArgs // {
             isUnstable = false;
           };
@@ -85,12 +89,13 @@
           home-manager = home-manager-stable;
           modules = [
             commonModule
-            ./modules/desktop-lxqt.nix
+            (subPath paths.modules "desktop-lxqt.nix")
             nixos-hardware.nixosModules.common-pc-laptop
             nixos-hardware.nixosModules.common-pc-ssd
             "${nixos-hardware}/common/cpu/intel/brasswell"
           ];
           machineName = "hp";
+          inherit paths subPath;
         };
 
         nixOnDroidConfiguration = nix-on-droid.lib.nixOnDroidConfiguration {
