@@ -12,6 +12,7 @@
       enable = lib.mkDefault true;
       useRoutingFeatures = lib.mkDefault "both";
       permitCertUid = lib.mkDefault "e-psi-lon";
+      extraSetFlags = [ "--ssh" ];
     };
   };
 }
