@@ -81,6 +81,15 @@
             # Fix key bind for Ctrl+Left and Ctrl+Right (should move cursor word by word)
             bindkey '^[[1;5D' backward-word
             bindkey '^[[1;5C' forward-word
+
+            # Setup github copilot cli
+            eval "$(gh copilot alias -- zsh)"
+
+            # Setup completions
+            eval "$(atuin gen-completions --shell zsh)"
+            eval "$(uv generate-shell-completion zsh)"
+            eval "$(uvx --generate-shell-completion zsh)"
+            eval "$(tailscale completion zsh)"
           '';
           zshConfigAfter = lib.mkOrder 1500 ''
             cls
