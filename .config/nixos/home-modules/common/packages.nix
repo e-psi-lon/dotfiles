@@ -5,6 +5,7 @@
     wget
     fastfetch
     file
+    glab
     eza
     zip
     unzip
