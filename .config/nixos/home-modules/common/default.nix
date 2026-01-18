@@ -60,6 +60,15 @@
           };
         }
         {
+          name = "fzf";
+          src = fetchFromGitHub {
+            owner = "zap-zsh";
+            repo = "fzf";
+            rev = "master";
+            sha256 = "sha256-jwcOmhPNmE8g+xOTDsysAFxE76xdUwxvi5211xlwM7s=";
+          };
+        }
+        {
           name = "colored-man-pages";
           src = fetchFromGitHub {
             owner = "ael-code";
