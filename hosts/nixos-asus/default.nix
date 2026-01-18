@@ -1,7 +1,5 @@
 {
-  config,
   pkgs,
-  lib,
   ...
 }:
 
@@ -14,9 +12,9 @@
     ./services.nix
   ];
 
-  environment = {
-    systemPackages = with pkgs; [ ];
-  };
+  # environment = {
+  #  systemPackages = with pkgs; [ ];
+  # };
 
   nix = {
     optimise.automatic = true;
