@@ -43,7 +43,7 @@
     let
       paths = import ./lib/paths.nix;
       subPath = paths.sub;
-      inherit (import subPath paths.lib "mkNixosSystem.nix") mkNixosSystem;
+      inherit (import (subPath paths.lib "mkNixosSystem.nix")) mkNixosSystem;
       commonModule = subPath paths.modules "common";
       asusModules = [
         commonModule
