@@ -13,12 +13,16 @@
 
     thermald.enable = true;
     journald.extraConfig = ''
-      SystemMaxUse=10M
+      SystemMaxUse=5M
       RuntimeMaxUse=50M
     '';
   };
 
-  zramSwap.enable = true;
+  zramSwap = {
+    enable = true;
+    # CONSIDER: adjust size as needed
+    # memoryPercent = 50;
+  };
 
   boot.kernel.sysctl = {
     "vm.swappiness" = 5;
@@ -37,6 +41,8 @@
     settings = {
       keep-outputs = false;
       keep-derivations = false;
+      max-jobs = 4;
+      auto-optimise-store = true;
     };
   };
 
