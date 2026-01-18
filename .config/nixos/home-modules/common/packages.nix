@@ -3,7 +3,6 @@
 {
   home.packages = with pkgs; [
     wget
-    fastfetch
     file
     glab
     eza
