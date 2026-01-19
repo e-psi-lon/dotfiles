@@ -1,6 +1,6 @@
 { paths, subPath, ... }:
 let
-  ff = import subPath paths.lib "fastfetch.nix";
+  ff = import (subPath paths.lib "fastfetch");
   inherit (ff) green cyan yellow magenta red override fastfetchModules;
 in
 {

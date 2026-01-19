@@ -18,6 +18,10 @@
 
   programs.tmux.enable = true;
 
+  programs.zsh.initContent = ''
+    [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(${pkgs.vscodeshur} --locate-shell-integration-path zsh)"
+  '';
+
   home.stateVersion = "26.05";
   home.packages = with pkgs; [
     # Web browser
