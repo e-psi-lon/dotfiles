@@ -2,6 +2,7 @@
 {
   hardware = {
     nvidia.prime.sync.enable = true;
+    nvidia-container-toolkit.enable = true;
     bluetooth = {
       enable = true;
       powerOnBoot = true;

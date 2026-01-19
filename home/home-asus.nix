@@ -14,12 +14,13 @@
     (subPath paths.home-modules "spicetify.nix")
     (subPath paths.home-modules "direnv.nix")
     (subPath paths.home-modules "discord.nix")
+    (subPath paths.home-modules "containerisation.nix")
   ];
 
   programs.tmux.enable = true;
 
   programs.zsh.initContent = ''
-    [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(${pkgs.vscodeshur} --locate-shell-integration-path zsh)"
+    [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(${pkgs.vscode} --locate-shell-integration-path zsh)"
   '';
 
   home.stateVersion = "26.05";
