@@ -93,7 +93,7 @@
             (subPath paths.modules "desktop-lxqt.nix")
             nixos-hardware.nixosModules.common-pc-laptop
             nixos-hardware.nixosModules.common-pc-ssd
-            "${nixos-hardware}/common/cpu/intel/brasswell"
+            "${nixos-hardware}/common/cpu/intel/braswell"
           ];
           machineName = "hp";
           inherit paths subPath;
