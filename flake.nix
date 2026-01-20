@@ -6,7 +6,7 @@
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
     zen-browser.url = "github:youwen5/zen-browser-flake";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
-    nixcord.url = "github:FlameFlag/nixcord";
+    nixcord.url = "github:FlameFlag/nixcord/f381c8e4469072862997d6f66019ebbdf8145963";
     nixos-hardware.url = "github:e-psi-lon/nixos-hardware/feat/asus-fa706ic";
     minegrub-world-sel-theme = {
       url = "github:Lxtharia/minegrub-world-sel-theme";
