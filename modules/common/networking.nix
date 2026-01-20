@@ -12,7 +12,8 @@
       enable = lib.mkDefault true;
       useRoutingFeatures = lib.mkDefault "both";
       permitCertUid = lib.mkDefault "e-psi-lon";
-      extraSetFlags = [ "--ssh" ];
+      # Once Tailscale fixes their SSH implementation this could be re-enabled
+      # extraSetFlags = [ "--ssh" ];
     };
   };
 }
