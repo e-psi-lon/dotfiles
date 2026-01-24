@@ -1,18 +1,23 @@
+{ pkgs, ...}: 
+
 {
 
   imports = [
     ./boot.nix
-    ./nix-ld.nix
     ./hardware-configuration.nix
     ./services.nix
   ];
 
-  # environment = {
-  #  systemPackages = with pkgs; [ ];
-  # };
+  environment = {
+    systemPackages = with pkgs; [
+      cryptsetup
+      tpm2-tss
+    ];
+  };
 
   nix = {
     optimise.automatic = true;
+    settings.trusted-users = [ "root" "e-psi-lon" ];
 
     gc = {
       automatic = true;
