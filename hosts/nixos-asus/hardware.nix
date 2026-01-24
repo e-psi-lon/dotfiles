@@ -22,8 +22,13 @@
     users.e-psi-lon.extraGroups = lib.mkAfter [ "data" ];
   };
 
-  systemd.tmpfiles.rules = [
-    "d /mnt/data 0775 root data - -"
-  ];
-
+  systemd.tmpfiles.settings."10-data" = {
+    "/mnt/data" = {
+      d = {
+        mode = "0755";
+        owner = "root";
+        group = "data";
+      };
+    };
+  };
 }
