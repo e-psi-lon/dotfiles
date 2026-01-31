@@ -30,7 +30,7 @@
   };
 
   boot = {
-    boot.tmp.cleanOnBoot = true;
+    tmp.cleanOnBoot = true;
     kernel.sysctl = {
       "vm.swappiness" = 5;
       "vm.vfs_cache_pressure" = 60;
