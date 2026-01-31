@@ -59,9 +59,6 @@
           bindkey '^[[1;5D' backward-word
           bindkey '^[[1;5C' forward-word
 
-          # Setup github copilot cli
-          eval "$(${pkgs.gh}/bin/gh copilot alias -- zsh)"
-
           # Setup completions
           eval "$(${pkgs.uv}/bin/uv generate-shell-completion zsh)"
           eval "$(${pkgs.uv}/bin/uvx --generate-shell-completion zsh)"

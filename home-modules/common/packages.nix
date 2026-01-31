@@ -16,6 +16,7 @@
     jq
     dust
     dnsutils
+    github-copilot-cli
 
     # Development
     neovim
