@@ -11,5 +11,10 @@
     };
 
     kernelPackages = pkgs.linuxPackages_latest;
+
+    tmp = {
+      useZram = true;
+      zramSettings.zram-size = "30%";
+    };
   };
 }
