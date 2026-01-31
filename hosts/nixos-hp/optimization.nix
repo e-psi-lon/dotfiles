@@ -16,6 +16,11 @@
       SystemMaxUse=5M
       RuntimeMaxUse=50M
     '';
+
+    scx = {
+      enable = true;
+      scheduler = "scx_lavd";
+    };
   };
 
   zramSwap = {
@@ -24,9 +29,14 @@
     # memoryPercent = 50;
   };
 
-  boot.kernel.sysctl = {
-    "vm.swappiness" = 5;
-    "vm.vfs_cache_pressure" = 60;
+  boot = {
+    boot.tmp.cleanOnBoot = true;
+    kernel.sysctl = {
+      "vm.swappiness" = 5;
+      "vm.vfs_cache_pressure" = 60;
+      "vm.oom_kill_allocating_task" = 1;
+      "vm.panic_on_oom" = 0;
+    };
   };
 
   nix = {
@@ -41,7 +51,7 @@
     settings = {
       keep-outputs = false;
       keep-derivations = false;
-      max-jobs = 4;
+      max-jobs = 2;
       auto-optimise-store = true;
     };
   };
