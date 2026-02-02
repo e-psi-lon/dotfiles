@@ -29,8 +29,6 @@
     zen-browser.packages.${stdenv.hostPlatform.system}.default
     ungoogled-chromium # Required for some APIs Firefox (and forks) doesn't support...
 
-    # Discord
-
     # IDEs and text editor and other dev tools
     vscode
     nixfmt
@@ -47,6 +45,7 @@
 
     # Misc
     proton-pass
+    xwayland-satellite
 
     # Global languages
     nodejs_24
