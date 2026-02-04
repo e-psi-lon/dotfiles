@@ -29,7 +29,7 @@
     zen-browser.packages.${stdenv.hostPlatform.system}.default
     ungoogled-chromium # Required for some APIs Firefox (and forks) doesn't support...
 
-    # IDEs and text editor and other dev tools
+    # IDEs, text editor and other dev tools
     vscode
     nixfmt
     nixd
@@ -40,10 +40,9 @@
     jetbrains.clion
     gource
 
+    # Misc
     libreoffice-qt
     prismlauncher
-
-    # Misc
     proton-pass
     xwayland-satellite
 
@@ -51,5 +50,8 @@
     nodejs_24
     jdk21
     php
+
+    # Class stuff
+    ganttproject-bin
   ];
 }
