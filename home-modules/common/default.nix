@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   imports = [
     ./packages.nix
@@ -13,10 +13,10 @@
       enableZshIntegration = true;
     };
     shellAliases = {
-      cls = "clear; ${pkgs.fastfetch}/bin/fastfetch";
+      cls = "clear; ${lib.getExe pkgs.fastfetch}";
       la = "ls -a";
       lla = "ls -la";
-      cdl = "${pkgs.zoxide}/bin/zoxide query -l -s";
+      cdl = "${lib.getExe pkgs.zoxide} query -l -s";
       grep = "grep --color=auto";
       # act = "gh act";
       edit = "$EDITOR";

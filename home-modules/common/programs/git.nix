@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   programs.git = {
     lfs.enable = true;
@@ -9,7 +9,7 @@
         name = "Lilian Maulny (e_ψ_lon)";
         email = "theg41g@gmail.com";
       };
-      credential."https://gitlab.com".helper = "!${pkgs.glab}/bin/glab auth git-credential";
+      credential."https://gitlab.com".helper = "!${lib.getExe pkgs.glab} auth git-credential";
       alias = {
         graph = "log --oneline --all --decorate --graph";
         undo = "reset HEAD~1";
