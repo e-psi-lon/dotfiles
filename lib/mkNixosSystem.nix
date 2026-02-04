@@ -9,9 +9,14 @@
       subPath,
       extraArgs ? { },
     }:
+    let
+      hashesFile = subPath paths.resources "/hashes.toml";
+      hashes = fromTOML (builtins.readFile hashesFile);
+      args = extraArgs // { inherit paths subPath hashes; };
+    in
     pkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = extraArgs // { inherit paths subPath; };
+      specialArgs = args;
       modules = modules ++ [
         (paths.hosts + "/nixos-${machineName}")
         { networking.hostName = "nixos-${machineName}"; }
@@ -20,7 +25,7 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.e-psi-lon = (paths.home + "/home-${machineName}.nix");
-          home-manager.extraSpecialArgs = extraArgs // { inherit paths subPath; };
+          home-manager.extraSpecialArgs = args;
         }
       ];
     };

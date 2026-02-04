@@ -1,4 +1,4 @@
-{ pkgs, lib, paths, subPath, ... }:
+{ pkgs, lib, paths, subPath, hashes, ... }:
 {
   programs.zsh = {
     enable = true;
@@ -24,7 +24,7 @@
           owner = "zap-zsh";
           repo = "exa";
           rev = "master";
-          sha256 = "sha256-gYyLML7tTRtMskKks/cxHXZL4MxAfGb1T7GJJCQUFTk=";
+          sha256 = hashes.zsh.zap-exa;
         };
       }
       {
@@ -33,7 +33,7 @@
           owner = "zap-zsh";
           repo = "fzf";
           rev = "master";
-          sha256 = "sha256-jwcOmhPNmE8g+xOTDsysAFxE76xdUwxvi5211xlwM7s=";
+          sha256 = hashes.zsh.zap-fzf;
         };
       }
       {
@@ -42,7 +42,7 @@
           owner = "ael-code";
           repo = "zsh-colored-man-pages";
           rev = "master";
-          sha256 = "sha256-087bNmB5gDUKoSriHIjXOVZiUG5+Dy9qv3D69E8GBhs=";
+          sha256 = hashes.zsh.zsh-colored-man-pages;
         };
       }
     ];

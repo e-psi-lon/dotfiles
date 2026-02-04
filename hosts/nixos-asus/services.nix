@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, hashes, ... }:
 {
 
   services = {
@@ -31,7 +31,7 @@
         text = builtins.readFile (
           pkgs.fetchurl {
             url = "https://cdn.numworks.com/f2be8a48/50-numworks-calculator.rules";
-            sha256 = "sha256-x4leQyuSdNsXwpZRZPUJWkJNZDRl2WhqC3PHizChe8w=";
+            sha256 = hashes.udev.numworks-rules;
           }
         );
       })
