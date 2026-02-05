@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  hashes,
   ...
 }:
 
@@ -28,7 +29,7 @@
       "input"
       "storage"
     ];
-    hashedPassword = "$6$RuWluSDrWlxlvRqQ$JCiJFbeooSAfaKV0BkcCx6g/wxxSH9oDpUbAn5EG6Ee/aG5hZ3zt9UVKUnRxbF6ELDFj71yvUdEpi/.aglaj1/";
+    hashedPassword = hashes.user.e-psi-lon.password;
     createHome = true;
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMj8zKRB39dPABSBPDkRU+yrgFP2iQaCkJvNLJ9D4/7X e-psi-lon@nixos-hp"

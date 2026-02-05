@@ -5,3 +5,6 @@ zsh-colored-man-pages = "sha256-087bNmB5gDUKoSriHIjXOVZiUG5+Dy9qv3D69E8GBhs="
 
 [udev]
 numworks-rules = "sha256-x4leQyuSdNsXwpZRZPUJWkJNZDRl2WhqC3PHizChe8w="
+
+[user.e-psi-lon]
+password = "$6$RuWluSDrWlxlvRqQ$JCiJFbeooSAfaKV0BkcCx6g/wxxSH9oDpUbAn5EG6Ee/aG5hZ3zt9UVKUnRxbF6ELDFj71yvUdEpi/.aglaj1/"
