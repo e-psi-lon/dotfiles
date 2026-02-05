@@ -2,6 +2,24 @@
 
 {
   enable = true;
+  globals.mapleader = " ";
+  keymaps = [
+    {
+      key = "<leader>et";
+      action  = "<cmd>NvimTreeToggle<CR>";
+      options.desc = "Toggle file explorer";
+    }
+    {
+      key = "<leader>e";
+      action  = "<cmd>NvimTreeFocus<CR>";
+      options.desc = "Focus file explorer";
+    }
+    {
+      key = "<leader>as";
+      action  = "<cmd>ASToggle<CR>";
+      options.desc = "Enable/disable auto-save";
+    }
+  ];
   plugins = {
     mini-icons = {
       enable = true;
@@ -27,20 +45,8 @@
         regex
         toml
         vim
-        vimdoc
-        xml
-        yaml
-        python
         c
-        cpp
-        java
-        html
-        css
-        javascript
-        typescript
-        php
         toml
-
       ];
     };
   };

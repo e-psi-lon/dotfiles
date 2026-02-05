@@ -1,7 +1,6 @@
 {
   pkgs,
   lib,
-  nixvim,
   zen-browser,
   nixcord,
   paths,
@@ -12,7 +11,6 @@
 {
   imports = [
     nixcord.homeModules.nixcord
-    nixvim.homeModules.nixvim
     (subPath paths.home-modules "common")
     (subPath paths.home-modules "spicetify.nix")
     (subPath paths.home-modules "direnv.nix")
@@ -21,13 +19,44 @@
   ];
 
   programs.tmux.enable = true;
-  programs.nixvim.imports = [
-    (subPath paths.home-modules "neovim.nix")
-     {
-      extraPlugins = with pkgs.vimPlugins; [ onedarkpro-nvim ];
-      colorscheme = "onedark_vivid";
-    }
-  ];
+  programs.nixvim = {
+    extraPlugins = with pkgs.vimPlugins; [ onedarkpro-nvim ];
+    colorscheme = "onedark_vivid";
+    keymaps = [
+      {
+        key = "<leader>mp";
+        action  = "<cmd>MarkdownPreview toggle<CR>";
+        options.desc = "Toggle markdown preview";
+      }
+    ];
+    plugins = {
+      render-markdown = {
+        enable = true;
+        settings = {
+          heading = {
+            icons = [ "# " "## " "### " "#### " "##### " "###### " ];
+          };
+          bullets = {
+            icons = [ "• " "◦ " "▪ " ];
+          };
+          enabled = true;
+          debounce = 100;
+        };
+      };
+      treesitter.grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
+        cpp
+        java
+        python
+        html
+        css
+        javascript
+        typescript
+        php
+        xml
+        yaml
+      ];
+    };
+  };
 
   programs.zsh.initContent = ''
     [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(${lib.getExe pkgs.vscode} --locate-shell-integration-path zsh)"
