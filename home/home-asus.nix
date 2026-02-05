@@ -1,5 +1,7 @@
 {
   pkgs,
+  lib,
+  nixvim,
   zen-browser,
   nixcord,
   paths,
@@ -10,6 +12,7 @@
 {
   imports = [
     nixcord.homeModules.nixcord
+    nixvim.homeModules.nixvim
     (subPath paths.home-modules "common")
     (subPath paths.home-modules "spicetify.nix")
     (subPath paths.home-modules "direnv.nix")
@@ -18,6 +21,13 @@
   ];
 
   programs.tmux.enable = true;
+  programs.nixvim.imports = [
+    (subPath paths.home-modules "neovim.nix")
+     {
+      extraPlugins = with pkgs.vimPlugins; [ onedarkpro-nvim ];
+      colorscheme = "onedark_vivid";
+    }
+  ];
 
   programs.zsh.initContent = ''
     [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(${lib.getExe pkgs.vscode} --locate-shell-integration-path zsh)"

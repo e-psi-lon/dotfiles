@@ -11,6 +11,7 @@
   ];
 
   home.stateVersion = "25.11";
+  programs.nixvim.colorschemes.onedark.enable = true;
 
   home.packages = with pkgs; [
     firefox

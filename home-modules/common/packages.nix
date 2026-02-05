@@ -19,7 +19,6 @@
     github-copilot-cli
 
     # Development
-    neovim
     uv
     python3
     gcc
