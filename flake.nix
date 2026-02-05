@@ -1,6 +1,5 @@
 {
   description = "My NixOS configuration flake. Do I really need to say more??";
-
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     zen-browser.url = "github:youwen5/zen-browser-flake";
@@ -19,6 +18,7 @@
       url = "github:nix-community/nix-on-droid/prerelease-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixvim.url = "github:nix-community/nixvim";
   };
 
   outputs =
@@ -31,6 +31,7 @@
       home-manager,
       nix-on-droid,
       nixos-hardware,
+      nixvim,
       ...
     }:
     let
@@ -38,26 +39,28 @@
       subPath = paths.sub;
       inherit (import (subPath paths.lib "mkNixosSystem.nix")) mkNixosSystem;
       commonModule = subPath paths.modules "common";
-      asusModules = [
-        commonModule
-        (subPath paths.modules "desktop-kde.nix")
-        (subPath paths.modules "grub.nix")
-        (subPath paths.modules "nvidia.nix")
-        (subPath paths.modules "steam.nix")
-        (subPath paths.modules "containerisation.nix")
-        minegrub-world-sel-theme.nixosModules.default
-        nixos-hardware.nixosModules.asus-fa706ic
-      ];
+      sharedArgs = {
+        nixvim = nixvim;
+      };
     in
     {
       nixosConfigurations = {
         nixos-asus = mkNixosSystem {
           pkgs = nixpkgs;
           home-manager = home-manager;
-          modules = asusModules;
+          modules = [
+            commonModule
+            (subPath paths.modules "desktop-kde.nix")
+            (subPath paths.modules "grub.nix")
+            (subPath paths.modules "nvidia.nix")
+            (subPath paths.modules "steam.nix")
+            (subPath paths.modules "containerisation.nix")
+            minegrub-world-sel-theme.nixosModules.default
+            nixos-hardware.nixosModules.asus-fa706ic
+          ];
           machineName = "asus";
           inherit paths subPath;
-          extraArgs = {
+          extraArgs = sharedArgs // {
             zen-browser = zen-browser;
             spicetify-nix = spicetify-nix;
             nixcord = nixcord;
@@ -76,6 +79,7 @@
           ];
           machineName = "hp";
           inherit paths subPath;
+          extraArgs = sharedArgs;
         };
 
         nixOnDroidConfiguration = nix-on-droid.lib.nixOnDroidConfiguration {
@@ -83,6 +87,7 @@
           modules = [
             ./hosts/nix-on-droid
           ];
+          extraArgs = sharedArgs;
         };
       };
     };
