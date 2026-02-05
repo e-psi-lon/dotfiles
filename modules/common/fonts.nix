@@ -15,8 +15,7 @@
   };
 
   fonts.packages = (
-    with pkgs;
-    [
+    with pkgs; [
       nerd-fonts.jetbrains-mono
       nerd-fonts.noto
     ]

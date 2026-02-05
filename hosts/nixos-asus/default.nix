@@ -14,6 +14,7 @@
       tpm2-tss
     ];
   };
+  services.desktopManager.plasma6.notoPackage = pkgs.nerd-fonts.noto;
 
   nix = {
     optimise.automatic = true;
