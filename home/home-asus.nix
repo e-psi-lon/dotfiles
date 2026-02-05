@@ -20,7 +20,7 @@
   programs.tmux.enable = true;
 
   programs.zsh.initContent = ''
-    [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(${pkgs.vscode} --locate-shell-integration-path zsh)"
+    [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(${lib.getExe pkgs.vscode} --locate-shell-integration-path zsh)"
   '';
 
   home.stateVersion = "26.05";
