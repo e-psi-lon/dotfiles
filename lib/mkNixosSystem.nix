@@ -1,18 +1,19 @@
 {
   mkNixosSystem =
-    {
+    allArgs@{
       pkgs,
       home-manager,
       modules,
       machineName,
       paths,
       subPath,
-      extraArgs ? { },
+      ...
     }:
     let
+      extraArgs = removeAttrs allArgs [ "pkgs" "home-manager" "modules" "machineName" ];
       hashesFile = subPath paths.resources "/hashes.toml";
       hashes = fromTOML (builtins.readFile hashesFile);
-      args = extraArgs // { inherit paths subPath hashes; };
+      args = extraArgs // { inherit hashes; };
     in
     pkgs.lib.nixosSystem {
       system = "x86_64-linux";

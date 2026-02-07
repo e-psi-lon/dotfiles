@@ -39,9 +39,6 @@
       subPath = paths.sub;
       inherit (import (subPath paths.lib "mkNixosSystem.nix")) mkNixosSystem;
       commonModule = subPath paths.modules "common";
-      sharedArgs = {
-        nixvim = nixvim;
-      };
     in
     {
       nixosConfigurations = {
@@ -59,12 +56,7 @@
             nixos-hardware.nixosModules.asus-fa706ic
           ];
           machineName = "asus";
-          inherit paths subPath;
-          extraArgs = sharedArgs // {
-            zen-browser = zen-browser;
-            spicetify-nix = spicetify-nix;
-            nixcord = nixcord;
-          };
+          inherit paths subPath zen-browser spicetify-nix nixcord nixvim;
         };
 
         nixos-hp = mkNixosSystem {
@@ -78,8 +70,7 @@
             "${nixos-hardware}/common/cpu/intel/braswell"
           ];
           machineName = "hp";
-          inherit paths subPath;
-          extraArgs = sharedArgs;
+          inherit paths subPath nixvim;
         };
 
         nixOnDroidConfiguration = nix-on-droid.lib.nixOnDroidConfiguration {
@@ -87,7 +78,7 @@
           modules = [
             ./hosts/nix-on-droid
           ];
-          extraArgs = sharedArgs;
+          inherit paths subPath;
         };
       };
     };
