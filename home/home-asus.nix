@@ -18,9 +18,24 @@
     (subPath paths.home-modules "containerisation.nix")
   ];
 
-  programs.tmux.enable = true;
+  programs.tmux = {
+    enable = true;
+    reverseSplit = true;
+    prefix = "C-A";
+    plugins = with pkgs.tmuxPlugins; [
+      prefix-highlight
+      yank
+      battery
+      onedark-theme
+      vim-tmux-focus-events
+    ];
+  };
+  programs.fzf.tmux.enableShellIntegration = true;
   programs.nixvim = {
-    extraPlugins = with pkgs.vimPlugins; [ onedarkpro-nvim ];
+    extraPlugins = with pkgs.vimPlugins; [ 
+      onedarkpro-nvim
+      vim-tmux-focus-events
+    ];
     colorscheme = "onedark_vivid";
     keymaps = [
       {

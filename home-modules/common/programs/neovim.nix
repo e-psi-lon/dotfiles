@@ -5,10 +5,11 @@
   globals.mapleader = " ";
   keymaps = [
     {
-      key = "<leader>et";
+      key = "<leader>tt";
       action  = "<cmd>NvimTreeToggle<CR>";
       options.desc = "Toggle file explorer";
     }
+    # TODO: Find a meaningful keybind for exiting terminal mode
     {
       key = "<leader>e";
       action  = "<cmd>NvimTreeFocus<CR>";
@@ -20,6 +21,11 @@
       options.desc = "Enable/disable auto-save";
     }
   ];
+  vimAlias = true;
+  opts = {
+    number = true;
+    shiftwidth = 4;
+  };
   plugins = {
     mini-icons = {
       enable = true;
