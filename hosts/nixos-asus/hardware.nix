@@ -19,7 +19,7 @@
 
   users = {
     groups.data = { };
-    users.e-psi-lon.extraGroups = lib.mkAfter [ "data" ];
+    users.e-psi-lon.extraGroups = lib.mkAfter [ "data"  "kvm" ];
   };
 
   systemd.tmpfiles.settings."10-data" = {
