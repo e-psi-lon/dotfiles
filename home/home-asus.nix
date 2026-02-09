@@ -3,6 +3,7 @@
   lib,
   zen-browser,
   nixcord,
+  android-nixpkgs,
   paths,
   subPath,
   ...
@@ -11,11 +12,13 @@
 {
   imports = [
     nixcord.homeModules.nixcord
+    android-nixpkgs.hmModule
     (subPath paths.home-modules "common")
     (subPath paths.home-modules "spicetify.nix")
     (subPath paths.home-modules "direnv.nix")
     (subPath paths.home-modules "discord.nix")
     (subPath paths.home-modules "containerisation.nix")
+    (subPath paths.home-modules "android.nix")
   ];
 
   programs.tmux = {
@@ -70,6 +73,27 @@
         xml
         yaml
       ];
+      cmp = {
+        enable = true;
+        autoEnableSource = false;
+        settings.sources = [
+          { name = "nvim_lsp"; }
+          { name = "path"; }
+          { name = "buffer"; }
+        ];
+      };
+      copilot-lua = {
+        enable = true;
+      };
+      copilot-chat = {
+        enable = true;
+      };
+      copilot-cmp = {
+        enable = true;
+      };
+      copilot-lsp = {
+        enable = true;
+      };
     };
   };
 
@@ -92,6 +116,7 @@
     jetbrains.pycharm
     jetbrains.webstorm
     jetbrains.clion
+    android-studio
     gource
 
     # Misc

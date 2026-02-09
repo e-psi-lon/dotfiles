@@ -19,6 +19,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim.url = "github:nix-community/nixvim";
+    android-nixpkgs = {
+      url = "github:tadfisher/android-nixpkgs/stable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -32,6 +36,7 @@
       nix-on-droid,
       nixos-hardware,
       nixvim,
+      android-nixpkgs,
       ...
     }:
     let
@@ -39,6 +44,9 @@
       subPath = paths.sub;
       inherit (import (subPath paths.lib "mkNixosSystem.nix")) mkNixosSystem;
       commonModule = subPath paths.modules "common";
+      overlays = [
+        android-nixpkgs.overlays.default
+      ];
     in
     {
       nixosConfigurations = {
@@ -46,6 +54,7 @@
           pkgs = nixpkgs;
           home-manager = home-manager;
           modules = [
+            { nixpkgs.overlays = overlays; }
             commonModule
             (subPath paths.modules "desktop-kde.nix")
             (subPath paths.modules "grub.nix")
@@ -56,7 +65,7 @@
             nixos-hardware.nixosModules.asus-fa706ic
           ];
           machineName = "asus";
-          inherit paths subPath zen-browser spicetify-nix nixcord nixvim;
+          inherit paths subPath zen-browser spicetify-nix nixcord android-nixpkgs nixvim;
         };
 
         nixos-hp = mkNixosSystem {
