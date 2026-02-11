@@ -43,7 +43,7 @@ in
         })
 
         (magenta display {
-          format = "{width}x{height} @ {refresh-rate}″ Hz in {inch} [{type}]";
+          format = "{width}x{height} @ {refresh-rate} Hz in {inch}″ [{type}]";
         })
         (magenta wifi {})
         (magenta localip {
