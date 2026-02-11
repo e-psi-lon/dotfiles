@@ -16,6 +16,7 @@
   home.packages = with pkgs; [
     firefox
     moonlight-qt
+    socat
     # CONSIDER: Keep some local RetroArch vs. 100% remote streaming. Local might not be useful
     (retroarch.withCores (
       cores: with cores; [

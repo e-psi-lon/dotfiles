@@ -14,9 +14,12 @@
     blacklistedKernelModules = [ "intel-spi" ];
   };
 
-    hardware.graphics.enable = true;
+  hardware.graphics.enable = true;
 
   services.xserver.videoDrivers = [ "intel" ];
+  services.udev.extraRules = ''
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="22d9", ATTRS{idProduct}=="2769", MODE="0666"
+  '';
 
   environment = {
     sessionVariables = {
