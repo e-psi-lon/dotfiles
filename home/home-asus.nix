@@ -24,7 +24,6 @@
   programs.tmux = {
     enable = true;
     reverseSplit = true;
-    prefix = "C-A";
     plugins = with pkgs.tmuxPlugins; [
       prefix-highlight
       yank
@@ -132,5 +131,6 @@
 
     # Class stuff
     ganttproject-bin
+    modelio
   ];
 }
