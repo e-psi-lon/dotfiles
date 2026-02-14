@@ -22,6 +22,8 @@
     uv
     python3
     gcc
+    cmake
+    gnumake
     nasm
 
     # Media
