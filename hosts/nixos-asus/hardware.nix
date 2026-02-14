@@ -25,7 +25,7 @@
   systemd.tmpfiles.settings."10-data" = {
     "/mnt/data" = {
       d = {
-        mode = "0755";
+        mode = "0775";
         owner = "root";
         group = "data";
       };
