@@ -120,9 +120,20 @@
 
     # Misc
     libreoffice-qt
-    prismlauncher
     proton-pass
     xwayland-satellite
+
+    # Games
+    prismlauncher
+    ryubing
+    dolphin-emu
+    melonDS
+    azahar
+    nestopia-ue
+    cemu
+    pcsx2
+    mgba
+    pegasus-frontend
 
     # Global languages
     nodejs_24
