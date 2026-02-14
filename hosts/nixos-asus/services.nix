@@ -8,6 +8,7 @@
       capSysAdmin = true;
       openFirewall = true;
     };
+    printing.enable = true;
 
     openvpn.servers = {
       univ-tours = {
