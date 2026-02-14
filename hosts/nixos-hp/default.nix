@@ -15,6 +15,8 @@
   };
 
   hardware.graphics.enable = true;
+  hardware.enableRedistributableFirmware = true;
+  programs.mtr.enable = true;
 
   services.xserver.videoDrivers = [ "intel" ];
   services.udev.extraRules = ''
