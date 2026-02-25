@@ -134,6 +134,8 @@
     pcsx2
     mgba
     pegasus-frontend
+    steam-rom-manager
+    weston # Attempt or forwarding games with Sunshine/Moonlight
 
     # Global languages
     nodejs_24

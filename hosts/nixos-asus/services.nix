@@ -1,6 +1,9 @@
 { pkgs, ... }:
 {
 
+  systemd.user.services.sunshine.environment = {
+    WAYLAND_DISPLAY = "wayland-1";
+  };
   services = {
     sunshine = {
       enable = true;
