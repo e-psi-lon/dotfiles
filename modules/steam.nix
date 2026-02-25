@@ -1,5 +1,3 @@
-{ config, pkgs, ... }:
-
 {
   programs.steam = {
     enable = true;
@@ -7,4 +5,5 @@
     dedicatedServer.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
   };
+  hardware.steam-hardware.enable = true;
 }
