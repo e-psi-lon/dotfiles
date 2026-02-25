@@ -8,7 +8,7 @@
   lib, 
   autoPatchelfHook, 
   libsecret, 
-  xorg, 
+  libXtst, 
   alsa-lib, 
   webkitgtk_4_1,
   makeWrapper, 
@@ -26,7 +26,7 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ rpm cpio autoPatchelfHook makeWrapper unzip ];
-  buildInputs = [ gtk3 libxcb libsecret xorg.libXtst alsa-lib webkitgtk_4_1 libGLU ];
+  buildInputs = [ gtk3 libxcb libsecret libXtst alsa-lib webkitgtk_4_1 libGLU ];
 
   unpackPhase = ''
     rpm2cpio $src | cpio -idmv

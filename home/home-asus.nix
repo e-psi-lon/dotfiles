@@ -127,7 +127,7 @@
     prismlauncher
     ryubing
     dolphin-emu
-    melonDS
+    melonds
     azahar
     nestopia-ue
     cemu
