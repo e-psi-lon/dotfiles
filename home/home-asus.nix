@@ -116,7 +116,7 @@
     jetbrains.webstorm
     jetbrains.clion
     android-studio
-    gource
+    # gource
 
     # Misc
     libreoffice-qt

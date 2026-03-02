@@ -1,16 +1,16 @@
 { pkgs, ... }:
 {
 
-  systemd.user.services.sunshine.environment = {
-    WAYLAND_DISPLAY = "wayland-1";
-  };
+  # systemd.user.services.sunshine.environment = {
+  #   WAYLAND_DISPLAY = "wayland-1";
+  # };
   services = {
-    sunshine = {
-      enable = true;
-      autoStart = true;
-      capSysAdmin = true;
-      openFirewall = true;
-    };
+  #  sunshine = {
+  #    enable = true;
+  #    autoStart = true;
+  #    capSysAdmin = true;
+  #    openFirewall = true;
+  #  };
     printing.enable = true;
 
     openvpn.servers = {
