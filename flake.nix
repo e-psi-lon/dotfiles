@@ -66,7 +66,15 @@
             nixos-hardware.nixosModules.asus-fa706ic
           ];
           machineName = "asus";
-          inherit paths subPath zen-browser spicetify-nix nixcord android-nixpkgs nixvim;
+          inherit
+            paths
+            subPath
+            zen-browser
+            spicetify-nix
+            nixcord
+            android-nixpkgs
+            nixvim
+            ;
         };
 
         nixos-hp = mkNixosSystem {

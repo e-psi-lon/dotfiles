@@ -6,18 +6,18 @@
   keymaps = [
     {
       key = "<leader>tt";
-      action  = "<cmd>NvimTreeToggle<CR>";
+      action = "<cmd>NvimTreeToggle<CR>";
       options.desc = "Toggle file explorer";
     }
     # TODO: Find a meaningful keybind for exiting terminal mode
     {
       key = "<leader>e";
-      action  = "<cmd>NvimTreeFocus<CR>";
+      action = "<cmd>NvimTreeFocus<CR>";
       options.desc = "Focus file explorer";
     }
     {
       key = "<leader>as";
-      action  = "<cmd>ASToggle<CR>";
+      action = "<cmd>ASToggle<CR>";
       options.desc = "Enable/disable auto-save";
     }
   ];

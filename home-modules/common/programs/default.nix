@@ -8,5 +8,5 @@
     ./fastfetch.nix
   ];
 
-  programs.nixvim.imports = [ ./neovim.nix ];  
+  programs.nixvim.imports = [ ./neovim.nix ];
 }

@@ -1,7 +1,15 @@
 { paths, subPath, ... }:
 let
   ff = import (subPath paths.lib "fastfetch");
-  inherit (ff) green cyan yellow magenta red override fastfetchModules;
+  inherit (ff)
+    green
+    cyan
+    yellow
+    magenta
+    red
+    override
+    fastfetchModules
+    ;
 in
 {
   programs.fastfetch = {
@@ -26,18 +34,18 @@ in
         uptime
         packages
 
-        (green shell {})
-        (green terminal {})
-        (green de {})
-        (green wm {})
+        (green shell { })
+        (green terminal { })
+        (green de { })
+        (green wm { })
 
         (cyan cpu {
           format = "{name} ({cores-physical}C/{cores-logical}T) @ {freq-base} ({freq-max})";
         })
-        (cyan gpu {})
+        (cyan gpu { })
 
-        (yellow memory {})
-        (yellow swap {})
+        (yellow memory { })
+        (yellow swap { })
         (yellow disk {
           showExternal = false;
         })
@@ -45,7 +53,7 @@ in
         (magenta display {
           format = "{width}x{height} @ {refresh-rate} Hz in {inch}″ [{type}]";
         })
-        (magenta wifi {})
+        (magenta wifi { })
         (magenta localip {
           format = "{ipv4} @ {speed} ({mac})";
         })
@@ -53,7 +61,11 @@ in
         (red battery {
           format = "{capacity-bar} {capacity}% [{status}] {time-formatted}";
           percent = {
-            type = [ "num" "num-color" "bar" ];
+            type = [
+              "num"
+              "num-color"
+              "bar"
+            ];
             green = 80;
             yellow = 20;
           };

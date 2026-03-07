@@ -26,7 +26,10 @@
 
   users = {
     groups.data = { };
-    users.e-psi-lon.extraGroups = [ "data"  "kvm" ];
+    users.e-psi-lon.extraGroups = [
+      "data"
+      "kvm"
+    ];
   };
 
   systemd.tmpfiles.settings."10-data" = {

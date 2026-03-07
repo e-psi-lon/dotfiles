@@ -1,4 +1,11 @@
-{ pkgs, lib, paths, subPath, hashes, ... }:
+{
+  pkgs,
+  lib,
+  paths,
+  subPath,
+  hashes,
+  ...
+}:
 {
   programs.zsh = {
     enable = true;

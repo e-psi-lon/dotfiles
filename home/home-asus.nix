@@ -34,7 +34,7 @@
   };
   programs.fzf.tmux.enableShellIntegration = true;
   programs.nixvim = {
-    extraPlugins = with pkgs.vimPlugins; [ 
+    extraPlugins = with pkgs.vimPlugins; [
       onedarkpro-nvim
       vim-tmux-focus-events
     ];
@@ -42,7 +42,7 @@
     keymaps = [
       {
         key = "<leader>mp";
-        action  = "<cmd>MarkdownPreview toggle<CR>";
+        action = "<cmd>MarkdownPreview toggle<CR>";
         options.desc = "Toggle markdown preview";
       }
     ];
@@ -51,10 +51,21 @@
         enable = true;
         settings = {
           heading = {
-            icons = [ "# " "## " "### " "#### " "##### " "###### " ];
+            icons = [
+              "# "
+              "## "
+              "### "
+              "#### "
+              "##### "
+              "###### "
+            ];
           };
           bullets = {
-            icons = [ "• " "◦ " "▪ " ];
+            icons = [
+              "• "
+              "◦ "
+              "▪ "
+            ];
           };
           enabled = true;
           debounce = 100;

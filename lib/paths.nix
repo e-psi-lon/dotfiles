@@ -6,6 +6,6 @@
   lib = ../lib;
   resources = ../resources;
   customPkgs = ../custom_pkgs;
-  
+
   sub = base: name: base + "/${name}";
 }

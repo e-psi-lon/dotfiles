@@ -1,4 +1,4 @@
-{ pkgs, ...}: 
+{ pkgs, ... }:
 
 {
 
@@ -19,7 +19,10 @@
 
   nix = {
     optimise.automatic = true;
-    settings.trusted-users = [ "root" "e-psi-lon" ];
+    settings.trusted-users = [
+      "root"
+      "e-psi-lon"
+    ];
 
     gc = {
       automatic = true;

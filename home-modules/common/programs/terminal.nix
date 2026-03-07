@@ -1,4 +1,9 @@
-{ pkgs, paths, subPath, ... }:
+{
+  pkgs,
+  paths,
+  subPath,
+  ...
+}:
 {
   programs = {
     atuin = {
@@ -9,7 +14,9 @@
       enable = true;
       enableZshIntegration = true;
       settings = builtins.fromJSON (
-        builtins.unsafeDiscardStringContext (builtins.readFile (subPath paths.resources "oh-my-posh/theme.json"))
+        builtins.unsafeDiscardStringContext (
+          builtins.readFile (subPath paths.resources "oh-my-posh/theme.json")
+        )
       );
     };
     fzf = {
