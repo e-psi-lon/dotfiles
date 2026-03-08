@@ -11,6 +11,7 @@
     };
 
     kernelPackages = pkgs.linuxPackages_6_18;
+    kernelModules = [ "asus-armoury" ];
 
     tmp = {
       useZram = true;
