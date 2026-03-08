@@ -7,5 +7,5 @@
   resources = ../resources;
   customPkgs = ../custom_pkgs;
 
-  sub = base: name: base + "/${name}";
+  subPath = base: name: base + "/${name}";
 }

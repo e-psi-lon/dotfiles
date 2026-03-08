@@ -41,7 +41,7 @@
     }:
     let
       paths = import ./lib/paths.nix;
-      subPath = paths.sub;
+      subPath = paths.subPath;
       inherit (import (subPath paths.lib "mkNixosSystem.nix")) mkNixosSystem;
       commonModule = subPath paths.modules "common";
       overlays = [
