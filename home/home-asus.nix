@@ -1,5 +1,6 @@
 {
   pkgs,
+  config,
   lib,
   zen-browser,
   nixcord,
@@ -150,11 +151,56 @@
 
     # Global languages
     nodejs_24
-    jdk21
     php
 
     # Class stuff
     ganttproject-bin
     modelio
   ];
+
+
+  home.file = let
+    xdgConfig = config.xdg.configHome;
+    xdgData = config.xdg.dataHome;
+    emulation = "/mnt/data/Emulation";
+    jdkHome = pkg: subPath pkg "lib/openjdk";
+    emuPath = rel: config.lib.file.mkOutOfStoreSymlink "${emulation}/${rel}";
+  in {
+    ".jdks/jdk21".source = jdkHome pkgs.jdk21;
+    ".jdks/jdk25".source = jdkHome pkgs.jdk25;
+    ".jdks/jdk17".source = jdkHome pkgs.jdk17;
+    ".jdks/jdk8".source = jdkHome pkgs.jdk8;
+
+    "Desktop/Zen Browser.desktop".source = subPath zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default "share/applications/zen-browser.desktop";
+
+    # Emulators
+    ## Ryujinx
+    "${xdgConfig}/Ryujinx/bis".source = emuPath "saves/ryujinx";
+    "${xdgConfig}/Ryujinx/games".source = emuPath "storage/ryujinx/games";
+    "${xdgConfig}/Ryujinx/mods".source = emuPath "storage/ryujinx/mods";
+    "${xdgConfig}/Ryujinx/sdcard".source = emuPath "storage/ryujinx/sdcard";
+    "${xdgConfig}/Ryujinx/system".source = emuPath "bios/ryujinx";
+
+    ## Dolphin
+    "${xdgData}/dolphin-emu/Dump".source = emuPath "storage/dolphin/Dump";
+    "${xdgData}/dolphin-emu/GC".source = emuPath "saves/dolphin/GC";
+    "${xdgData}/dolphin-emu/Load".source = emuPath "storage/dolphin/Load";
+    "${xdgData}/dolphin-emu/ResourcePacks".source = emuPath "texturepacks/dolphin/ResourcePacks";
+    "${xdgData}/dolphin-emu/ScreenShots".source = emuPath "storage/dolphin/ScreenShots";
+    "${xdgData}/dolphin-emu/StateSaves".source = emuPath "saves/dolphin/StateSaves";
+    "${xdgData}/dolphin-emu/WFS".source = emuPath "storage/dolphin/WFS";
+    "${xdgData}/dolphin-emu/Wii".source = emuPath "saves/dolphin/Wii";
+
+    ## Azahar
+    "${xdgData}/azahar-emu/sysdata".source = emuPath "bios/azahar";
+    "${xdgData}/azahar-emu/cheats".source = emuPath "storage/azahar/cheats";
+    "${xdgData}/azahar-emu/nand".source = emuPath "storage/azahar/nand";
+    "${xdgData}/azahar-emu/screenshots".source = emuPath "storage/azahar/screenshots";
+    "${xdgData}/azahar-emu/sdmc".source = emuPath "storage/azahar/sdmc";
+
+    ## Cemu
+    "${xdgData}/Cemu/mlc01/sys".source = emuPath "storage/Cemu";
+    "${xdgData}/Cemu/mlc01/usr".source = emuPath "saves/Cemu";
+    "${xdgData}/Cemu/graphicPacks".source = emuPath "texturepacks/Cemu";
+  };
 }
