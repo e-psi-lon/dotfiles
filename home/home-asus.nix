@@ -196,7 +196,8 @@
     "${xdgData}/azahar-emu/cheats".source = emuPath "storage/azahar/cheats";
     "${xdgData}/azahar-emu/nand".source = emuPath "storage/azahar/nand";
     "${xdgData}/azahar-emu/screenshots".source = emuPath "storage/azahar/screenshots";
-    "${xdgData}/azahar-emu/sdmc".source = emuPath "storage/azahar/sdmc";
+    "${xdgData}/azahar-emu/sdmc".source = emuPath "saves/azahar/sdmc";
+    "${xdgData}/azahar-emu/states".source = emuPath "saves/azahar/states";
 
     ## Cemu
     "${xdgData}/Cemu/mlc01/sys".source = emuPath "storage/Cemu";
