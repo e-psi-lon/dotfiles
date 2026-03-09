@@ -134,6 +134,7 @@
     libreoffice-qt
     proton-pass
     xwayland-satellite
+    setup-dev # Custom script to setup a dev environment with direnv and a flake
 
     # Games
     prismlauncher
@@ -147,7 +148,7 @@
     mgba
     pegasus-frontend
     steam-rom-manager
-    weston # Attempt for forwarding games with Sunshine/Moonlight
+    weston # Attempt to forward games with Sunshine/Moonlight
 
     # Global languages
     nodejs_24

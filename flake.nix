@@ -46,7 +46,7 @@
       commonModule = subPath paths.modules "common";
       overlays = [
         android-nixpkgs.overlays.default
-        (import paths.custom-pkgs)
+        (import paths.custom-pkgs { inherit paths; })
       ];
     in
     {
