@@ -1,3 +1,4 @@
+{ paths, subPath, ... }:
 {
   programs.nixcord = {
     enable = true;
@@ -6,7 +7,7 @@
       vencord.enable = true;
     };
     openASAR.enable = true;
-    quickCss = builtins.readFile ../resources/discord/quickCss.css;
+    quickCss = builtins.readFile (subPath paths.resources "discord/quickCss.css");
     vesktop = {
       enable = true;
       autoscroll.enable = true;
