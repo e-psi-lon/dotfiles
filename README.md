@@ -12,3 +12,5 @@ This repository contains my dotfiles. I use [Nix](https://nixos.org/) and [Home 
 
 - Create a CI/CD pipeline to build configuration files such as `.zshrc` for non-NixOS systems ready to use with [GNU Stow](https://www.gnu.org/software/stow/).
 - Explore flakes to see if they can help simplify some parts of the current dotfiles structure.
+- Setup weekly auto-flake update through GitHub Actions and PR with verification and warn/failure report in case of failure.
+- Easy setup of development environment through a `setup <language>` command creating a flake and a `.envrc` file with a pre-filled flake for the specified language.
