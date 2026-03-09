@@ -171,7 +171,7 @@
     ".jdks/jdk17".source = jdkHome pkgs.jdk17;
     ".jdks/jdk8".source = jdkHome pkgs.jdk8;
 
-    "Desktop/Zen Browser.desktop".source = subPath zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default "share/applications/zen-browser.desktop";
+    "Desktop/Zen Browser.desktop".source = subPath zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default "share/applications/zen.desktop";
 
     # Emulators
     ## Ryujinx
