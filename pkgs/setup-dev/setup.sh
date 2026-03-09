@@ -4,7 +4,8 @@
 # usage setup-dev <language> [<template:value>...]
 
 if [ "$#" -lt 1 ]; then
-  echo "Usage: $0 <language> [<template:value>...]"
+  executable=$(basename "$0")
+  echo "Usage: $executable <language> [<template:value>...]"
   exit 1
 fi
 
@@ -29,7 +30,7 @@ done
 verify_required_vars() {
   local required_vars=("$@")
   for var in "${required_vars[@]}"; do
-    if [ -z "${VARS[$var]}" ]; then
+    if [ -z "${VARS[$var]:-}" ]; then
       echo "Error: Missing required variable '$var' for language '$LANGUAGE'."
       exit 1
     fi
