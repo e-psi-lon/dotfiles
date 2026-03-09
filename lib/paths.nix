@@ -5,7 +5,7 @@
   home-modules = ../home-modules;
   lib = ../lib;
   resources = ../resources;
-  customPkgs = ../custom_pkgs;
+  custom-pkgs = ../pkgs;
 
-  subPath = base: name: base + "/${name}";
+  subPath = base: name: "${base}/${name}";
 }
