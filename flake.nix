@@ -5,7 +5,7 @@
     zen-browser.url = "github:youwen5/zen-browser-flake";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     nixcord.url = "github:FlameFlag/nixcord";
-    nixos-hardware.url = "github:e-psi-lon/nixos-hardware/feat/asus-fa706ic";
+    nixos-hardware.url = "github:e-psi-lon/nixos-hardware/feat/asus-fa706ic"; # To upstream
     minegrub-world-sel-theme = {
       url = "github:Lxtharia/minegrub-world-sel-theme";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -90,13 +90,14 @@
           machineName = "hp";
           inherit paths subPath nixvim;
         };
-
-        nixOnDroidConfiguration = nix-on-droid.lib.nixOnDroidConfiguration {
-          pkgs = import nixpkgs { system = "aarch64-linux"; };
-          modules = [
-            ./hosts/nix-on-droid
-          ];
-          inherit paths subPath;
+      };
+      nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
+        pkgs = import nixpkgs { system = "aarch64-linux"; };
+        modules = [
+          ./hosts/nix-on-droid # Currently empty
+        ];
+        extraSpecialArgs = {
+           inherit paths subPath;
         };
       };
     };
