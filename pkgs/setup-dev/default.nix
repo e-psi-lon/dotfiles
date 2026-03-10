@@ -8,8 +8,8 @@ let
 in writeShellApplication {
   name = "setup-dev";
   text = ''
-    ENVRC_FILE=${envrc}
-    FLAKE_DIR=${flakes}
+    ENVRC_FILE="${envrc}"
+    FLAKE_DIR="${flakes}"
 
     ${builtins.readFile ./setup.sh}
   '';
