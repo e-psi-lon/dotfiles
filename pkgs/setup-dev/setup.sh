@@ -4,6 +4,8 @@
 
 # usage setup-dev <language> [--nixpkgs VERSION] [--force] [args...]
 
+PERMISSIONS=644 # rw-r--r-- - Base permissions
+
 # Check a language has been provided
 if [ "$#" -lt 1 ]; then
   executable=$(basename "$0")
@@ -77,6 +79,7 @@ apply_template() {
     sed -i "s|{{${key}}}|${escaped}|g" "$temp_flake"
   done
   mv "$temp_flake" "./flake.nix"
+  chmod $PERMISSIONS "./flake.nix"
   trap - EXIT
 }
 
@@ -102,5 +105,6 @@ esac
 
 # Copy the template .envrc file to the current directory
 cp "$ENVRC_FILE" "./.envrc"
+chmod $PERMISSIONS "./.envrc"
 
 echo "Setup completed for language '$LANGUAGE'."
