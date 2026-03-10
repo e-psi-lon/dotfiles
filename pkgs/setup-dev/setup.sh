@@ -42,6 +42,10 @@ while [ "$#" -gt 0 ]; do
   esac
 done
 
+if [ "$FORCE" = true ]; then
+  echo "Warning: FORCE flag is set. Existing flake.nix and .envrc files will be overwritten."
+fi
+
 # Verify that the current path don't contain a flake.nix 
 # nor a .envrc file to avoid overwriting them unless FORCE is set to true
 if [ "$FORCE" = false ]; then
