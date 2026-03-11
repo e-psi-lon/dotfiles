@@ -2,6 +2,7 @@
   pkgs,
   lib,
   hashes,
+  username,
   ...
 }:
 
@@ -17,7 +18,7 @@
 
   boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;
 
-  users.users.e-psi-lon = {
+  users.users.${username} = {
     isNormalUser = true;
     description = "e_ψ_lon";
     shell = pkgs.zsh;
@@ -29,11 +30,11 @@
       "input"
       "storage"
     ];
-    hashedPassword = hashes.user.e-psi-lon.password;
+    hashedPassword = hashes.user.${username}.password;
     createHome = true;
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMj8zKRB39dPABSBPDkRU+yrgFP2iQaCkJvNLJ9D4/7X e-psi-lon@nixos-hp"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEdsCJp/3BQiAzscw2PT8rmfVWYwd7gVJca0QKWkpnSm e-psi-lon@home"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMj8zKRB39dPABSBPDkRU+yrgFP2iQaCkJvNLJ9D4/7X ${username}@nixos-hp"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEdsCJp/3BQiAzscw2PT8rmfVWYwd7gVJca0QKWkpnSm ${username}@home"
     ];
   };
 

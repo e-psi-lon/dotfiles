@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, username, ... }:
 {
   imports = [
     ./packages.nix
@@ -6,8 +6,8 @@
   ];
 
   home = {
-    username = "e-psi-lon";
-    homeDirectory = "/home/e-psi-lon";
+    username = username;
+    homeDirectory = "/home/${username}";
 
     shell = {
       enableZshIntegration = true;

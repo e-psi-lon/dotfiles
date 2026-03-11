@@ -10,6 +10,7 @@
       ...
     }:
     let
+      username = "e-psi-lon";
       extraArgs = removeAttrs allArgs [
         "pkgs"
         "home-manager"
@@ -19,7 +20,7 @@
       hashesFile = subPath paths.resources "/hashes.toml";
       hashes = fromTOML (builtins.readFile hashesFile);
       args = extraArgs // {
-        inherit hashes;
+        inherit hashes username;
       };
     in
     pkgs.lib.nixosSystem {
@@ -32,7 +33,7 @@
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.e-psi-lon = (paths.home + "/home-${machineName}.nix");
+          home-manager.users.${username} = (paths.home + "/home-${machineName}.nix");
           home-manager.extraSpecialArgs = args;
         }
       ];

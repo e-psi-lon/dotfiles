@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, username, ... }:
 
 {
 
@@ -21,7 +21,7 @@
     optimise.automatic = true;
     settings.trusted-users = [
       "root"
-      "e-psi-lon"
+      username
     ];
 
     gc = {
