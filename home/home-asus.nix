@@ -20,6 +20,7 @@
     (subPath paths.home-modules "discord.nix")
     (subPath paths.home-modules "containerisation.nix")
     (subPath paths.home-modules "android.nix")
+    (subPath paths.home-modules "mcp.nix")
   ];
 
   programs.tmux = {
