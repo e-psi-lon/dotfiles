@@ -5,7 +5,7 @@
     zen-browser.url = "github:youwen5/zen-browser-flake";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     nixcord.url = "github:FlameFlag/nixcord";
-    nixos-hardware.url = "github:e-psi-lon/nixos-hardware/feat/asus-fa706ic"; # To upstream
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
     minegrub-world-sel-theme = {
       url = "github:Lxtharia/minegrub-world-sel-theme";
       inputs.nixpkgs.follows = "nixpkgs";
