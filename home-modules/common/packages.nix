@@ -16,7 +16,10 @@
     jq
     dust
     dnsutils
-    github-copilot-cli
+    (github-copilot-cli.overrideAttrs (oldAttrs: {
+      postInstall = ''
+      '';
+    })) # TODO: Remove once the PR make it from master to unstable
 
     # Development
     uv
