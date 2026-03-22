@@ -62,6 +62,7 @@
             (subPath paths.modules "nvidia.nix")
             (subPath paths.modules "steam.nix")
             (subPath paths.modules "containerisation.nix")
+            (subPath paths.modules "waydroid.nix")
             minegrub-world-sel-theme.nixosModules.default
             nixos-hardware.nixosModules.asus-fa706ic
           ];
