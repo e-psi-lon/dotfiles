@@ -136,6 +136,7 @@
     proton-pass
     xwayland-satellite
     setup-dev # Custom script to setup a dev environment with direnv and a flake
+    sl # Yes.
 
     # Games
     prismlauncher
