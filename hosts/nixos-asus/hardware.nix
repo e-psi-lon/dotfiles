@@ -8,6 +8,10 @@
   specialisation.battery-saver = lib.mkIf config.hardware.nvidia.primeBatterySaverSpecialisation {
     configuration.hardware.nvidia.prime.sync.enable = lib.mkForce false;
   };
+  fileSystems."/home/${username}/Dev" = {
+    device = "/mnt/data/Dev";
+    options = [ "bind" ];
+  };
   hardware = {
     nvidia.prime.sync.enable = lib.mkOverride 900 true;
     nvidia.prime.offload.enable = lib.mkOverride 900 false;
@@ -46,4 +50,5 @@
       };
     };
   };
+
 }
