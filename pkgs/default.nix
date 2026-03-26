@@ -1,5 +1,5 @@
-{ paths }: 
+{ paths }:
 final: prev: {
   modelio = final.callPackage ./modelio.nix { };
-  setup-dev = final.callPackage ./setup-dev { inherit paths;};
+  setup-dev = final.callPackage ./setup-dev { inherit paths; };
 }

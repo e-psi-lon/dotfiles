@@ -28,8 +28,6 @@
         autoStart = false;
       };
     };
-    udev.packages = with pkgs; [
-      numworks-udev-rules
-    ];
+    udev.packages = with pkgs; [ numworks-udev-rules ];
   };
 }

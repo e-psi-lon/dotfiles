@@ -39,24 +39,16 @@ in
         (green de { })
         (green wm { })
 
-        (cyan cpu {
-          format = "{name} ({cores-physical}C/{cores-logical}T) @ {freq-base} ({freq-max})";
-        })
+        (cyan cpu { format = "{name} ({cores-physical}C/{cores-logical}T) @ {freq-base} ({freq-max})"; })
         (cyan gpu { })
 
         (yellow memory { })
         (yellow swap { })
-        (yellow disk {
-          showExternal = false;
-        })
+        (yellow disk { showExternal = false; })
 
-        (magenta display {
-          format = "{width}x{height} @ {refresh-rate} Hz in {inch}″ [{type}]";
-        })
+        (magenta display { format = "{width}x{height} @ {refresh-rate} Hz in {inch}″ [{type}]"; })
         (magenta wifi { })
-        (magenta localip {
-          format = "{ipv4} @ {speed} ({mac})";
-        })
+        (magenta localip { format = "{ipv4} @ {speed} ({mac})"; })
 
         (red battery {
           format = "{capacity-bar} {capacity}% [{status}] {time-formatted}";

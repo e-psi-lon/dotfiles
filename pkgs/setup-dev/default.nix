@@ -1,11 +1,9 @@
-{
-  writeShellApplication,
-  paths
-}:
-let 
+{ writeShellApplication, paths }:
+let
   flakes = paths.dev-flakes;
   envrc = paths.subPath paths.resources ".envrc";
-in writeShellApplication {
+in
+writeShellApplication {
   name = "setup-dev";
   text = ''
     ENVRC_FILE="${envrc}"

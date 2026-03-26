@@ -5,25 +5,27 @@
     nixpkgs.url = "github:NixOS/nixpkgs/release-{{NIXPKGS_VERSION}}";
   };
 
-  outputs = { self, nixpkgs, ... }:
+  outputs =
+    { self, nixpkgs, ... }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
-    in {
+    in
+    {
       devShells.${system}.default = pkgs.mkShell {
-          shellHook = ''
-            
-          '';
-          nativeBuildInputs = with pkgs; [
-            gcc
-            cmake
-            gnumake
-            gdb
-            binutils
-            pkg-config
-            valgrind
-            bear
-          ];
-        };
+        shellHook = ''
+
+        '';
+        nativeBuildInputs = with pkgs; [
+          gcc
+          cmake
+          gnumake
+          gdb
+          binutils
+          pkg-config
+          valgrind
+          bear
+        ];
+      };
     };
 }

@@ -97,9 +97,7 @@
         modules = [
           ./hosts/nix-on-droid # Currently empty
         ];
-        extraSpecialArgs = {
-           inherit paths subPath;
-        };
+        extraSpecialArgs = { inherit paths subPath; };
       };
     };
 }

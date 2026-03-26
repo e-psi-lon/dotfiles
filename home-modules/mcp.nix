@@ -1,4 +1,9 @@
-{ config, subPath, paths, ... }:
+{
+  config,
+  subPath,
+  paths,
+  ...
+}:
 
 let
   mcp = import (subPath paths.lib "mcp");
@@ -10,27 +15,20 @@ in
       servers = {
         nixos = mcp.raw {
           command = "nix";
-          args = [ "run" "github:utensils/mcp-nixos" ];
+          args = [
+            "run"
+            "github:utensils/mcp-nixos"
+          ];
         };
-        fetch = mcp.uvx {
-          package = "mcp-server-fetch";
-        };
-        git = mcp.npx {
-          package = "mcp-server-git";
-        };
-        sequential-thinking = mcp.npx {
-          package = "@modelcontextprotocol/server-sequential-thinking";
-        };
-        time = mcp.uvx {
-          package = "mcp-server-time";
-        };
+        fetch = mcp.uvx { package = "mcp-server-fetch"; };
+        git = mcp.npx { package = "mcp-server-git"; };
+        sequential-thinking = mcp.npx { package = "@modelcontextprotocol/server-sequential-thinking"; };
+        time = mcp.uvx { package = "mcp-server-time"; };
         memory = mcp.npx {
           package = "@modelcontextprotocol/server-memory";
           env.MEMORY_FILE_PATH = "${config.xdg.dataHome}/mcp/memory.jsonl";
         };
-        discord = mcp.http {
-          url = "https://docs.discord.com/mcp";
-        };
+        discord = mcp.http { url = "https://docs.discord.com/mcp"; };
         github = mcp.http {
           url = "https://api.githubcopilot.com/mcp/";
           headers = {
@@ -40,6 +38,6 @@ in
       };
     };
     home.file.".ai/mcp/mcp.json".source = config.xdg.configFile."mcp/mcp.json".source;
-    
+
   };
 }

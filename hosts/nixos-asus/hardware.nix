@@ -1,4 +1,9 @@
-{ lib, config, username, ... }:
+{
+  lib,
+  config,
+  username,
+  ...
+}:
 {
   specialisation.battery-saver = lib.mkIf config.hardware.nvidia.primeBatterySaverSpecialisation {
     configuration.hardware.nvidia.prime.sync.enable = lib.mkForce false;

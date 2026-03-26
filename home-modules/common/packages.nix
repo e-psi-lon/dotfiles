@@ -17,8 +17,7 @@
     dust
     dnsutils
     (github-copilot-cli.overrideAttrs (oldAttrs: {
-      postInstall = ''
-      '';
+      postInstall = "";
     })) # TODO: Remove once the PR make it from master to unstable
 
     # Development
