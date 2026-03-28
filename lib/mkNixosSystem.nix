@@ -27,6 +27,7 @@
       system = "x86_64-linux";
       specialArgs = args;
       modules = modules ++ [
+        allArgs.sops-nix.nixosModules.sops
         (paths.hosts + "/nixos-${machineName}")
         { networking.hostName = "nixos-${machineName}"; }
         home-manager.nixosModules.home-manager

@@ -1,0 +1,25 @@
+keys:
+  - &user_e-psi-lon "age1kgu5c0xcajwg3wnc39s5ulg3ktsz405x65sp3wqgpay2tncgqfrqs5s5s8"
+  - &host_asus "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK6pjaptz3FJ+0RnVavufNVTaVcCVwi6Ky+x7nNZ6s9+ root@nixos-asus"
+  - &host_hp "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAC7Euhsz1t1i1J5Y/XecPtuLhO50r1El6pRTlZDCI0J root@nixos-hp"
+
+creation_rules:
+  # Base pattern: Give the user access to everything by default, plus specific hosts based on yaml filename
+  - path_regex: resources/secrets/asus\.yaml$
+    key_groups:
+      - age:
+          - *user_e-psi-lon
+          - *host_asus
+
+  - path_regex: resources/secrets/hp\.yaml$
+    key_groups:
+      - age:
+          - *user_e-psi-lon
+          - *host_hp
+
+  - path_regex: resources/secrets/.*\.yaml$
+    key_groups:
+      - age:
+          - *user_e-psi-lon
+          - *host_asus
+          - *host_hp

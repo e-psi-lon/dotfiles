@@ -35,9 +35,14 @@ in
             Authorization = "Bearer $GITHUB_PAT";
           };
         };
+        context7 = mcp.http { 
+          url = "https://mcp.context7.com/mcp";
+          headers = {
+            Authorization = "Bearer $CONTEXT7_API_KEY";
+          };
+        };
       };
     };
     home.file.".ai/mcp/mcp.json".source = config.xdg.configFile."mcp/mcp.json".source;
-
   };
 }

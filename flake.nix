@@ -23,6 +23,10 @@
       url = "github:tadfisher/android-nixpkgs/stable";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -37,6 +41,7 @@
       nixos-hardware,
       nixvim,
       android-nixpkgs,
+      sops-nix,
       ...
     }:
     let
@@ -75,6 +80,7 @@
             nixcord
             android-nixpkgs
             nixvim
+            sops-nix
             ;
         };
 
@@ -89,7 +95,7 @@
             "${nixos-hardware}/common/cpu/intel/braswell"
           ];
           machineName = "hp";
-          inherit paths subPath nixvim;
+          inherit paths subPath nixvim sops-nix;
         };
       };
       nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {

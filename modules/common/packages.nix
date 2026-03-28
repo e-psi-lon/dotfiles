@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 {
   environment.systemPackages = (
@@ -13,6 +13,8 @@
       git
       rsync
       curl
+      sops
+      age
     ]
   );
 }

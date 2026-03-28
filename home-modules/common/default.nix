@@ -8,6 +8,7 @@
   imports = [
     ./packages.nix
     ./programs
+    ./sops.nix
   ];
 
   home = {

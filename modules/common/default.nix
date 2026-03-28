@@ -14,6 +14,7 @@
     ./packages.nix
     ./fonts.nix
     ./programs.nix
+    ./sops.nix
   ];
 
   boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;

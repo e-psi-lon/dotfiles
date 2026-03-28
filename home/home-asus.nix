@@ -150,7 +150,6 @@
     mgba
     pegasus-frontend
     steam-rom-manager
-    weston # Attempt to forward games with Sunshine/Moonlight
 
     # Global languages
     nodejs_24
