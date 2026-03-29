@@ -1,0 +1,107 @@
+name: Update Flake Inputs
+
+on:
+  # schedule:
+  #  - cron: '0 2 * * 0'  # Weekly on Sunday at 2 AM UTC
+  workflow_dispatch:  # Allow manual trigger
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Nix
+        uses: DeterminateSystems/determinate-nix-action@main
+
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Update flake inputs
+        id: update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          nix flake update --commit-lock-file
+
+      - name: Build configurations
+        id: build
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          
+          echo "## Build Results" > build_results.md
+          echo "" >> build_results.md
+          
+          # Get all hosts from flake
+          hosts=$(nix eval .#nixosConfigurations --apply builtins.attrNames --json | jq -r '.[]')
+          
+          failed=0
+          for host in $hosts; do
+            echo "Building configuration for host: $host"
+            nix build ".#nixosConfigurations.$host.config.system.build.toplevel" --no-link 2>&1 | tee "build_$host.log"
+            if [ ${PIPESTATUS[0]} -eq 0 ]; then
+              echo "✅ **$host**: Build successful" >> build_results.md
+            else
+              echo "❌ **$host**: Build failed" >> build_results.md
+              echo "" >> build_results.md
+              echo "<details><summary>Error log for $host</summary>" >> build_results.md
+              echo "" >> build_results.md
+              echo '```' >> build_results.md
+              tail -n 50 "build_$host.log" >> build_results.md
+              echo '```' >> build_results.md
+              echo "</details>" >> build_results.md
+              echo "" >> build_results.md
+              failed=1
+            fi
+          done
+          
+          if [ $failed -eq 1 ]; then
+            echo "status=failed" >> $GITHUB_OUTPUT
+          else
+            echo "status=success" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Read build results
+        id: results
+        run: |
+          echo "content<<EOF" >> $GITHUB_OUTPUT
+          cat build_results.md >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          git-user-name: "github-actions[bot]"
+          git-user-email: "github-actions[bot]@users.noreply.github.com"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update flake inputs"
+          branch: automated/flake-update
+          delete-branch: true
+          title: "🔄 Weekly flake inputs update"
+          body: |
+            This PR updates all flake inputs to their latest versions.
+            
+            **Build Status**: ${{ steps.build.outputs.status == 'success' && '✅ All builds passed' || '⚠️ Some builds failed' }}
+            
+            ${{ steps.build.outputs.status == 'failed' && '## ⚠️ Build Failures' || '' }}
+
+            ${{ steps.build.outputs.status == 'failed' && 'Some configurations failed to build. Please review the errors below and fix them manually.' || '' }}
+            
+            <details>
+            <summary>Build Details</summary>
+            
+            ${{ steps.results.outputs.content }}
+            
+            </details>
+            
+            ---
+            🤖 This PR was automatically created by the weekly update workflow.
+          labels: |
+            dependencies
+            automated
