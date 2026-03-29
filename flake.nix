@@ -2,7 +2,10 @@
   description = "My NixOS configuration flake. Do I really need to say more??";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    zen-browser.url = "github:youwen5/zen-browser-flake";
+    zen-browser = {
+        url = "github:youwen5/zen-browser-flake";
+        inputs.nixpkgs.follows = "nixpkgs";
+    };
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     nixcord.url = "github:FlameFlag/nixcord";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
