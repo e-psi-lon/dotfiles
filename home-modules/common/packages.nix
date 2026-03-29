@@ -8,7 +8,7 @@
     eza
     zip
     unzip
-    htop
+    btop
     bat
     glow
     ripgrep
