@@ -23,6 +23,7 @@
     (subPath paths.home-modules "mcp.nix")
   ];
 
+  hasNvidiaGpu = true;
   programs.tmux = {
     enable = true;
     reverseSplit = true;

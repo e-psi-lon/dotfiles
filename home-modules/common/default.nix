@@ -9,6 +9,7 @@
     ./packages.nix
     ./programs
     ./sops.nix
+    ./options.nix
   ];
 
   home = {

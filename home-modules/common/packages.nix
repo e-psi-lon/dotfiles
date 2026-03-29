@@ -1,14 +1,14 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
-  home.packages = with pkgs; [
+  config.home.packages = with pkgs; [
     wget
     file
     glab
     eza
     zip
     unzip
-    btop
+    (if config.hasNvidiaGpu then pkgs.btop-cuda else pkgs.btop)
     bat
     glow
     ripgrep
