@@ -77,8 +77,6 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          git-user-name: "github-actions[bot]"
-          git-user-email: "github-actions[bot]@users.noreply.github.com"
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore: update flake inputs"
           branch: automated/flake-update

@@ -1,0 +1,11 @@
+name: Export ready to stow
+
+on:
+  # push:
+  #   branches:
+  #     - main
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+    stow:
+        runs-on: ubuntu-latest
