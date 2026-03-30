@@ -1,8 +1,8 @@
 name: Update Flake Inputs
 
 on:
-  # schedule:
-  #  - cron: '0 2 * * 0'  # Weekly on Sunday at 2 AM UTC
+  schedule:
+   - cron: '0 2 * * 0'  # Weekly on Sunday at 2 AM UTC
   workflow_dispatch:  # Allow manual trigger
 
 permissions:
@@ -27,7 +27,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          nix flake update --commit-lock-file
+          nix flake update --commit-lock-file --commit-lockfile-summary "flake: Update flake inputs to their latest versions"
 
       - name: Build configurations
         id: build
