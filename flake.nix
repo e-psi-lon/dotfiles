@@ -6,8 +6,14 @@
         url = "github:youwen5/zen-browser-flake";
         inputs.nixpkgs.follows = "nixpkgs";
     };
-    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
-    nixcord.url = "github:FlameFlag/nixcord";
+    spicetify-nix = {
+        url = "github:Gerg-L/spicetify-nix";
+        inputs.nixpkgs.follows = "nixpkgs";
+    } ;
+    nixcord = {
+        url = "github:FlameFlag/nixcord";
+        inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     minegrub-world-sel-theme = {
       url = "github:Lxtharia/minegrub-world-sel-theme";
