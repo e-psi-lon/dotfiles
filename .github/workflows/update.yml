@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Nix
         uses: DeterminateSystems/determinate-nix-action@main
@@ -37,8 +37,8 @@ jobs:
         run: |
           set -o pipefail
           
-          echo "## Build Results" > build_results.md
-          echo "" >> build_results.md
+          echo "## Build Results" > /tmp/build_results.md
+          echo "" >> /tmp/build_results.md
           
           # Get all hosts from flake
           hosts=$(nix eval .#nixosConfigurations --apply builtins.attrNames --json | jq -r '.[]')
@@ -46,19 +46,19 @@ jobs:
           failed=0
           for host in $hosts; do
             echo "Building configuration for host: $host"
-            nix build ".#nixosConfigurations.$host.config.system.build.toplevel" --no-link 2>&1 | tee "build_$host.log"
+            nix build ".#nixosConfigurations.$host.config.system.build.toplevel" --no-link 2>&1 | tee "/tmp/build_$host.log"
             if [ ${PIPESTATUS[0]} -eq 0 ]; then
-              echo "✅ **$host**: Build successful" >> build_results.md
+              echo "✅ **$host**: Build successful" >> /tmp/build_results.md
             else
-              echo "❌ **$host**: Build failed" >> build_results.md
-              echo "" >> build_results.md
-              echo "<details><summary>Error log for $host</summary>" >> build_results.md
-              echo "" >> build_results.md
-              echo '```' >> build_results.md
-              tail -n 50 "build_$host.log" >> build_results.md
-              echo '```' >> build_results.md
-              echo "</details>" >> build_results.md
-              echo "" >> build_results.md
+              echo "❌ **$host**: Build failed" >> /tmp/build_results.md
+              echo "" >> /tmp/build_results.md
+              echo "<details><summary>Error log for $host</summary>" >> /tmp/build_results.md
+              echo "" >> /tmp/build_results.md
+              echo '```' >> /tmp/build_results.md
+              tail -n 50 "/tmp/build_$host.log" >> /tmp/build_results.md
+              echo '```' >> /tmp/build_results.md
+              echo "</details>" >> /tmp/build_results.md
+              echo "" >> /tmp/build_results.md
               failed=1
             fi
           done
@@ -73,14 +73,14 @@ jobs:
         id: results
         run: |
           echo "content<<EOF" >> $GITHUB_OUTPUT
-          cat build_results.md >> $GITHUB_OUTPUT
+          cat /tmp/build_results.md >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore: update flake inputs"
+          add-paths: flake.lock
           branch: automated/flake-update
           delete-branch: true
           title: "🔄 Weekly flake inputs update"
