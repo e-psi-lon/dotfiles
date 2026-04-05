@@ -9,3 +9,6 @@ on:
 jobs:
     stow:
         runs-on: ubuntu-latest
+        steps:
+          - name: Placeholder
+            run: echo "Not implemented yet"
