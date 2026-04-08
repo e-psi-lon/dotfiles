@@ -5,8 +5,8 @@
     discord = {
       enable = true;
       vencord.enable = true;
+      openASAR.enable = true;
     };
-    openASAR.enable = true;
     quickCss = builtins.readFile (subPath paths.resources "discord/quickCss.css");
     vesktop = {
       enable = true;
