@@ -21,6 +21,7 @@
     (subPath paths.home-modules "containerisation.nix")
     (subPath paths.home-modules "android.nix")
     (subPath paths.home-modules "mcp.nix")
+    paths.containers
   ];
 
   hasNvidiaGpu = true;
@@ -209,5 +210,17 @@
       "${xdgData}/Cemu/mlc01/sys".source = emuPath "storage/Cemu";
       "${xdgData}/Cemu/mlc01/usr".source = emuPath "saves/Cemu";
       "${xdgData}/Cemu/graphicPacks".source = emuPath "texturepacks/Cemu";
+    };
+
+
+    podman-containers = {
+      enable = true;
+
+      bypass-cors.enable = true;
+      minecraft-server = {
+        enable = true;
+        javaVersion = 25;
+        autoStart = false;
+      };
     };
 }
