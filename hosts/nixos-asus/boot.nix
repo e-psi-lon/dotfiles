@@ -15,7 +15,7 @@
 
     tmp = {
       useZram = true;
-      zramSettings.zram-size = "30%";
+      zramSettings.zram-size = "ram * 0.3";
     };
   };
 }
