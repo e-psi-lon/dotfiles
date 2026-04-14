@@ -47,7 +47,7 @@ let
       Entrypoint = [ 
         (lib.getExe jre) 
       ] ++ cfg.javaArgs ++ [ 
-        "-Xmx${cfg.memoryLimit}" 
+        "-XX:MaxRAMPercentage=75.0"
         "-jar" 
         "/minecraft/server.jar"
         "nogui"
@@ -69,6 +69,9 @@ in {
       image = "${name}:latest";
       restart = "no";
       deploy.resources.limits.memory = cfg.memoryLimit;
+      volumes = [
+        "${cfg.serverDirectory}:/minecraft"
+      ] ++ cfg.volumes;
     };
     ports = [ "25565:25565" ];
   };
