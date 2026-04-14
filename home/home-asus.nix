@@ -217,6 +217,13 @@
     podman-containers = {
       enable = true;
 
+      nginx = {
+        enable = true;
+        serverBlocks = ''
+
+        '';
+      };
+
       bypass-cors.enable = true;
       minecraft-server = {
         enable = true;

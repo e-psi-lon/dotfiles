@@ -37,10 +37,28 @@
       description = "nginx proxy container managing routing between services"; 
       defaultExpose = true;
     } // {
-      configDirectory = lib.mkOption {
-        type = lib.types.path;
-        default = config.xdg.configHome + "/containers/nginx";
-        description = "Host directory to store nginx configuration files.";
+      domain = lib.mkOption {
+        type = lib.types.str;
+        default = "localhost";
+        description = "Primary domain for the Nginx proxy.";
+      };
+
+      serverBlocks = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+        description = "Extra declarative Nginx server blocks to inject into the http {} context.";
+      };
+      
+      sslCert = lib.mkOption {
+        type = lib.types.nullOr lib.types.path;
+        default = null;
+        description = "Path to the host SSL certificate (e.g., from sops-nix).";
+      };
+
+      sslKey = lib.mkOption {
+        type = lib.types.nullOr lib.types.path;
+        default = null;
+        description = "Path to the host SSL key (e.g., from sops-nix).";
       };
     };
 
@@ -126,12 +144,16 @@
       autoStart = config.podman-containers.${name}.autoStart;
     };
 
+    nginxContainer = evalContainer "nginx";
     bypassCorsContainer = evalContainer "bypass-cors";
     minecraftServerContainer = evalContainer "minecraft-server";
 
     docker-compose = {
       version = "3.8";
       services = {}
+        // lib.optionalAttrs config.podman-containers.nginx.enable {
+          nginx = nginxContainer.composeInfo;
+        }
         // lib.optionalAttrs config.podman-containers.bypass-cors.enable {
           bypass-cors = bypassCorsContainer.composeInfo;
         }
@@ -142,6 +164,7 @@
     composeFile = yaml.generate "docker-compose.yml" docker-compose;
 
     enabledImages = lib.flatten [
+      (lib.optionals config.podman-containers.nginx.enable [ nginxContainer.image ])
       (lib.optionals config.podman-containers.bypass-cors.enable [ bypassCorsContainer.image ])
       (lib.optionals config.podman-containers.minecraft-server.enable [ minecraftServerContainer.image ])
     ];
