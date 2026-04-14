@@ -60,6 +60,12 @@
         default = null;
         description = "Path to the host SSL key (e.g., from sops-nix).";
       };
+
+      extraConfigDir = lib.mkOption {
+        type = lib.types.path;
+        default = config.xdg.configHome + "/containers/nginx/conf.d";
+        description = "Path to a host directory containing extra Nginx config files to include (e.g., for additional server blocks or custom settings).";
+      };
     };
 
     bypass-cors = mkContainerOpts { 
