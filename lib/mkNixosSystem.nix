@@ -21,7 +21,7 @@
       hashes = fromTOML (builtins.readFile hashesFile);
       args = extraArgs // {
         inherit hashes username;
-      };
+      } // (import (subPath paths.lib "mkBindMount.nix"));
     in
     pkgs.lib.nixosSystem {
       system = "x86_64-linux";

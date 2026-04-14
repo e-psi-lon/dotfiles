@@ -8,7 +8,7 @@
 {
   imports = [ (subPath paths.home-modules "common") ];
 
-  home.stateVersion = "25.11";
+  home.stateVersion = "26.05";
   programs.nixvim.colorschemes.onedark.enable = true;
 
   home.packages = with pkgs; [

@@ -46,8 +46,8 @@ jobs:
           failed=0
           for host in $hosts; do
             echo "Building configuration for host: $host"
-            nix build ".#nixosConfigurations.$host.config.system.build.toplevel" --no-link 2>&1 | tee "/tmp/build_$host.log"
-            if [ ${PIPESTATUS[0]} -eq 0 ]; then
+            nix build ".#nixosConfigurations.$host.config.system.build.toplevel" --no-link 2>&1 | tee "/tmp/build_$host.log"; build_exit=${PIPESTATUS[0]}
+            if [ $build_exit -eq 0 ]; then
               echo "✅ **$host**: Build successful" >> /tmp/build_results.md
             else
               echo "❌ **$host**: Build failed" >> /tmp/build_results.md

@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  mkBindMount,
   username,
   ...
 }:
@@ -8,10 +9,7 @@
   specialisation.battery-saver = lib.mkIf config.hardware.nvidia.primeBatterySaverSpecialisation {
     configuration.hardware.nvidia.prime.sync.enable = lib.mkForce false;
   };
-  fileSystems."/home/${username}/Dev" = {
-    device = "/mnt/data/Dev";
-    options = [ "bind" ];
-  };
+  fileSystems."/home/${username}/Dev" = mkBindMount "/mnt/data/Dev";
   hardware = {
     nvidia.prime.sync.enable = lib.mkOverride 900 true;
     nvidia.prime.offload.enable = lib.mkOverride 900 false;
