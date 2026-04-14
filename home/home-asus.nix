@@ -147,7 +147,8 @@
     melonds
     azahar
     nestopia-ue
-    cemu
+    # Currently broken in the current nixpkgs, to re-enabled once fixed
+    # cemu 
     pcsx2
     mgba
     pegasus-frontend
