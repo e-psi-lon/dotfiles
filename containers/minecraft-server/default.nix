@@ -67,7 +67,6 @@ in {
     inherit name autoStart exposePorts;
     base = {
       image = "${name}:latest";
-      restart = "no";
       deploy.resources.limits.memory = cfg.memoryLimit;
       volumes = [
         "${cfg.serverDirectory}:/minecraft"

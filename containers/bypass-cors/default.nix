@@ -40,7 +40,6 @@ in {
     inherit name exposePorts autoStart;
     base = {
       image = "${name}:latest";
-      restart = "always";
       deploy.resources.limits.memory = "32M";
     };
     ports = [ "5050:8080" ];

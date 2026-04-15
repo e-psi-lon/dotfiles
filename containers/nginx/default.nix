@@ -107,7 +107,6 @@ in {
     exposePorts = true;
     base = {
       image = "${name}:latest";
-      restart = "unless-stopped";
       volumes = [ "${cfg.extraConfigDir}:/etc/nginx/conf.d:ro" ]
         ++ lib.optional hasSsl "${cfg.sslCert}:/etc/nginx/ssl/cert.pem:ro"
         ++ lib.optional hasSsl "${cfg.sslKey}:/etc/nginx/ssl/key.pem:ro";

@@ -2,7 +2,7 @@
 
 {
   options.podman-containers = let
-    mkContainerOpts = { description, defaultExpose ? false }: {
+    mkContainerOpts = { description, defaultExpose ? false, defaultRestartPolicy ? "unless-stopped" }: {
       enable = lib.mkEnableOption description;
       
       exposePorts = lib.mkOption {
@@ -11,6 +11,12 @@
         description = "Bind container ports to the host.";
       };
       
+      restartPolicy = lib.mkOption {
+        type = lib.types.str;
+        default = defaultRestartPolicy;
+        description = "Restart policy for the container.";
+      };
+
       envFiles = lib.mkOption {
         type = lib.types.listOf lib.types.path;
         default = [];
@@ -42,6 +48,7 @@
     nginx = mkContainerOpts { 
       description = "nginx proxy container managing routing between services"; 
       defaultExpose = true;
+      defaultRestartPolicy = "always";
     } // {
       domain = lib.mkOption {
         type = lib.types.str;
@@ -77,11 +84,13 @@
     bypass-cors = mkContainerOpts { 
       description = "CORS bypass tool"; 
       defaultExpose = !nginxEnabled;
+      defaultRestartPolicy = "unless-stopped";
     };
 
     minecraft-server = mkContainerOpts { 
       description = "Minecraft server"; 
       defaultExpose = true; # Minecraft and Nginx won't work great together
+      defaultRestartPolicy = "unless-stopped";
     } // {
       serverDirectory = lib.mkOption {
         type = lib.types.path;
@@ -111,6 +120,7 @@
     postgres = mkContainerOpts { 
       description = "PostgreSQL database server"; 
       defaultExpose = true;
+      defaultRestartPolicy = "always";
     } // {
       dataDirectory = lib.mkOption {
         type = lib.types.path;
@@ -128,6 +138,7 @@
     redis = mkContainerOpts { 
       description = "redis container"; 
       defaultExpose = !nginxEnabled;
+      defaultRestartPolicy = "unless-stopped";
     } // {
       dataDirectory = lib.mkOption {
         type = lib.types.path;
@@ -140,8 +151,10 @@
   config = let
     yaml = pkgs.formats.yaml { };
 
-    mkComposeInfo = { name, base, exposePorts, autoStart, ports ? [], envFiles ? [], volumes ? [], extraPorts ? [] }: 
-      base
+    mkComposeInfo = { name, base, exposePorts, restartPolicy, autoStart, ports ? [], envFiles ? [], volumes ? [], extraPorts ? [] }: 
+      base // {
+        restart = restartPolicy;
+      }
       // {
         volumes = (base.volumes or []) ++ volumes;
       }
@@ -159,6 +172,7 @@
     # Helper to evaluate container configurations without repetition
     evalContainer = name: pkgs.callPackage (./. + "/${name}") {
       mkComposeInfo = args: mkComposeInfo (args // {
+        restartPolicy = config.podman-containers.${name}.restartPolicy;
         envFiles = config.podman-containers.${name}.envFiles;
         volumes = config.podman-containers.${name}.volumes;
         extraPorts = config.podman-containers.${name}.extraPorts;
@@ -207,7 +221,7 @@
 
     podmanContainerCLI = pkgs.writeShellApplication {
       name = "podman-container";
-      runtimeInputs = [ pkgs.podman-compose pkgs.podman ];
+      runtimeInputs = with pkgs; [ podman podman-compose ];
       text = ''
         export COMPOSE_FILE="${composeFile}"
         export PROJECT_NAME="podman-containers"
