@@ -71,7 +71,7 @@ in {
       deploy.resources.limits.memory = cfg.memoryLimit;
       volumes = [
         "${cfg.serverDirectory}:/minecraft"
-      ] ++ cfg.volumes;
+      ];
     };
     ports = [ "25565:25565" ];
   };

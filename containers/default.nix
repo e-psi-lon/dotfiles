@@ -23,6 +23,12 @@
         description = "List of volume mappings (e.g. ['/var/lib/my-app:/data']).";
       };
 
+      extraPorts = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [];
+        description = "Additional ports to expose in the format 'hostPort:containerPort' (e.g., ['8080:80']). Only applicable if exposePorts is true.";
+      };
+
       autoStart = lib.mkOption {
         type = lib.types.bool;
         default = true;
@@ -134,9 +140,17 @@
   config = let
     yaml = pkgs.formats.yaml { };
 
-    mkComposeInfo = { name, base, exposePorts, autoStart, ports }: 
+    mkComposeInfo = { name, base, exposePorts, autoStart, ports ? [], envFiles ? [], volumes ? [], extraPorts ? [] }: 
       base
-      // lib.optionalAttrs exposePorts { inherit ports; }
+      // {
+        volumes = (base.volumes or []) ++ volumes;
+      }
+      // lib.optionalAttrs (base ? env_file || envFiles != []) {
+        env_file = (base.env_file or []) ++ envFiles;
+      }
+      // lib.optionalAttrs exposePorts {
+        ports = (base.ports or []) ++ ports ++ extraPorts;
+      }
       // lib.optionalAttrs (!autoStart) {
         profiles = [ "manual-${name}" ];
         restart = "no";
@@ -144,7 +158,11 @@
     
     # Helper to evaluate container configurations without repetition
     evalContainer = name: pkgs.callPackage (./. + "/${name}") {
-      inherit mkComposeInfo;
+      mkComposeInfo = args: mkComposeInfo (args // {
+        envFiles = config.podman-containers.${name}.envFiles;
+        volumes = config.podman-containers.${name}.volumes;
+        extraPorts = config.podman-containers.${name}.extraPorts;
+      });
       cfg = config.podman-containers.${name};
       exposePorts = config.podman-containers.${name}.exposePorts;
       autoStart = config.podman-containers.${name}.autoStart;
