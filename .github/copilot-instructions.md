@@ -8,12 +8,12 @@ When assisting with Nix code in this personal system configuration (dotfiles) re
 *   **Brackets & Braces:** Place opening braces `{` and brackets `[` on the same line as the variable or parameter declaration. Do not add extra blank lines before closing braces.
 *   **Attribute Sets:** Keep simple nested attributes compact (e.g., `boot.loader.efi.efiSysMountPoint = "/boot/efi";`). Place list items on separate lines if there are multiple items.
 *   **Conditionals & Defaults:** Utilize `lib.mkIf` for conditional configurations and `lib.mkDefault` or `lib.mkForce` to manage configuration priorities appropriately.
+*   **Using the main binary:** When applicable, avoid using raw interpolation (e.g., `"${pkgs.somePackage}/bin/someExecutable"`). Instead, prefer using `lib.getExe pkgs.somePackage` for better readability and maintainability. 
 
 ## 2. Naming Conventions
 
 *   **Files / Directories:** Use `kebab-case` for file and directory names (e.g., `desktop-kde.nix`, `home-modules`).
 *   **Variables (let bindings):** Use `camelCase` for local bindings (e.g., `zshConfigEarlyInit`).
-*   **NixOS Options:** Use standard `snake_case` or as required by Nixpkgs (e.g., `nixpkgs.hostPlatform`).
 
 ## 3. Module Authorship & Parameters
 
@@ -59,7 +59,9 @@ To ensure things go where they belong, ask yourself the scope of the feature bef
     *   System: `hosts/` (in the specific host folder)
     *   User: `home/` (in the specific profile file)
 
-*   **`lib/`:** Custom utility functions (e.g., `paths.nix`, `mkNixosSystem.nix`).
+*   **`lib/`:** Custom utility functions (e.g., `paths.nix`, `mkNixosSystem.nix`, `mkBindMount.nix`).
 *   **`resources/`:** Static configuration files like themes (`theme.json`), scripts, and TOML data.
+*   **`containers/`:** Custom podman compose-based system to manage containerized services.
+*   **`pkgs/`:** Custom package definitions and overrides.
 
 Always preserve the separation between Home Manager (user) configurations and NixOS (system) configurations.
