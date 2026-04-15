@@ -12,7 +12,7 @@ let
     pname = name;
     version = "1.0.0";
     src = ./.; 
-    vendorHash = null;
+    vendorHash = null; # We only use the standard library, so no vendor hash is needed
     env = {
       CGO_ENABLED = 0;
     };
