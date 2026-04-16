@@ -14,19 +14,6 @@ let
   
   hasSsl = cfg.sslCert != null && cfg.sslKey != null;
 
-  # Minimal /etc/passwd and /etc/group for our unprivileged worker profile
-  etcPasswd = pkgs.writeTextDir "etc/passwd" ''
-    root:x:0:0:root:/root:/bin/sh
-    nginx:x:1000:1000:Nginx worker:/var/empty:/bin/sh
-    nobody:x:65534:65534:nobody:/nonexistent:/bin/false
-  '';
-
-  etcGroup = pkgs.writeTextDir "etc/group" ''
-    root:x:0:
-    nginx:x:1000:
-    nogroup:x:65534:
-  '';
-
   nginxConf = pkgs.writeTextDir "etc/nginx/nginx.conf" ''
     user nginx nginx;
     worker_processes auto;
@@ -74,15 +61,24 @@ let
     name = name;
     tag = "latest";
     
-    contents = [ 
-      pkgs.nginx 
-      pkgs.tzdata
-      pkgs.curl
-      pkgs.cacert
-      etcPasswd
-      etcGroup
+    contents = with pkgs; [ 
+      nginx 
+      tzdata
+      curl
+      cacert
       nginxConf
     ];
+
+    enableFakechroot = true;
+    fakeRootCommands = ''
+      ${pkgs.dockerTools.shadowSetup}
+      groupadd -r nginx -g 1000
+      useradd -r -g nginx -u 1000 -d /var/empty -s /bin/sh nginx
+      groupadd -r nogroup -g 65534
+      useradd -r -g nogroup -u 65534 -d /nonexistent -s /bin/false nobody
+      mkdir -p /var/cache/nginx
+      chown -R nginx:nginx /var/cache/nginx
+    '';
 
     config = {
       Entrypoint = [ 
