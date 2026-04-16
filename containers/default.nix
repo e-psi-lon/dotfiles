@@ -188,7 +188,7 @@
     minecraftServerContainer = evalContainer "minecraft-server";
     postgresContainer = evalContainer "postgres";
 
-    docker-compose = with config.podman-containers; {
+    composeSet = with config.podman-containers; {
       version = "3.8";
       services = {}
         // lib.optionalAttrs nginx.enable {
@@ -209,7 +209,7 @@
           postgres-password = { file = postgres.postgresPasswordPath; };
         };
     };
-    composeFile = yaml.generate "docker-compose.yml" docker-compose;
+    composeFile = yaml.generate "podman-compose.yml" composeSet;
 
     enabledImages = with config.podman-containers; lib.flatten [
       (lib.optionals nginx.enable [ nginxContainer.image ])

@@ -110,6 +110,10 @@ in {
         "/var/cache/nginx"
         "/var/run"
       ];
+      deploy.resources.limits = {
+        cpus = "0.3";
+        memory = "128M";
+      };
       healthcheck = {
         test = [ "CMD" (lib.getExe pkgs.curl) "-f" "http://localhost:${toString healthPort}/health" ];
         interval = "30s";

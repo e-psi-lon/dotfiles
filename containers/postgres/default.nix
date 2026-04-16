@@ -55,6 +55,10 @@ in {
       volumes = [ 
         "${cfg.dataDirectory}:/var/lib/postgresql/data"
       ];
+      deploy.resources.limits = {
+        cpus = "0.5";
+        memory = "256M";
+      };
       userns_mode = "keep-id";
       secrets = [
         {
