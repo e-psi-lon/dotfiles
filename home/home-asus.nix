@@ -220,8 +220,11 @@
 
     nginx = {
       enable = true;
-      serverBlocks = ''
+      httpConfig = ''
 
+      '';
+      streamConfig = ''
+        
       '';
     };
 

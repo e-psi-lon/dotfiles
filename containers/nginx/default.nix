@@ -51,9 +51,14 @@ let
         }
       }
 
-      ${cfg.serverBlocks}
+      ${cfg.httpConfig}
 
-      include /etc/nginx/conf.d/*.conf;
+      include /etc/nginx/http.d/*.conf;
+    }
+
+    stream {
+      ${cfg.streamConfig}
+      include /etc/nginx/stream.d/*.conf;
     }
   '';
 
@@ -95,6 +100,11 @@ let
         "443/tcp" = { };
         "${toString healthPort}/tcp" = { };
       };
+      Volumes = {
+        "/etc/nginx/http.d" = { };
+        "/etc/nginx/stream.d" = { };
+        "/etc/nginx/ssl" = { };
+      };
       WorkingDir = "/";
     };
   };
@@ -108,7 +118,8 @@ in
     base = {
       image = "${name}:latest";
       volumes = [
-        "${cfg.extraConfigDir}:/etc/nginx/conf.d:ro"
+          "${cfg.extraHttpDirectory}:/etc/nginx/http.d:ro"
+          "${cfg.extraStreamDirectory}:/etc/nginx/stream.d:ro"
       ]
       ++ lib.optional hasSsl "${cfg.sslCert}:/etc/nginx/ssl/cert.pem:ro"
       ++ lib.optional hasSsl "${cfg.sslKey}:/etc/nginx/ssl/key.pem:ro";

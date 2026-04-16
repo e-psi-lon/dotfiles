@@ -72,10 +72,16 @@
             description = "Primary domain for the Nginx proxy.";
           };
 
-          serverBlocks = lib.mkOption {
+          httpConfig = lib.mkOption {
             type = lib.types.str;
             default = "";
-            description = "Extra declarative Nginx server blocks to inject into the http {} context.";
+            description = "Extra declarative Nginx http {} context configuration.";
+          };
+
+          streamConfig = lib.mkOption {
+            type = lib.types.str;
+            default = "";
+            description = "Extra declarative Nginx stream {} context configuration.";
           };
 
           sslCert = lib.mkOption {
@@ -90,10 +96,16 @@
             description = "Path to the host SSL key (e.g., from sops-nix).";
           };
 
-          extraConfigDir = lib.mkOption {
+          extraHttpDirectory = lib.mkOption {
             type = lib.types.path;
-            default = config.xdg.configHome + "/containers/nginx/conf.d";
-            description = "Path to a host directory containing extra Nginx config files to include (e.g., for additional server blocks or custom settings).";
+            default = config.xdg.configHome + "/containers/nginx/http.d";
+            description = "Path to a host directory containing extra Nginx HTTP config files (e.g., for additional server blocks).";
+          };
+
+          extraStreamDirectory = lib.mkOption {
+            type = lib.types.path;
+            default = config.xdg.configHome + "/containers/nginx/stream.d";
+            description = "Path to a host directory containing extra Nginx Stream config files (e.g., for TCP/UDP services).";
           };
         };
 
