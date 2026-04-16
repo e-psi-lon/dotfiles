@@ -119,7 +119,7 @@
 
     postgres = mkContainerOpts { 
       description = "PostgreSQL database server"; 
-      defaultExpose = true;
+      defaultExpose = !nginxEnabled;
       defaultRestartPolicy = "always";
     } // {
       dataDirectory = lib.mkOption {
