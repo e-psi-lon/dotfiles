@@ -47,6 +47,9 @@ let
         "6379/tcp" = { };
       };
       User = "1000:1000";
+      Volumes = {
+        "/data" = { };
+      };
       WorkingDir = "/data";
     };
   };

@@ -58,10 +58,10 @@ let
         "25565/tcp" = { };
       };
       User = "1000:1000";
-      WorkingDir = "/minecraft";
       Volumes = {
         "/minecraft" = { };
       };
+      WorkingDir = "/minecraft";
     };
   };
 in

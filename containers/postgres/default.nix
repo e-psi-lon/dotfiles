@@ -46,6 +46,10 @@ let
           "5432/tcp" = { };
         };
         User = "1000:1000";
+        Volumes = {
+          "/var/lib/postgresql/data" = { };
+        };
+        WorkingDir = "/var/lib/postgresql";
       };
   };
 in
