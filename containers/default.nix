@@ -170,48 +170,46 @@
       };
     
     # Helper to evaluate container configurations without repetition
-    evalContainer = name: pkgs.callPackage (./. + "/${name}") {
+    evalContainer = name: let
+      containerCfg = config.podman-containers.${name};
+    in pkgs.callPackage (./. + "/${name}") {
       mkComposeInfo = args: mkComposeInfo (args // {
-        restartPolicy = config.podman-containers.${name}.restartPolicy;
-        envFiles = config.podman-containers.${name}.envFiles;
-        volumes = config.podman-containers.${name}.volumes;
-        extraPorts = config.podman-containers.${name}.extraPorts;
+        inherit (containerCfg) restartPolicy envFiles volumes extraPorts;
       });
-      cfg = config.podman-containers.${name};
-      exposePorts = config.podman-containers.${name}.exposePorts;
-      autoStart = config.podman-containers.${name}.autoStart;
+      cfg = containerCfg;
+      inherit (containerCfg) exposePorts autoStart;
     };
 
     nginxContainer = evalContainer "nginx";
     bypassCorsContainer = evalContainer "bypass-cors";
     minecraftServerContainer = evalContainer "minecraft-server";
 
-    docker-compose = {
+    docker-compose = with config.podman-containers; {
       version = "3.8";
       services = {}
-        // lib.optionalAttrs config.podman-containers.nginx.enable {
+        // lib.optionalAttrs nginx.enable {
           nginx = nginxContainer.composeInfo;
         }
-        // lib.optionalAttrs config.podman-containers.bypass-cors.enable {
+        // lib.optionalAttrs bypass-cors.enable {
           bypass-cors = bypassCorsContainer.composeInfo;
         }
-        // lib.optionalAttrs config.podman-containers.minecraft-server.enable {
+        // lib.optionalAttrs minecraft-server.enable {
           minecraft-server = minecraftServerContainer.composeInfo;
         };
     };
     composeFile = yaml.generate "docker-compose.yml" docker-compose;
 
-    enabledImages = lib.flatten [
-      (lib.optionals config.podman-containers.nginx.enable [ nginxContainer.image ])
-      (lib.optionals config.podman-containers.bypass-cors.enable [ bypassCorsContainer.image ])
-      (lib.optionals config.podman-containers.minecraft-server.enable [ minecraftServerContainer.image ])
+    enabledImages = with config.podman-containers; lib.flatten [
+      (lib.optionals nginx.enable [ nginxContainer.image ])
+      (lib.optionals bypass-cors.enable [ bypassCorsContainer.image ])
+      (lib.optionals minecraft-server.enable [ minecraftServerContainer.image ])
     ];
 
-    directoriesToCreate = lib.flatten [
-      (lib.optionals config.podman-containers.nginx.enable [ config.podman-containers.nginx.extraConfigDir ])
-      (lib.optionals config.podman-containers.minecraft-server.enable [ config.podman-containers.minecraft-server.serverDirectory ])
-      (lib.optionals config.podman-containers.postgres.enable [ config.podman-containers.postgres.dataDirectory ])
-      (lib.optionals config.podman-containers.redis.enable [ config.podman-containers.redis.dataDirectory ])
+    directoriesToCreate = with config.podman-containers; lib.flatten [
+      (lib.optionals nginx.enable [ nginx.extraConfigDir ])
+      (lib.optionals minecraft-server.enable [ minecraft-server.serverDirectory ])
+      (lib.optionals postgres.enable [ postgres.dataDirectory ])
+      (lib.optionals redis.enable [ redis.dataDirectory ])
     ];
 
     loadImagesScript = 
