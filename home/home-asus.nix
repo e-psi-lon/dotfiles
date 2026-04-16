@@ -236,5 +236,7 @@
         enable = true;
         postgresPasswordPath = config.sops.secrets."containers/postgres-password".path;
       };
+
+      redis.enable = true;
     };
 }

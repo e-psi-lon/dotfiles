@@ -187,6 +187,7 @@
     bypassCorsContainer = evalContainer "bypass-cors";
     minecraftServerContainer = evalContainer "minecraft-server";
     postgresContainer = evalContainer "postgres";
+    redisContainer = evalContainer "redis";
 
     composeSet = with config.podman-containers; {
       version = "3.8";
@@ -202,6 +203,9 @@
         }
         // lib.optionalAttrs postgres.enable {
           postgres = postgresContainer.composeInfo;
+        }
+        // lib.optionalAttrs redis.enable {
+          redis = redisContainer.composeInfo;
         };
       
       secrets = {}
@@ -216,6 +220,7 @@
       (lib.optionals bypass-cors.enable [ bypassCorsContainer.image ])
       (lib.optionals minecraft-server.enable [ minecraftServerContainer.image ])
       (lib.optionals postgres.enable [ postgresContainer.image ])
+      (lib.optionals redis.enable [ redisContainer.image ])
     ];
 
     directoriesToCreate = with config.podman-containers; lib.flatten [
