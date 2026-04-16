@@ -24,6 +24,8 @@
     paths.containers
   ];
 
+  sops.secrets."containers/postgres-password".sopsFile = subPath paths.resources "secrets/asus.yaml";
+
   hasNvidiaGpu = true;
   programs.tmux = {
     enable = true;
@@ -229,6 +231,10 @@
         enable = true;
         javaVersion = 25;
         autoStart = false;
+      };
+      postgres = {
+        enable = true;
+        postgresPasswordPath = config.sops.secrets."containers/postgres-password".path;
       };
     };
 }

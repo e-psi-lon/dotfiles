@@ -151,15 +151,18 @@
   config = let
     yaml = pkgs.formats.yaml { };
 
-    mkComposeInfo = { name, base, exposePorts, restartPolicy, autoStart, ports ? [], envFiles ? [], volumes ? [], extraPorts ? [] }: 
+    mkComposeInfo = { name, base, exposePorts, restartPolicy, autoStart, ports ? [], envFiles ? [], volumes ? [], extraPorts ? [], secrets ? [] }: 
       base // {
         restart = restartPolicy;
       }
       // {
         volumes = (base.volumes or []) ++ volumes;
       }
-      // lib.optionalAttrs (base ? env_file || envFiles != []) {
+      // lib.optionalAttrs ((base.env_file or []) ++ envFiles != []) {
         env_file = (base.env_file or []) ++ envFiles;
+      }
+      // lib.optionalAttrs ((base.secrets or []) ++ secrets != []) {
+        secrets = (base.secrets or []) ++ secrets;
       }
       // lib.optionalAttrs exposePorts {
         ports = (base.ports or []) ++ ports ++ extraPorts;
@@ -183,6 +186,7 @@
     nginxContainer = evalContainer "nginx";
     bypassCorsContainer = evalContainer "bypass-cors";
     minecraftServerContainer = evalContainer "minecraft-server";
+    postgresContainer = evalContainer "postgres";
 
     docker-compose = with config.podman-containers; {
       version = "3.8";
@@ -195,6 +199,14 @@
         }
         // lib.optionalAttrs minecraft-server.enable {
           minecraft-server = minecraftServerContainer.composeInfo;
+        }
+        // lib.optionalAttrs postgres.enable {
+          postgres = postgresContainer.composeInfo;
+        };
+      
+      secrets = {}
+        // lib.optionalAttrs postgres.enable {
+          postgres-password = { file = postgres.postgresPasswordPath; };
         };
     };
     composeFile = yaml.generate "docker-compose.yml" docker-compose;
@@ -203,6 +215,7 @@
       (lib.optionals nginx.enable [ nginxContainer.image ])
       (lib.optionals bypass-cors.enable [ bypassCorsContainer.image ])
       (lib.optionals minecraft-server.enable [ minecraftServerContainer.image ])
+      (lib.optionals postgres.enable [ postgresContainer.image ])
     ];
 
     directoriesToCreate = with config.podman-containers; lib.flatten [
