@@ -69,7 +69,7 @@
           # Setup completions
           eval "$(${lib.getExe pkgs.uv} generate-shell-completion zsh)"
           # Can't use lib.getExe because uvx is not the main program of pkgs.uv
-          eval "$(${pkgs.uv}/bin/uvx --generate-shell-completion zsh)" 
+          eval "$(${lib.getExe' pkgs.uv "uvx"} --generate-shell-completion zsh)" 
           eval "$(${lib.getExe pkgs.tailscale} completion zsh)"
           eval "$(${lib.getExe pkgs.atuin} gen-completions --shell zsh)"
         '';

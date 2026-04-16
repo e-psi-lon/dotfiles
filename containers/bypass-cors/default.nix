@@ -1,5 +1,6 @@
 { 
   pkgs,
+  lib,
   mkComposeInfo,
   exposePorts,
   autoStart,
@@ -17,6 +18,10 @@ let
       CGO_ENABLED = 0;
     };
     ldflags = [ "-s" "-w" ];
+    meta = {
+      description = "A simple CORS proxy server to bypass CORS restrictions in development.";
+      mainProgram = name;
+    };
   };
   image = pkgs.dockerTools.streamLayeredImage {
     name = name;
@@ -27,7 +32,7 @@ let
     ];
 
     config = {
-      Entrypoint = [ "${proxyBin}/bin/${name}" ];
+      Entrypoint = [ (lib.getExe proxyBin) ];
       ExposedPorts = { "8080/tcp" = {}; };
       User = "1000:1000";
       WorkingDir = "/";
