@@ -207,6 +207,13 @@
       (lib.optionals config.podman-containers.minecraft-server.enable [ minecraftServerContainer.image ])
     ];
 
+    directoriesToCreate = lib.flatten [
+      (lib.optionals config.podman-containers.nginx.enable [ config.podman-containers.nginx.extraConfigDir ])
+      (lib.optionals config.podman-containers.minecraft-server.enable [ config.podman-containers.minecraft-server.serverDirectory ])
+      (lib.optionals config.podman-containers.postgres.enable [ config.podman-containers.postgres.dataDirectory ])
+      (lib.optionals config.podman-containers.redis.enable [ config.podman-containers.redis.dataDirectory ])
+    ];
+
     loadImagesScript = 
       let
         loadImageBase = ./load-images.sh;
@@ -214,6 +221,9 @@
         name = "load-podman-images";
         runtimeInputs = [ pkgs.podman ];
         text = ''
+          # Ensure all host volume directories exist with current user ownership
+          ${lib.concatMapStringsSep "\n" (dir: "mkdir -p \"${dir}\"") directoriesToCreate}
+
           images=(${lib.concatMapStringsSep " " (img: "\"${img}\"") enabledImages})
           ${builtins.readFile loadImageBase}
         '';
