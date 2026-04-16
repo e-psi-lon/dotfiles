@@ -1,4 +1,4 @@
-{ 
+{
   pkgs,
   lib,
   mkComposeInfo,
@@ -11,15 +11,13 @@
 let
   name = "redis";
 
-  smallRedis = pkgs.redis.override {
-    withSystemd = false;
-  };
+  smallRedis = pkgs.redis.override { withSystemd = false; };
 
   image = pkgs.dockerTools.streamLayeredImage {
     name = name;
     tag = "latest";
-    
-    contents = with pkgs; [ 
+
+    contents = with pkgs; [
       smallRedis
       cacert
       tzdata
@@ -35,28 +33,32 @@ let
     '';
 
     config = {
-      Entrypoint = [ 
+      Entrypoint = [
         (lib.getExe' smallRedis "redis-server")
-        "--dir" "/data"
-        "--maxmemory" "400mb" # Leave some overhead for the 512M container limit
-        "--maxmemory-policy" "allkeys-lru"
+        "--dir"
+        "/data"
+        "--maxmemory"
+        "400mb" # Leave some overhead for the 512M container limit
+        "--maxmemory-policy"
+        "allkeys-lru"
       ];
-      Cmd = [];
-      ExposedPorts = { "6379/tcp" = {}; };
+      Cmd = [ ];
+      ExposedPorts = {
+        "6379/tcp" = { };
+      };
       User = "1000:1000";
       WorkingDir = "/data";
     };
   };
-in {
+in
+{
   inherit image;
 
   composeInfo = mkComposeInfo {
     inherit name exposePorts autoStart;
     base = {
       image = "${name}:latest";
-      volumes = [ 
-        "${cfg.dataDirectory}:/data"
-      ];
+      volumes = [ "${cfg.dataDirectory}:/data" ];
       deploy.resources.limits = {
         cpus = "0.5";
         memory = "512M";

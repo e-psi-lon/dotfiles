@@ -1,4 +1,4 @@
-{ 
+{
   pkgs,
   lib,
   mkComposeInfo,
@@ -14,9 +14,9 @@ let
   image = pkgs.dockerTools.streamLayeredImage {
     name = name;
     tag = "latest";
-    
-    contents = with pkgs; [ 
-      postgresql 
+
+    contents = with pkgs; [
+      postgresql
       cacert
       tzdata
     ];
@@ -30,21 +30,26 @@ let
       chown -R postgres:postgres /var/lib/postgresql /run/postgresql
     '';
 
-    config = let
-      entrypoint = pkgs.writeShellApplication {
-        name = "${name}-entrypoint";
-        runtimeInputs = with pkgs; [ postgresql ];
-        text = ''
-          ${builtins.readFile ./entrypoint.sh}
-        '';
+    config =
+      let
+        entrypoint = pkgs.writeShellApplication {
+          name = "${name}-entrypoint";
+          runtimeInputs = with pkgs; [ postgresql ];
+          text = ''
+            ${builtins.readFile ./entrypoint.sh}
+          '';
+        };
+      in
+      {
+        Entrypoint = [ (lib.getExe entrypoint) ];
+        ExposedPorts = {
+          "5432/tcp" = { };
+        };
+        User = "1000:1000";
       };
-    in {
-      Entrypoint = [ (lib.getExe entrypoint) ];
-      ExposedPorts = { "5432/tcp" = {}; };
-      User = "1000:1000";
-    };
   };
-in {
+in
+{
   inherit image;
 
   composeInfo = mkComposeInfo {
@@ -52,9 +57,7 @@ in {
     base = {
       image = "${name}:latest";
       shm_size = "128mb";
-      volumes = [ 
-        "${cfg.dataDirectory}:/var/lib/postgresql/data"
-      ];
+      volumes = [ "${cfg.dataDirectory}:/var/lib/postgresql/data" ];
       deploy.resources.limits = {
         cpus = "0.5";
         memory = "256M";

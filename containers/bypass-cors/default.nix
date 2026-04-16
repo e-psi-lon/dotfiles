@@ -1,4 +1,4 @@
-{ 
+{
   pkgs,
   lib,
   mkComposeInfo,
@@ -12,12 +12,15 @@ let
   proxyBin = pkgs.buildGoModule {
     pname = name;
     version = "1.0.0";
-    src = ./.; 
+    src = ./.;
     vendorHash = null; # We only use the standard library, so no vendor hash is needed
     env = {
       CGO_ENABLED = 0;
     };
-    ldflags = [ "-s" "-w" ];
+    ldflags = [
+      "-s"
+      "-w"
+    ];
     meta = {
       description = "A simple CORS proxy server to bypass CORS restrictions in development.";
       mainProgram = name;
@@ -26,19 +29,20 @@ let
   image = pkgs.dockerTools.streamLayeredImage {
     name = name;
     tag = "latest";
-    
-    contents = [ 
-      pkgs.cacert 
-    ];
+
+    contents = [ pkgs.cacert ];
 
     config = {
       Entrypoint = [ (lib.getExe proxyBin) ];
-      ExposedPorts = { "8080/tcp" = {}; };
+      ExposedPorts = {
+        "8080/tcp" = { };
+      };
       User = "1000:1000";
       WorkingDir = "/";
     };
   };
-in {
+in
+{
   inherit image;
 
   composeInfo = mkComposeInfo {

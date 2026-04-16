@@ -3,16 +3,16 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     zen-browser = {
-        url = "github:youwen5/zen-browser-flake";
-        inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:youwen5/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     spicetify-nix = {
-        url = "github:Gerg-L/spicetify-nix";
-        inputs.nixpkgs.follows = "nixpkgs";
-    } ;
+      url = "github:Gerg-L/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixcord = {
-        url = "github:FlameFlag/nixcord";
-        inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:FlameFlag/nixcord";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     minegrub-world-sel-theme = {
@@ -104,7 +104,12 @@
             "${nixos-hardware}/common/cpu/intel/braswell"
           ];
           machineName = "hp";
-          inherit paths subPath nixvim sops-nix;
+          inherit
+            paths
+            subPath
+            nixvim
+            sops-nix
+            ;
         };
       };
       nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {

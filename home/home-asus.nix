@@ -150,7 +150,7 @@
     azahar
     nestopia-ue
     # Currently broken in the current nixpkgs, to re-enabled once fixed
-    # cemu 
+    # cemu
     pcsx2
     mgba
     pegasus-frontend
@@ -215,28 +215,27 @@
       "${xdgData}/Cemu/graphicPacks".source = emuPath "texturepacks/Cemu";
     };
 
+  podman-containers = {
+    enable = true;
 
-    podman-containers = {
+    nginx = {
       enable = true;
+      serverBlocks = ''
 
-      nginx = {
-        enable = true;
-        serverBlocks = ''
-
-        '';
-      };
-
-      bypass-cors.enable = true;
-      minecraft-server = {
-        enable = true;
-        javaVersion = 25;
-        autoStart = false;
-      };
-      postgres = {
-        enable = true;
-        postgresPasswordPath = config.sops.secrets."containers/postgres-password".path;
-      };
-
-      redis.enable = true;
+      '';
     };
+
+    bypass-cors.enable = true;
+    minecraft-server = {
+      enable = true;
+      javaVersion = 25;
+      autoStart = false;
+    };
+    postgres = {
+      enable = true;
+      postgresPasswordPath = config.sops.secrets."containers/postgres-password".path;
+    };
+
+    redis.enable = true;
+  };
 }

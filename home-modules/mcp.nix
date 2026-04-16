@@ -35,7 +35,7 @@ in
             Authorization = "Bearer $GITHUB_PAT";
           };
         };
-        context7 = mcp.http { 
+        context7 = mcp.http {
           url = "https://mcp.context7.com/mcp";
           headers = {
             Authorization = "Bearer $CONTEXT7_API_KEY";

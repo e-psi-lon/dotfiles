@@ -1,6 +1,6 @@
-{ 
+{
   pkgs,
-  lib, 
+  lib,
   mkComposeInfo,
   cfg,
   autoStart,
@@ -11,7 +11,7 @@ let
   name = "nginx";
 
   healthPort = 43417;
-  
+
   hasSsl = cfg.sslCert != null && cfg.sslKey != null;
 
   nginxConf = pkgs.writeTextDir "etc/nginx/nginx.conf" ''
@@ -60,9 +60,9 @@ let
   image = pkgs.dockerTools.streamLayeredImage {
     name = name;
     tag = "latest";
-    
-    contents = with pkgs; [ 
-      nginx 
+
+    contents = with pkgs; [
+      nginx
       tzdata
       curl
       cacert
@@ -81,21 +81,25 @@ let
     '';
 
     config = {
-      Entrypoint = [ 
+      Entrypoint = [
         (lib.getExe pkgs.nginx)
-        "-e" "stderr"
-        "-c" "/etc/nginx/nginx.conf"
-        "-g" "daemon off;"
+        "-e"
+        "stderr"
+        "-c"
+        "/etc/nginx/nginx.conf"
+        "-g"
+        "daemon off;"
       ];
-      ExposedPorts = { 
-        "80/tcp" = {};
-        "443/tcp" = {};
-        "${toString healthPort}/tcp" = {};
+      ExposedPorts = {
+        "80/tcp" = { };
+        "443/tcp" = { };
+        "${toString healthPort}/tcp" = { };
       };
       WorkingDir = "/";
     };
   };
-in {
+in
+{
   inherit image;
 
   composeInfo = mkComposeInfo {
@@ -103,9 +107,11 @@ in {
     exposePorts = true;
     base = {
       image = "${name}:latest";
-      volumes = [ "${cfg.extraConfigDir}:/etc/nginx/conf.d:ro" ]
-        ++ lib.optional hasSsl "${cfg.sslCert}:/etc/nginx/ssl/cert.pem:ro"
-        ++ lib.optional hasSsl "${cfg.sslKey}:/etc/nginx/ssl/key.pem:ro";
+      volumes = [
+        "${cfg.extraConfigDir}:/etc/nginx/conf.d:ro"
+      ]
+      ++ lib.optional hasSsl "${cfg.sslCert}:/etc/nginx/ssl/cert.pem:ro"
+      ++ lib.optional hasSsl "${cfg.sslKey}:/etc/nginx/ssl/key.pem:ro";
       tmpfs = [
         "/var/cache/nginx"
         "/var/run"
@@ -115,14 +121,17 @@ in {
         memory = "128M";
       };
       healthcheck = {
-        test = [ "CMD" (lib.getExe pkgs.curl) "-f" "http://localhost:${toString healthPort}/health" ];
+        test = [
+          "CMD"
+          (lib.getExe pkgs.curl)
+          "-f"
+          "http://localhost:${toString healthPort}/health"
+        ];
         interval = "30s";
         timeout = "10s";
         retries = 3;
       };
     };
-    ports = [ 
-      "50080:80"
-    ] ++ lib.optional hasSsl "50443:443";
+    ports = [ "50080:80" ] ++ lib.optional hasSsl "50443:443";
   };
 }
