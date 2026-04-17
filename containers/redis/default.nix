@@ -65,7 +65,7 @@ in
       healthcheck = {
         test = [
           "CMD"
-          (lib.getExe pkgs.redis)
+          (lib.getExe smallRedis)
           "ping"
         ];
         interval = "10s";
