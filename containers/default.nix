@@ -283,7 +283,7 @@
       directoriesToCreate =
         with config.podman-containers;
         lib.flatten [
-          (lib.optionals nginx.enable [ nginx.extraConfigDir ])
+          (lib.optionals nginx.enable [ nginx.extraHttpDirectory nginx.extraStreamDirectory ])
           (lib.optionals minecraft-server.enable [ minecraft-server.serverDirectory ])
           (lib.optionals postgres.enable [ postgres.dataDirectory ])
           (lib.optionals redis.enable [ redis.dataDirectory ])
