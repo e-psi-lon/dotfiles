@@ -342,8 +342,12 @@
         Service = {
           Type = "simple";
           ExecStartPre = "${lib.getExe loadImagesScript}";
-          ExecStart = "${lib.getExe pkgs.podman-compose} -p podman-containers -f ${composeFile} up";
-          ExecStop = "${lib.getExe pkgs.podman-compose} -p podman-containers -f ${composeFile} down";
+          Environment = [
+            "PODMAN_COMPOSE_PROVIDER=${lib.getExe pkgs.docker-compose}"
+            "PODMAN_COMPOSE_WARNING_LOGS=false"
+          ];
+          ExecStart = "${lib.getExe pkgs.podman} compose -p podman-containers -f ${composeFile} up";
+          ExecStop = "${lib.getExe pkgs.podman} compose -p podman-containers -f ${composeFile} down";
           Restart = "on-failure";
           RestartSec = "10";
         };
