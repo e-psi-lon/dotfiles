@@ -62,6 +62,17 @@ in
     base = {
       image = "${name}:latest";
       volumes = [ "${cfg.dataDirectory}:/data" ];
+      healthcheck = {
+        test = [
+          "CMD"
+          (lib.getExe pkgs.redis)
+          "ping"
+        ];
+        interval = "10s";
+        timeout = "5s";
+        retries = 5;
+        start_period = "5s";
+      };
       deploy.resources.limits = {
         cpus = "0.5";
         memory = "512M";

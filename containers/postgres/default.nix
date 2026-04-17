@@ -66,6 +66,22 @@ in
         cpus = "0.5";
         memory = "256M";
       };
+      healthcheck = {
+        test = [
+          "CMD"
+          (lib.getExe' pkgs.postgresql "pg_isready")
+          "-h"
+          "localhost"
+          "-p"
+          "5432"
+          "-U"
+          "postgres"
+        ];  
+        interval = "10s";
+        timeout = "5s";
+        retries = 10;
+        start_period = "5s";
+      };
       userns_mode = "keep-id";
       secrets = [
         {
