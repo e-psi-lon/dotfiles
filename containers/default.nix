@@ -249,10 +249,33 @@
       redisContainer = evalContainer "redis";
 
       composeSet = with config.podman-containers; {
-        version = "3.8";
         services =
           { }
-          // lib.optionalAttrs nginx.enable { nginx = nginxContainer.composeInfo; }
+          // lib.optionalAttrs nginx.enable {
+            nginx = nginxContainer.composeInfo // {
+              depends_on =
+                  let
+                    allEvaluated = {
+                      nginx = nginxContainer.composeInfo;
+                      bypassCors = bypassCorsContainer.composeInfo;
+                      minecraftServer = minecraftServerContainer.composeInfo;
+                      postgres = postgresContainer.composeInfo;
+                      redis = redisContainer.composeInfo;
+                    };
+                    hiddenEnabled = lib.filterAttrs (
+                      _: c: (builtins.isAttrs c) && c.enable && !c.exposePorts && c.autoStart
+                    ) config.podman-containers;
+                    withHealth = lib.filterAttrs (
+                      n: c: (allEvaluated.${n}.healthcheck or null) != null
+                    ) hiddenEnabled;
+                    withoutHealth = lib.filterAttrs (
+                      n: c: (allEvaluated.${n}.healthcheck or null) == null
+                    ) hiddenEnabled;
+                  in
+                (lib.mapAttrs (name: _: { condition = "service_healthy"; }) withHealth)
+                // (lib.mapAttrs (name: _: { condition = "service_started"; }) withoutHealth);
+            };
+          }
           // lib.optionalAttrs bypass-cors.enable { bypass-cors = bypassCorsContainer.composeInfo; }
           // lib.optionalAttrs minecraft-server.enable {
             minecraft-server = minecraftServerContainer.composeInfo;
@@ -283,7 +306,10 @@
       directoriesToCreate =
         with config.podman-containers;
         lib.flatten [
-          (lib.optionals nginx.enable [ nginx.extraHttpDirectory nginx.extraStreamDirectory ])
+          (lib.optionals nginx.enable [
+            nginx.extraHttpDirectory
+            nginx.extraStreamDirectory
+          ])
           (lib.optionals minecraft-server.enable [ minecraft-server.serverDirectory ])
           (lib.optionals postgres.enable [ postgres.dataDirectory ])
           (lib.optionals redis.enable [ redis.dataDirectory ])
