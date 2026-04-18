@@ -40,6 +40,7 @@
 
   outputs =
     {
+      self,
       nixpkgs,
       zen-browser,
       spicetify-nix,
@@ -62,6 +63,7 @@
         android-nixpkgs.overlays.default
         (import paths.custom-pkgs { inherit paths; })
       ];
+      flakeRev = self.shortRev or "dirty-${toString self.lastModified}";
     in
     {
       nixosConfigurations = {
@@ -84,6 +86,7 @@
           inherit
             paths
             subPath
+            flakeRev
             zen-browser
             spicetify-nix
             nixcord
@@ -107,6 +110,7 @@
           inherit
             paths
             subPath
+            flakeRev
             nixvim
             sops-nix
             ;
@@ -117,7 +121,7 @@
         modules = [
           ./hosts/nix-on-droid # Currently empty
         ];
-        extraSpecialArgs = { inherit paths subPath; };
+        extraSpecialArgs = { inherit paths subPath flakeRev; };
       };
     };
 }
