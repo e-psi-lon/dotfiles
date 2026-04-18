@@ -5,17 +5,18 @@
   cfg,
   autoStart,
   exposePorts,
+  flakeRev,
   ...
 }:
 
 let
   name = "redis";
+  tag = toString flakeRev;
 
   smallRedis = pkgs.redis.override { withSystemd = false; };
 
-  image = pkgs.dockerTools.streamLayeredImage {
-    name = name;
-    tag = "latest";
+  streamImage = pkgs.dockerTools.streamLayeredImage {
+    inherit name tag;
 
     contents = with pkgs; [
       smallRedis
@@ -55,12 +56,12 @@ let
   };
 in
 {
-  inherit image;
+  inherit streamImage;
 
   composeInfo = mkComposeInfo {
     inherit name exposePorts autoStart;
     base = {
-      image = "${name}:latest";
+      image = "${streamImage.imageName}:${streamImage.imageTag}";
       volumes = [ "${cfg.dataDirectory}:/data" ];
       healthcheck = {
         test = [

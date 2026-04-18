@@ -2,6 +2,7 @@
   pkgs,
   lib,
   mkComposeInfo,
+  flakeRev,
   exposePorts,
   autoStart,
   ...
@@ -9,9 +10,10 @@
 
 let
   name = "bypass-cors";
+  tag = toString flakeRev;
   proxyBin = pkgs.buildGoModule {
     pname = name;
-    version = "1.0.0";
+    version = toString flakeRev;
     src = ./.;
     vendorHash = null; # We only use the standard library, so no vendor hash is needed
     env = {
@@ -26,9 +28,8 @@ let
       mainProgram = name;
     };
   };
-  image = pkgs.dockerTools.streamLayeredImage {
-    name = name;
-    tag = "latest";
+  streamImage = pkgs.dockerTools.streamLayeredImage {
+    inherit name tag;
 
     contents = [ pkgs.cacert ];
 
@@ -43,12 +44,12 @@ let
   };
 in
 {
-  inherit image;
+  inherit streamImage;
 
   composeInfo = mkComposeInfo {
     inherit name exposePorts autoStart;
     base = {
-      image = "${name}:latest";
+      image = "${streamImage.imageName}:${streamImage.imageTag}";
       deploy.resources.limits = {
         cpus = "0.1";
         memory = "32M";

@@ -2,6 +2,7 @@
   pkgs,
   lib,
   mkComposeInfo,
+  flakeRev,
   cfg,
   autoStart,
   exposePorts,
@@ -10,11 +11,11 @@
 
 let
   name = "postgres";
+  tag = toString flakeRev;
 
-  image = pkgs.dockerTools.streamLayeredImage {
-    name = name;
-    tag = "latest";
-
+  streamImage = pkgs.dockerTools.streamLayeredImage {
+    inherit name tag;
+    
     contents = with pkgs; [
       postgresql
       cacert
@@ -54,12 +55,12 @@ let
   };
 in
 {
-  inherit image;
+  inherit streamImage;
 
   composeInfo = mkComposeInfo {
     inherit name exposePorts autoStart;
     base = {
-      image = "${name}:latest";
+      image = "${streamImage.imageName}:${streamImage.imageTag}";
       shm_size = "128mb";
       volumes = [ "${cfg.dataDirectory}:/var/lib/postgresql/data" ];
       deploy.resources.limits = {

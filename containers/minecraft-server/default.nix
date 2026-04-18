@@ -3,6 +3,7 @@
   lib,
   mkComposeInfo,
   cfg,
+  flakeRev,
   autoStart,
   exposePorts,
   ...
@@ -10,6 +11,7 @@
 
 let
   name = "minecraft-server";
+  tag = toString flakeRev;
   javaVersion = toString cfg.javaVersion;
   jdk = pkgs."jdk${javaVersion}";
   headlessJdk = jdk.override {
@@ -34,9 +36,8 @@ let
       "java.instrument"
     ];
   };
-  image = pkgs.dockerTools.streamLayeredImage {
-    name = name;
-    tag = "latest";
+  streamImage = pkgs.dockerTools.streamLayeredImage {
+    inherit name tag;
 
     contents = [
       pkgs.cacert
@@ -66,12 +67,12 @@ let
   };
 in
 {
-  inherit image;
+  inherit streamImage;
 
   composeInfo = mkComposeInfo {
     inherit name autoStart exposePorts;
     base = {
-      image = "${name}:latest";
+      image = "${streamImage.imageName}:${streamImage.imageTag}";
       deploy.resources.limits.memory = cfg.memoryLimit;
       volumes = [ "${cfg.serverDirectory}:/minecraft" ];
     };

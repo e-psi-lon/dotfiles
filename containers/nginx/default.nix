@@ -4,11 +4,13 @@
   mkComposeInfo,
   cfg,
   autoStart,
+  flakeRev,
   ...
 }:
 
 let
   name = "nginx";
+  tag = toString flakeRev;
 
   healthPort = 43417;
 
@@ -62,9 +64,8 @@ let
     }
   '';
 
-  image = pkgs.dockerTools.streamLayeredImage {
-    name = name;
-    tag = "latest";
+  streamImage = pkgs.dockerTools.streamLayeredImage {
+    inherit name tag;
 
     contents = with pkgs; [
       nginx
@@ -110,13 +111,13 @@ let
   };
 in
 {
-  inherit image;
+  inherit streamImage;
 
   composeInfo = mkComposeInfo {
     inherit name autoStart;
     exposePorts = true;
     base = {
-      image = "${name}:latest";
+      image = "${streamImage.imageName}:${streamImage.imageTag}";
       volumes = [
           "${cfg.extraHttpDirectory}:/etc/nginx/http.d:ro"
           "${cfg.extraStreamDirectory}:/etc/nginx/stream.d:ro"

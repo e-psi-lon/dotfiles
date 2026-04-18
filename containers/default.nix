@@ -3,6 +3,7 @@
   lib,
   pkgs,
   osConfig,
+  flakeRev,
   ...
 }:
 
@@ -266,6 +267,7 @@
               }
             );
           cfg = containerCfg;
+          inherit flakeRev;
           inherit (containerCfg) exposePorts autoStart;
         };
 
@@ -309,7 +311,7 @@
       };
       composeFile = yaml.generate "podman-compose.yml" composeSet;
 
-      enabledImages = lib.flatten (lib.mapAttrsToList (name: c: c.image) evaluatedContainers);
+      enabledImages = lib.flatten (lib.mapAttrsToList (name: c: c.streamImage) evaluatedContainers);
 
       directoriesToCreate = lib.flatten (
         lib.mapAttrsToList (
@@ -333,6 +335,7 @@
             ${lib.concatMapStringsSep "\n" (dir: "mkdir -p \"${dir}\"") directoriesToCreate}
 
             images=(${lib.concatMapStringsSep " " (img: "\"${img}\"") enabledImages})
+            image_refs=(${lib.concatMapStringsSep " " (img: "\"${img.imageName}:${img.imageTag}\"") enabledImages})
             ${builtins.readFile loadImageBase}
           '';
         };

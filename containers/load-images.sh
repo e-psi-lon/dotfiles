@@ -35,6 +35,18 @@ for img in "${images[@]}"; do
 done
 
 # 4. Clean up the Podman storage block bloat!
-# When an image is updated, the old one loses its "latest" tag and becomes <none>:<none>.
-# This safely deletes those dangling gigabytes without touching actively running containers.
-podman image prune -f
+# When an image is updated, the old one is still there but we definitely don't want to keep it around.
+declare -A current_refs
+declare -A managed_names
+for ref in "${image_refs[@]}"; do
+  current_refs["$ref"]=1
+  managed_names["${ref%%:*}"]=1  # extract just the name part before ':'
+done
+
+for ref in $(podman images --format "{{.Repository}}:{{.Tag}}"); do
+  name="${ref%%:*}"
+  if [[ -n "${managed_names[$name]:-}" ]] && [[ -z "${current_refs[$ref]:-}" ]]; then
+    echo "Removing stale image: $ref"
+    podman rmi "$ref" || true
+  fi
+done
