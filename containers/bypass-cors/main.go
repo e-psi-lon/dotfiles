@@ -26,6 +26,7 @@ func main() {
     }
 
     http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+        log.Printf("Proxying request to: %s", r.RequestURI)
         if r.Method == http.MethodOptions {
             w.Header().Set("Access-Control-Allow-Origin", "*")
             w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH, HEAD")
