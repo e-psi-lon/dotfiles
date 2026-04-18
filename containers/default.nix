@@ -185,7 +185,6 @@
 
   config =
     let
-      yaml = pkgs.formats.yaml { };
       containerDefs = {
         nginx = {
           extraDirs = c: [
@@ -311,9 +310,25 @@
           acc // (if meta ? secrets then meta.secrets c else { })
         ) { } enabledContainers;
       };
-      composeFile = yaml.generate "podman-compose.yml" composeSet;
 
       enabledImages = lib.flatten (lib.mapAttrsToList (name: c: c.streamImage) evaluatedContainers);
+
+      composeFile = pkgs.runCommand "compose" {
+        nativeBuildInputs = [ pkgs.remarshal ];
+        closureInfo = pkgs.closureInfo { rootPaths = enabledImages; };
+        json = builtins.toJSON composeSet;
+        manifest = builtins.toJSON (map (img: {
+          name = img.imageName;
+          tag = img.imageTag;
+          path = img;
+        }) enabledImages);
+        passAsFile = [ "json" "manifest" ];
+      } ''
+        mkdir -p $out
+        json2yaml "$jsonPath" > $out/podman-compose.yml
+        cp "$manifestPath" $out/images.json
+      '';
+
 
       directoriesToCreate = lib.flatten (
         lib.mapAttrsToList (
@@ -337,7 +352,7 @@
             ${lib.concatMapStringsSep "\n" (dir: "mkdir -p \"${dir}\"") directoriesToCreate}
 
             images=(${lib.concatMapStringsSep " " (img: "\"${img}\"") enabledImages})
-            image_refs=(${lib.concatMapStringsSep " " (img: "\"${img.imageName}:${img.imageTag}\"") enabledImages})
+            image_refs=(${lib.concatMapStringsSep " " (img: "\"localhost/${img.imageName}:${img.imageTag}\"") enabledImages})
             ${builtins.readFile loadImageBase}
           '';
         };
@@ -349,7 +364,7 @@
           podman-compose
         ];
         text = ''
-          export COMPOSE_FILE="${composeFile}"
+          export COMPOSE_FILE="${composeFile}/podman-compose.yml"
           export PROJECT_NAME="podman-containers"
           ${builtins.readFile ./podman-container.sh}
         '';
@@ -383,8 +398,8 @@
             "PODMAN_COMPOSE_PROVIDER=${lib.getExe pkgs.podman-compose}"
             "PODMAN_COMPOSE_WARNING_LOGS=false"
           ];
-          ExecStart = "${lib.getExe pkgs.podman} compose -p podman-containers -f ${composeFile} up";
-          ExecStop = "${lib.getExe pkgs.podman} compose -p podman-containers -f ${composeFile} down";
+          ExecStart = "${lib.getExe pkgs.podman} compose -p podman-containers -f ${composeFile}/podman-compose.yml up";
+          ExecStop = "${lib.getExe pkgs.podman} compose -p podman-containers -f ${composeFile}/podman-compose.yml down";
           Restart = "on-failure";
           RestartSec = "10";
         };
