@@ -185,6 +185,33 @@
   config =
     let
       yaml = pkgs.formats.yaml { };
+      containerDefs = {
+        nginx = {
+          extraDirs = c: [
+            c.extraHttpDirectory
+            c.extraStreamDirectory
+          ];
+        };
+        bypass-cors = { };
+        minecraft-server = {
+          extraDirs = c: [ c.serverDirectory ];
+        };
+        postgres = {
+          extraDirs = c: [ c.dataDirectory ];
+          secrets = c: {
+            postgres-password = {
+              file = c.postgresPasswordPath;
+            };
+          };
+        };
+        redis = {
+          extraDirs = c: [ c.dataDirectory ];
+        };
+      };
+
+      enabledContainers = lib.filterAttrs (
+        name: _: config.podman-containers.${name}.enable
+      ) containerDefs;
 
       mkComposeInfo =
         {
@@ -242,78 +269,57 @@
           inherit (containerCfg) exposePorts autoStart;
         };
 
-      nginxContainer = evalContainer "nginx";
-      bypassCorsContainer = evalContainer "bypass-cors";
-      minecraftServerContainer = evalContainer "minecraft-server";
-      postgresContainer = evalContainer "postgres";
-      redisContainer = evalContainer "redis";
+      evaluatedContainers = lib.mapAttrs (name: _: evalContainer name) enabledContainers;
 
       composeSet = with config.podman-containers; {
         services =
-          { }
+          let
+            base = lib.mapAttrs (name: c: c.composeInfo) evaluatedContainers;
+          in
+          base
           // lib.optionalAttrs nginx.enable {
-            nginx = nginxContainer.composeInfo // {
+            nginx = base.nginx // {
               depends_on =
-                  let
-                    allEvaluated = {
-                      nginx = nginxContainer.composeInfo;
-                      bypassCors = bypassCorsContainer.composeInfo;
-                      minecraftServer = minecraftServerContainer.composeInfo;
-                      postgres = postgresContainer.composeInfo;
-                      redis = redisContainer.composeInfo;
-                    };
-                    hiddenEnabled = lib.filterAttrs (
-                      _: c: (builtins.isAttrs c) && c.enable && !c.exposePorts && c.autoStart
-                    ) config.podman-containers;
-                    withHealth = lib.filterAttrs (
-                      n: c: (allEvaluated.${n}.healthcheck or null) != null
-                    ) hiddenEnabled;
-                    withoutHealth = lib.filterAttrs (
-                      n: c: (allEvaluated.${n}.healthcheck or null) == null
-                    ) hiddenEnabled;
-                  in
+                let
+                  hiddenEnabled = lib.filterAttrs (
+                    name: _:
+                    name != "nginx"
+                    && !(config.podman-containers.${name}.exposePorts)
+                    && config.podman-containers.${name}.autoStart
+                  ) enabledContainers;
+                  withHealth = lib.filterAttrs (
+                    n: c: (evaluatedContainers.${n}.composeInfo.healthcheck or null) != null
+                  ) hiddenEnabled;
+                  withoutHealth = lib.filterAttrs (
+                    n: c: (evaluatedContainers.${n}.composeInfo.healthcheck or null) == null
+                  ) hiddenEnabled;
+                in
                 (lib.mapAttrs (name: _: { condition = "service_healthy"; }) withHealth)
                 // (lib.mapAttrs (name: _: { condition = "service_started"; }) withoutHealth);
             };
-          }
-          // lib.optionalAttrs bypass-cors.enable { bypass-cors = bypassCorsContainer.composeInfo; }
-          // lib.optionalAttrs minecraft-server.enable {
-            minecraft-server = minecraftServerContainer.composeInfo;
-          }
-          // lib.optionalAttrs postgres.enable { postgres = postgresContainer.composeInfo; }
-          // lib.optionalAttrs redis.enable { redis = redisContainer.composeInfo; };
-
-        secrets =
-          { }
-          // lib.optionalAttrs postgres.enable {
-            postgres-password = {
-              file = postgres.postgresPasswordPath;
-            };
           };
+
+        secrets = lib.foldlAttrs (
+          acc: name: meta:
+          let
+            c = config.podman-containers.${name};
+          in
+          acc // (if meta ? secrets then meta.secrets c else { })
+        ) { } enabledContainers;
       };
       composeFile = yaml.generate "podman-compose.yml" composeSet;
 
-      enabledImages =
-        with config.podman-containers;
-        lib.flatten [
-          (lib.optionals nginx.enable [ nginxContainer.image ])
-          (lib.optionals bypass-cors.enable [ bypassCorsContainer.image ])
-          (lib.optionals minecraft-server.enable [ minecraftServerContainer.image ])
-          (lib.optionals postgres.enable [ postgresContainer.image ])
-          (lib.optionals redis.enable [ redisContainer.image ])
-        ];
+      enabledImages = lib.flatten (lib.mapAttrsToList (name: c: c.image) evaluatedContainers);
 
-      directoriesToCreate =
-        with config.podman-containers;
-        lib.flatten [
-          (lib.optionals nginx.enable [
-            nginx.extraHttpDirectory
-            nginx.extraStreamDirectory
-          ])
-          (lib.optionals minecraft-server.enable [ minecraft-server.serverDirectory ])
-          (lib.optionals postgres.enable [ postgres.dataDirectory ])
-          (lib.optionals redis.enable [ redis.dataDirectory ])
-        ];
+      directoriesToCreate = lib.flatten (
+        lib.mapAttrsToList (
+          name: meta:
+          let
+            c = config.podman-containers.${name};
+          in
+          if meta ? extraDirs then meta.extraDirs c else [ ]
+        ) enabledContainers
+      );
 
       loadImagesScript =
         let
