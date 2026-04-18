@@ -72,7 +72,6 @@ in
   composeInfo = mkComposeInfo {
     inherit name autoStart exposePorts;
     base = {
-      image = "${streamImage.imageName}:${streamImage.imageTag}";
       deploy.resources.limits.memory = cfg.memoryLimit;
       volumes = [ "${cfg.serverDirectory}:/minecraft" ];
     };

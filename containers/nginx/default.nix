@@ -117,7 +117,6 @@ in
     inherit name autoStart;
     exposePorts = true;
     base = {
-      image = "${streamImage.imageName}:${streamImage.imageTag}";
       volumes = [
           "${cfg.extraHttpDirectory}:/etc/nginx/http.d:ro"
           "${cfg.extraStreamDirectory}:/etc/nginx/stream.d:ro"

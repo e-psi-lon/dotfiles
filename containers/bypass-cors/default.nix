@@ -49,7 +49,6 @@ in
   composeInfo = mkComposeInfo {
     inherit name exposePorts autoStart;
     base = {
-      image = "${streamImage.imageName}:${streamImage.imageTag}";
       deploy.resources.limits = {
         cpus = "0.1";
         memory = "32M";

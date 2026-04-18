@@ -60,7 +60,6 @@ in
   composeInfo = mkComposeInfo {
     inherit name exposePorts autoStart;
     base = {
-      image = "${streamImage.imageName}:${streamImage.imageTag}";
       shm_size = "128mb";
       volumes = [ "${cfg.dataDirectory}:/var/lib/postgresql/data" ];
       deploy.resources.limits = {

@@ -276,7 +276,9 @@
       composeSet = with config.podman-containers; {
         services =
           let
-            base = lib.mapAttrs (name: c: c.composeInfo) evaluatedContainers;
+            base = lib.mapAttrs (name: c: c.composeInfo // {
+              image = "${c.streamImage.imageName}:${c.streamImage.imageTag}";
+            }) evaluatedContainers;
           in
           base
           // lib.optionalAttrs nginx.enable {

@@ -61,7 +61,6 @@ in
   composeInfo = mkComposeInfo {
     inherit name exposePorts autoStart;
     base = {
-      image = "${streamImage.imageName}:${streamImage.imageTag}";
       volumes = [ "${cfg.dataDirectory}:/data" ];
       healthcheck = {
         test = [
