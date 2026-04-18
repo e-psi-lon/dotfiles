@@ -15,7 +15,7 @@ let
 
   streamImage = pkgs.dockerTools.streamLayeredImage {
     inherit name tag;
-    
+
     contents = with pkgs; [
       postgresql
       cacert
@@ -76,7 +76,7 @@ in
           "5432"
           "-U"
           "postgres"
-        ];  
+        ];
         interval = "10s";
         timeout = "5s";
         retries = 10;

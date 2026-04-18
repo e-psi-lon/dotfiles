@@ -104,8 +104,8 @@ let
       Volumes = {
         "/etc/nginx/http.d" = { };
         "/etc/nginx/stream.d" = { };
-        "/etc/nginx/ssl" = { };
-      };
+      }
+      // lib.optionalAttrs hasSsl { "/etc/nginx/ssl" = { }; };
       WorkingDir = "/";
     };
   };
@@ -118,8 +118,8 @@ in
     exposePorts = true;
     base = {
       volumes = [
-          "${cfg.extraHttpDirectory}:/etc/nginx/http.d:ro"
-          "${cfg.extraStreamDirectory}:/etc/nginx/stream.d:ro"
+        "${cfg.extraHttpDirectory}:/etc/nginx/http.d:ro"
+        "${cfg.extraStreamDirectory}:/etc/nginx/stream.d:ro"
       ]
       ++ lib.optional hasSsl "${cfg.sslCert}:/etc/nginx/ssl/cert.pem:ro"
       ++ lib.optional hasSsl "${cfg.sslKey}:/etc/nginx/ssl/key.pem:ro";

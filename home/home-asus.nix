@@ -220,54 +220,58 @@
 
     nginx = {
       enable = true;
-      httpConfig = let 
-        hasSsl = config.podman-containers.nginx.sslCert != null;
-      in ''
-        server {
-          listen 80;
-          ${lib.optionalString hasSsl "listen 443 ssl;"}
-          server_name cors.localhost;
+      httpConfig =
+        let
+          hasSsl = config.podman-containers.nginx.sslCert != null;
+        in
+        ''
+          server {
+            listen 80;
+            ${lib.optionalString hasSsl "listen 443 ssl;"}
+            server_name cors.localhost;
 
-          ${lib.optionalString hasSsl ''
+            ${lib.optionalString hasSsl ''
+              ssl_certificate ${config.podman-containers.nginx.sslCert};
+              ssl_certificate_key ${config.podman-containers.nginx.sslKey};
+            ''}
+
+            location /cors/ {
+              proxy_pass http://bypass-cors:8080;
+            }
+          }
+        '';
+      streamConfig =
+        let
+          hasSsl = config.podman-containers.nginx.sslCert != null;
+          useSsl = lib.optionalString hasSsl "ssl";
+          sslTemplate = lib.optionalString hasSsl ''
             ssl_certificate ${config.podman-containers.nginx.sslCert};
             ssl_certificate_key ${config.podman-containers.nginx.sslKey};
-          ''}
-
-          location /cors/ {
-            proxy_pass http://bypass-cors:8080;
+          '';
+        in
+        ''
+          upstream postgres_proto {
+            server postgres:5432;
           }
-        }
-      '';
-      streamConfig = let 
-        hasSsl = config.podman-containers.nginx.sslCert != null;
-        useSsl = lib.optionalString hasSsl "ssl";
-        sslTemplate = lib.optionalString hasSsl ''
-          ssl_certificate ${config.podman-containers.nginx.sslCert};
-          ssl_certificate_key ${config.podman-containers.nginx.sslKey};
+
+          upstream redis_proto {
+            server redis:6379;
+          }
+
+          # Postgres Gateway
+          server {
+            listen 5432 ${useSsl};
+            ${sslTemplate}
+            proxy_pass postgres_proto;
+          }
+
+          # Redis Gateway
+          server {
+            listen 6379 ${useSsl};
+            ${sslTemplate}
+            proxy_pass redis_proto;
+          }
         '';
-      in ''
-        upstream postgres_proto {
-          server postgres:5432;
-        }
-
-        upstream redis_proto {
-          server redis:6379;
-        }
-
-        # Postgres Gateway
-        server {
-          listen 5432 ${useSsl};
-          ${sslTemplate}
-          proxy_pass postgres_proto;
-        }
-
-        # Redis Gateway
-        server {
-          listen 6379 ${useSsl};
-          ${sslTemplate}
-          proxy_pass redis_proto;
-        }
-      '';
 
       extraPorts = [
         "5432:5432"

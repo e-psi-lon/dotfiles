@@ -275,9 +275,9 @@
       composeSet = with config.podman-containers; {
         services =
           let
-            base = lib.mapAttrs (name: c: c.composeInfo // {
-              image = "${c.streamImage.imageName}:${c.streamImage.imageTag}";
-            }) evaluatedContainers;
+            base = lib.mapAttrs (
+              name: c: c.composeInfo // { image = "${c.streamImage.imageName}:${c.streamImage.imageTag}"; }
+            ) evaluatedContainers;
           in
           base
           // lib.optionalAttrs nginx.enable {
@@ -313,22 +313,29 @@
 
       enabledImages = lib.flatten (lib.mapAttrsToList (name: c: c.streamImage) evaluatedContainers);
 
-      composeFile = pkgs.runCommand "compose" {
-        nativeBuildInputs = [ pkgs.remarshal ];
-        closureInfo = pkgs.closureInfo { rootPaths = enabledImages; };
-        json = builtins.toJSON composeSet;
-        manifest = builtins.toJSON (map (img: {
-          name = img.imageName;
-          tag = img.imageTag;
-          path = img;
-        }) enabledImages);
-        passAsFile = [ "json" "manifest" ];
-      } ''
-        mkdir -p $out
-        json2yaml "$jsonPath" > $out/podman-compose.yml
-        cp "$manifestPath" $out/images.json
-      '';
-
+      composeFile =
+        pkgs.runCommand "compose"
+          {
+            nativeBuildInputs = [ pkgs.remarshal ];
+            closureInfo = pkgs.closureInfo { rootPaths = enabledImages; };
+            json = builtins.toJSON composeSet;
+            manifest = builtins.toJSON (
+              map (img: {
+                name = img.imageName;
+                tag = img.imageTag;
+                path = img;
+              }) enabledImages
+            );
+            passAsFile = [
+              "json"
+              "manifest"
+            ];
+          }
+          ''
+            mkdir -p $out
+            json2yaml "$jsonPath" > $out/podman-compose.yml
+            cp "$manifestPath" $out/images.json
+          '';
 
       directoriesToCreate = lib.flatten (
         lib.mapAttrsToList (
@@ -352,7 +359,9 @@
             ${lib.concatMapStringsSep "\n" (dir: "mkdir -p \"${dir}\"") directoriesToCreate}
 
             images=(${lib.concatMapStringsSep " " (img: "\"${img}\"") enabledImages})
-            image_refs=(${lib.concatMapStringsSep " " (img: "\"localhost/${img.imageName}:${img.imageTag}\"") enabledImages})
+            image_refs=(${
+              lib.concatMapStringsSep " " (img: "\"localhost/${img.imageName}:${img.imageTag}\"") enabledImages
+            })
             ${builtins.readFile loadImageBase}
           '';
         };
