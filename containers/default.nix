@@ -119,7 +119,7 @@
       minecraft-server =
         mkContainerOpts {
           description = "Minecraft server";
-          defaultExpose = true; # Minecraft and Nginx won't work great together
+          defaultExpose = !nginxEnabled;
           defaultRestartPolicy = "unless-stopped";
         }
         // {

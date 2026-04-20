@@ -229,7 +229,8 @@
           server {
             listen 80;
             ${lib.optionalString hasSsl "listen 443 ssl;"}
-            server_name cors.localhost;
+            server_name localhost;
+            merge_slashes off;
 
             ${lib.optionalString hasSsl ''
               ssl_certificate ${config.podman-containers.nginx.sslCert};
@@ -237,7 +238,22 @@
             ''}
 
             location /cors/ {
-              proxy_pass http://bypass-cors:8080;
+              proxy_pass http://bypass-cors:8080/;
+            }
+          }
+
+          server {
+            listen 80;
+            server_name cors.localhost;
+            merge_slashes off;
+
+            ${lib.optionalString hasSsl ''
+              ssl_certificate ${config.podman-containers.nginx.sslCert};
+              ssl_certificate_key ${config.podman-containers.nginx.sslKey};
+            ''}
+
+            location / {
+              proxy_pass http://bypass-cors:8080/;
             }
           }
         '';
