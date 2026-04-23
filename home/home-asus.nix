@@ -131,7 +131,7 @@
     jetbrains.idea
     jetbrains.pycharm
     jetbrains.webstorm
-    jetbrains.clion
+    # jetbrains.clion
     android-studio
     gource
     kobweb-cli
