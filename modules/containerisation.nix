@@ -42,6 +42,9 @@
       }
     '';
   };
-  networking.firewall.allowedTCPPorts = [ 50080 50443 ];
+  networking.firewall.allowedTCPPorts = [
+    50080
+    50443
+  ];
 
 }

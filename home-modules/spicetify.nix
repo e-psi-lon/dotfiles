@@ -9,6 +9,7 @@ in
   programs.spicetify = {
     enable = true;
     alwaysEnableDevTools = true;
+    wayland = true;
 
     enabledExtensions = with spicePkgs.extensions; [
       adblock
@@ -40,7 +41,6 @@ in
       rotatingCoverart
     ];
 
-    windowManagerPatch = true;
     experimentalFeatures = true;
   };
 }
