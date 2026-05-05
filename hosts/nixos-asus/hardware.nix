@@ -9,7 +9,10 @@
   specialisation.battery-saver = lib.mkIf config.hardware.nvidia.primeBatterySaverSpecialisation {
     configuration.hardware.nvidia.prime.sync.enable = lib.mkForce false;
   };
-  fileSystems."/home/${username}/Dev" = mkBindMount "/mnt/data/Dev";
+  fileSystems = {
+    "/home/${username}/Dev" = mkBindMount "/mnt/data/Dev";
+    "/home/${username}/.local/share/containers" = mkBindMount "/mnt/data/containers";
+  };
   hardware = {
     nvidia.prime.sync.enable = lib.mkOverride 900 true;
     nvidia.prime.offload.enable = lib.mkOverride 900 false;
