@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
   boot = {
@@ -11,7 +11,10 @@
     };
 
     kernelPackages = pkgs.linuxPackages_latest;
-    kernelModules = [ "asus-armoury" ];
+    extraModulePackages = [
+      config.boot.kernelPackages.hid-nintendolic
+    ];
+    kernelModules = [ "asus-armoury" "hid-nintendolic" ];
 
     tmp = {
       useZram = true;
