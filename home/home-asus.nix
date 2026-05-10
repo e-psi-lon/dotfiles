@@ -146,6 +146,7 @@
 
     # Games
     prismlauncher
+    labymod
     ryubing
     dolphin-emu
     melonds
