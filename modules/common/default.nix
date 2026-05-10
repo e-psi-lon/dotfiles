@@ -30,6 +30,7 @@
       "video"
       "input"
       "storage"
+      "disk"
     ];
     hashedPassword = hashes.user.${username}.password;
     createHome = true;
