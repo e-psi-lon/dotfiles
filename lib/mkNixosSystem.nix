@@ -7,6 +7,7 @@
       machineName,
       paths,
       subPath,
+      flakeRev,
       ...
     }:
     let
@@ -27,7 +28,10 @@
       modules = modules ++ [
         allArgs.sops-nix.nixosModules.sops
         (paths.hosts + "/nixos-${machineName}")
-        { networking.hostName = "nixos-${machineName}"; }
+        { 
+          networking.hostName = "nixos-${machineName}"; 
+          system.configurationRevision = flakeRev;
+        }
         home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
