@@ -30,7 +30,7 @@ stdenv.mkDerivation {
   '';
 
   meta = with lib; {
-    description = "Linux HID driver for Nintendo-licensed Pro Controllers (HORI, PDP/Afterglow, etc.)";
+    description = "Linux HID driver for HORI Nintendo-licensed Pro Controllers";
     homepage = "https://gitlab.com/cipitaua/dkms-hid-nintendolic";
     license = licenses.gpl2Only;
     platforms = platforms.linux;
