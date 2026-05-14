@@ -6,6 +6,7 @@
   nix-update-script,
   jdk11,
   gradle,
+  hashes
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "kobweb-cli";
@@ -15,7 +16,7 @@ stdenv.mkDerivation (finalAttrs: {
     owner = "varabyte";
     repo = "kobweb-cli";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-zNXQrzito6TGKpBDjqog7oCrhcwARCnVKH2uQjcNAtk=";
+    hash = hashes.pkgs.kobweb-cli;
   };
 
   gradleFlags = [ "-Dfile.encoding=utf-8" ];

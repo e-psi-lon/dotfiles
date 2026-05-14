@@ -60,9 +60,11 @@
       subPath = paths.subPath;
       inherit (import (subPath paths.lib "mkNixosSystem.nix")) mkNixosSystem;
       commonModule = subPath paths.modules "common";
+      hashesFile = subPath paths.resources "/hashes.toml";
+      hashes = fromTOML (builtins.readFile hashesFile);
       overlays = [
         android-nixpkgs.overlays.default
-        (import paths.custom-pkgs { inherit paths; })
+        (import paths.custom-pkgs { inherit paths hashes; })
       ];
       flakeRev = self.shortRev or "dirty-${toString self.lastModified}";
       pkgs = import nixpkgs {
@@ -116,6 +118,7 @@
             android-nixpkgs
             nixvim
             sops-nix
+            hashes
             ;
         };
 
@@ -136,6 +139,7 @@
             flakeRev
             nixvim
             sops-nix
+            hashes
             ;
         };
       };

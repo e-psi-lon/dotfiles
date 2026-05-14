@@ -2,6 +2,7 @@
   lib,
   fetchurl,
   appimageTools,
+  hashes
 }:
 
 let
@@ -11,7 +12,7 @@ let
   src = fetchurl {
     name = "labymod-launcher";
     url = "https://releases.r2.labymod.net/launcher/linux/x64/LabyMod%20Launcher-latest.AppImage"; # No idea what's the new URL scheme
-    hash = "sha256-aZxnuMh7jMB9nU9YHEV45JiGYV3OiD2hIb/Z/2Rk+MU=";
+    hash = hashes.pkgs.labymod;
   };
 
   appimageContents = appimageTools.extract { inherit pname version src; };

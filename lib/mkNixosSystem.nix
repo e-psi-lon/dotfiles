@@ -7,6 +7,7 @@
       machineName,
       paths,
       subPath,
+      hashes,
       flakeRev,
       ...
     }:
@@ -18,8 +19,6 @@
         "modules"
         "machineName"
       ];
-      hashesFile = subPath paths.resources "/hashes.toml";
-      hashes = fromTOML (builtins.readFile hashesFile);
       args = extraArgs // { inherit hashes username; } // (import (subPath paths.lib "mkBindMount.nix"));
     in
     pkgs.lib.nixosSystem {

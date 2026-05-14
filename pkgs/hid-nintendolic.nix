@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchFromGitLab, kernel }:
+{ lib, stdenv, fetchFromGitLab, kernel, hashes }:
 
 stdenv.mkDerivation {
   pname = "hid-nintendolic";
@@ -8,7 +8,7 @@ stdenv.mkDerivation {
     owner = "cipitaua";
     repo = "dkms-hid-nintendolic";
     rev = "main";
-    sha256 = "sha256-T0jOtk9JblNbA7eYRv4JbtS2NKpLW00A1jGWQlSSKJk=";
+    sha256 = hashes.pkgs.hid-nintendolic;
   };
 
   nativeBuildInputs = kernel.moduleBuildDependencies;

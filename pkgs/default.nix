@@ -1,12 +1,12 @@
-{ paths }:
+{ paths, hashes }:
 final: prev: {
-  modelio = final.callPackage ./modelio.nix { };
+  modelio = final.callPackage ./modelio.nix { inherit hashes; };
   setup-dev = final.callPackage ./setup-dev { inherit paths; };
-  kobweb-cli = final.callPackage ./kobweb-cli { };
-  labymod = final.callPackage ./labymod.nix { };
+  kobweb-cli = final.callPackage ./kobweb-cli { inherit hashes; };
+  labymod = final.callPackage ./labymod.nix { inherit hashes; };
   linuxKernel = prev.linuxKernel // {
     packagesFor = kernel: (prev.linuxKernel.packagesFor kernel).extend (lpFinal: lpPrev: {
-      hid-nintendolic = lpFinal.callPackage ./hid-nintendolic.nix { };
+      hid-nintendolic = lpFinal.callPackage ./hid-nintendolic.nix { inherit hashes; };
     });
   };
 }

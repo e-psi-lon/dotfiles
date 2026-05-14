@@ -14,6 +14,7 @@
   makeWrapper,
   unzip,
   libGLU,
+  hashes
 }:
 
 stdenv.mkDerivation rec {
@@ -22,7 +23,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://github.com/ModelioOpenSource/Modelio/releases/download/v${version}/modelio-open-source-${version}.el8.x86_64.rpm";
-    sha256 = "sha256-V7Vq8o5HZmfhGaDwd1vo1PRaaF6UVSmc9N+ggd+Y3M4=";
+    sha256 = hashes.pkgs.modelio;
   };
 
   nativeBuildInputs = [
