@@ -8,6 +8,3 @@ kobweb-cli = "sha256-zNXQrzito6TGKpBDjqog7oCrhcwARCnVKH2uQjcNAtk="
 labymod = "sha256-aZxnuMh7jMB9nU9YHEV45JiGYV3OiD2hIb/Z/2Rk+MU="
 modelio = "sha256-V7Vq8o5HZmfhGaDwd1vo1PRaaF6UVSmc9N+ggd+Y3M4="
 hid-nintendolic = "sha256-T0jOtk9JblNbA7eYRv4JbtS2NKpLW00A1jGWQlSSKJk="
-
-[user.e-psi-lon]
-password = "$6$RuWluSDrWlxlvRqQ$JCiJFbeooSAfaKV0BkcCx6g/wxxSH9oDpUbAn5EG6Ee/aG5hZ3zt9UVKUnRxbF6ELDFj71yvUdEpi/.aglaj1/"

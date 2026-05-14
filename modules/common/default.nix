@@ -1,8 +1,10 @@
 {
   pkgs,
   lib,
-  hashes,
+  config,
   username,
+  subPath,
+  paths,
   ...
 }:
 
@@ -19,6 +21,13 @@
 
   boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;
 
+  sops.defaultSopsFile = subPath paths.resources "secrets/password.yaml";
+
+  sops.secrets."e-psi-lon/password" = {
+    neededForUsers = true;
+  };
+
+
   users.users.${username} = {
     isNormalUser = true;
     description = "e_ψ_lon";
@@ -32,7 +41,7 @@
       "storage"
       "disk"
     ];
-    hashedPassword = hashes.user.${username}.password;
+    hashedPasswordFile = config.sops.secrets."e-psi-lon/password".path;
     createHome = true;
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMj8zKRB39dPABSBPDkRU+yrgFP2iQaCkJvNLJ9D4/7X ${username}@nixos-hp"
