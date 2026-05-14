@@ -141,6 +141,7 @@
     libreoffice-qt
     proton-pass
     xwayland-satellite
+    pear-desktop
     setup-dev # Custom script to setup a dev environment with direnv and a flake
     sl # Yes.
 
@@ -152,8 +153,7 @@
     melonds
     azahar
     nestopia-ue
-    # Currently broken in the current nixpkgs, to re-enabled once fixed
-    # cemu
+    cemu
     pcsx2
     mgba
     pegasus-frontend
