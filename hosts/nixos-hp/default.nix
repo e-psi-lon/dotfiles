@@ -18,7 +18,7 @@
   hardware.enableRedistributableFirmware = true;
   programs.mtr.enable = true;
 
-  services.xserver.videoDrivers = [ "modsetting" ];
+  services.xserver.videoDrivers = [ "modesetting" ];
   services.udev.extraRules = ''
     SUBSYSTEM=="usb", ATTRS{idVendor}=="22d9", ATTRS{idProduct}=="2769", MODE="0666"
   '';
