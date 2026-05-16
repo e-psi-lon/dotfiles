@@ -18,7 +18,7 @@
   hardware.enableRedistributableFirmware = true;
   programs.mtr.enable = true;
 
-  services.xserver.videoDrivers = [ "intel" ];
+  services.xserver.videoDrivers = [ "modsetting" ];
   services.udev.extraRules = ''
     SUBSYSTEM=="usb", ATTRS{idVendor}=="22d9", ATTRS{idProduct}=="2769", MODE="0666"
   '';
@@ -29,6 +29,8 @@
     };
     enableDebugInfo = false;
   };
+
+  users.mutableUsers = false;
 
   system.stateVersion = "26.05";
 
