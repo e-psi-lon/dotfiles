@@ -4,20 +4,31 @@ keys:
   - &host_hp "age1eva2w8azzuw4nunuy4t0tjn0ajfcj525e58j59j6hleu5gxdav5qgcgf34"
 
 creation_rules:
-  # Base pattern: Give the user access to everything by default, plus specific hosts based on yaml filename
-  - path_regex: resources/secrets/asus\.yaml$
+  - path_regex: resources/secrets/.*\.asus\.[^/]+$
     key_groups:
       - age:
           - *user_e-psi-lon
           - *host_asus
 
-  - path_regex: resources/secrets/hp\.yaml$
+  - path_regex: resources/secrets/.*\.hp\.[^/]+$
     key_groups:
       - age:
           - *user_e-psi-lon
           - *host_hp
 
-  - path_regex: resources/secrets/.*\.yaml$
+  - path_regex: resources/secrets/.*\.e-psi-lon\.[^/]+$
+    key_groups:
+      - age:
+          - *user_e-psi-lon
+
+  - path_regex: resources/secrets/.*\.shared\.[^/]+$
+    key_groups:
+      - age:
+          - *user_e-psi-lon
+          - *host_asus
+          - *host_hp
+
+  - path_regex: resources/secrets/.*
     key_groups:
       - age:
           - *user_e-psi-lon
