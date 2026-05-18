@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, paths, subPath, ... }:
 {
 
   # systemd.user.services.sunshine.environment = {
@@ -15,8 +15,7 @@
 
     openvpn.servers = {
       univ-tours = {
-        # TODO: Use a more appropriate location for the ovpn file
-        config = "config /home/e-psi-lon/.config/openvpn/vpnfr-etu-TCP4-443.ovpn ";
+        config = "config ${subPath paths.resources "vpn/univ-tours.ovpn"}";
         up = ''
           ${lib.getExe' pkgs.systemd "resolvectl"} dns tun0 10.195.2.1 10.196.20.10 10.195.2.2
           ${lib.getExe' pkgs.systemd "resolvectl"} domain tun0 '~univ-tours.local' '~univ-tours.fr'
@@ -29,5 +28,10 @@
       };
     };
     udev.packages = with pkgs; [ numworks-udev-rules ];
+  };
+
+  sops.secrets."univ-tours.ovpn" = {
+    sopsFile = subPath paths.resources "secrets/univ-tours.asus.ovpn";
+    format = "binary";
   };
 }

@@ -25,7 +25,7 @@
     paths.containers
   ];
 
-  sops.secrets."containers/postgres-password".sopsFile = subPath paths.resources "containers.e-psi-lon.yaml";
+  sops.secrets."containers/postgres-password".sopsFile = subPath paths.resources "secrets/containers.e-psi-lon.yaml";
 
   hasNvidiaGpu = true;
   programs.tmux = {

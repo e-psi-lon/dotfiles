@@ -144,8 +144,7 @@
         themeAttributes.enable = true;
         translate = {
           enable = true;
-          # service = "deepl"; # TODO: Get API key for DeepL
-          # deeplApiKey = "";
+          service = "deepl"; # CONSIDER: Consider moving to pro. If required, an home activation script will be required to patch the json file
           target = "en";
         };
         unlockedAvatarZoom.enable = true;

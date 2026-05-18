@@ -21,9 +21,8 @@
 
   boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;
 
-  sops.defaultSopsFile = subPath paths.resources "secrets/password.yaml";
-
   sops.secrets."e-psi-lon/password" = {
+    sopsFile = subPath paths.resources "secrets/password.shared.yaml";
     neededForUsers = true;
   };
 
