@@ -143,6 +143,7 @@
     xwayland-satellite
     pear-desktop
     setup-dev # Custom script to setup a dev environment with direnv and a flake
+    launch-in-vm # Custom script to launch an application in a VM and forward it using waypipe
     sl # Yes.
 
     # Games
