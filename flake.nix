@@ -104,6 +104,7 @@
             (subPath paths.modules "containerisation.nix")
             (subPath paths.modules "waydroid.nix")
             (subPath paths.modules "virtualisation.nix")
+            (subPath paths.modules "virtiofsd.nix")
             minegrub-world-sel-theme.nixosModules.default
             nixos-hardware.nixosModules.asus-fa706ic
           ];

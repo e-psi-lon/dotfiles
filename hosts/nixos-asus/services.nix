@@ -1,4 +1,4 @@
-{ pkgs, lib, paths, subPath, ... }:
+{ pkgs, lib, paths, subPath, username, ... }:
 {
 
   # systemd.user.services.sunshine.environment = {
@@ -28,6 +28,11 @@
       };
     };
     udev.packages = with pkgs; [ numworks-udev-rules ];
+  };
+
+  systemd.sockets."virtiofsd@${username}" = {
+    overrideStrategy = "asDropin";
+    wantedBy = [ "sockets.target" ];
   };
 
   sops.secrets."univ-tours.ovpn" = {
