@@ -353,7 +353,7 @@
         in
         pkgs.writeShellApplication {
           name = "load-podman-images";
-          runtimeInputs = [ pkgs.podman ];
+          runtimeInputs = [ pkgs.podman pkgs.coreutils ];
           text = ''
             # Ensure all host volume directories exist with current user ownership
             ${lib.concatMapStringsSep "\n" (dir: "mkdir -p \"${dir}\"") directoriesToCreate}

@@ -1,13 +1,16 @@
 STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/containers"
 mkdir -p "$STATE_DIR"
 
-# 1. Gather all current valid hashes into an array
+chmod 700 "$STATE_DIR"
+chmod 700 "$STATE_DIR"/loaded-images
+chmod 600 "$STATE_DIR"/loaded-images/* 2>/dev/null || true
+
+
 declare -A current_hashes
 for img in "${images[@]}"; do
   current_hashes["$(basename "$img")"]=1
 done
 
-# 2. Clean up obsolete markers to prevent directory bloat
 for mark in "$STATE_DIR/loaded-images/"*.loaded; do
   [ -e "$mark" ] || continue
   base_hash="$(basename "$mark" .loaded)"
@@ -17,30 +20,42 @@ for mark in "$STATE_DIR/loaded-images/"*.loaded; do
   fi
 done
 
-# 3. Load only the new or missing images
 mkdir -p "$STATE_DIR/loaded-images"
-for img in "${images[@]}"; do
+for i in "${!images[@]}"; do
+  img="${images[$i]}"
+  ref="${image_refs[$i]}"
   img_hash="$(basename "$img")"
+  marker_file="$STATE_DIR/loaded-images/$img_hash.loaded"
   
-  if [ -f "$STATE_DIR/loaded-images/$img_hash.loaded" ]; then
-    echo "Image $img_hash is up to date."
-    continue
+  if [ -f "$marker_file" ]; then
+    expected_id=$(cat "$marker_file")
+    
+    current_id=$(podman image inspect --format '{{.Id}}' "$ref" 2>/dev/null || true)
+
+    if [ -n "$current_id" ] && [ "$current_id" == "$expected_id" ]; then
+      echo "Image $img_hash is up to date in podman. Skipping load."
+      continue
+    fi
+    echo "Image $img_hash missing from podman storage. Reloading..."
   fi
 
   echo "Streaming new image to podman: $img"
   "$img" | podman load
+  loaded_id=$(podman image inspect --format '{{.Id}}' "$ref")
 
-  # Mark as perfectly loaded
-  touch "$STATE_DIR/loaded-images/$img_hash.loaded"
+  if [[ -z "$loaded_id" ]]; then
+    echo "Error: Failed to load image $img_hash into podman or extract digest."
+    continue
+  fi
+
+  echo "$loaded_id" > "$marker_file"
 done
 
-# 4. Clean up the Podman storage block bloat!
-# When an image is updated, the old one is still there but we definitely don't want to keep it around.
 declare -A current_refs
 declare -A managed_names
 for ref in "${image_refs[@]}"; do
   current_refs["$ref"]=1
-  managed_names["${ref%%:*}"]=1  # extract just the name part before ':'
+  managed_names["${ref%%:*}"]=1
 done
 
 for ref in $(podman images --format "{{.Repository}}:{{.Tag}}"); do
@@ -50,3 +65,6 @@ for ref in $(podman images --format "{{.Repository}}:{{.Tag}}"); do
     podman rmi "$ref" || true
   fi
 done
+
+chmod 000 "$STATE_DIR/loaded-images"/* 2>/dev/null || true
+chmod 100 "$STATE_DIR/loaded-images" 2>/dev/null || true
