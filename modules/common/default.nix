@@ -27,8 +27,12 @@
   };
 
 
+  users.groups.${username} = { 
+    members = [ username ];
+  };
   users.users.${username} = {
     isNormalUser = true;
+    group = username;
     description = "e_ψ_lon";
     shell = pkgs.zsh;
     extraGroups = [
