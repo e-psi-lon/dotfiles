@@ -14,7 +14,7 @@
     extraModulePackages = [
       config.boot.kernelPackages.hid-nintendolic
     ];
-    kernelModules = [ "asus-armoury" "hid-nintendolic" ];
+    kernelModules = [ "asus-armoury" "hid-nintendolic" "vhost_vsock" ];
 
     tmp = {
       useZram = true;

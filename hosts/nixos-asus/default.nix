@@ -18,6 +18,8 @@
   services.desktopManager.plasma6.notoPackage = pkgs.nerd-fonts.noto;
   services.joycond.enable = true;
 
+  programs.fuse.enable = true;
+
 
   nix = {
     optimise.automatic = true;
