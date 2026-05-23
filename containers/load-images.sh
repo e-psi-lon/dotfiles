@@ -1,10 +1,18 @@
 STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/containers"
 mkdir -p "$STATE_DIR"
+mkdir -p "$STATE_DIR/loaded-images"
+
+
+lock_state() {
+  chmod 000 "$STATE_DIR/loaded-images"/* 2>/dev/null || true
+  chmod 100 "$STATE_DIR/loaded-images" 2>/dev/null || true
+}
+
+trap 'cleanup' EXIT INT TERM HUP
 
 chmod 700 "$STATE_DIR"
 chmod 700 "$STATE_DIR"/loaded-images
-chmod 600 "$STATE_DIR"/loaded-images/* 2>/dev/null || true
-
+chmod 400 "$STATE_DIR"/loaded-images/* 2>/dev/null || true
 
 declare -A current_hashes
 for img in "${images[@]}"; do
@@ -20,7 +28,6 @@ for mark in "$STATE_DIR/loaded-images/"*.loaded; do
   fi
 done
 
-mkdir -p "$STATE_DIR/loaded-images"
 for i in "${!images[@]}"; do
   img="${images[$i]}"
   ref="${image_refs[$i]}"
@@ -32,7 +39,7 @@ for i in "${!images[@]}"; do
     
     current_id=$(podman image inspect --format '{{.Id}}' "$ref" 2>/dev/null || true)
 
-    if [ -n "$current_id" ] && [ "$current_id" == "$expected_id" ]; then
+    if [ -n "$current_id" ] && [[ "$current_id" == "$expected_id" ]]; then
       echo "Image $img_hash is up to date in podman. Skipping load."
       continue
     fi
@@ -65,6 +72,3 @@ for ref in $(podman images --format "{{.Repository}}:{{.Tag}}"); do
     podman rmi "$ref" || true
   fi
 done
-
-chmod 000 "$STATE_DIR/loaded-images"/* 2>/dev/null || true
-chmod 100 "$STATE_DIR/loaded-images" 2>/dev/null || true
