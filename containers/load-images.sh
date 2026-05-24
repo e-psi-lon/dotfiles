@@ -3,13 +3,15 @@ mkdir -p "$STATE_DIR"
 mkdir -p "$STATE_DIR/loaded-images"
 
 
+# Lock the files after use to prevent accidental modification between runs.
 lock_state() {
   chmod 000 "$STATE_DIR/loaded-images"/* 2>/dev/null || true
   chmod 100 "$STATE_DIR/loaded-images" 2>/dev/null || true
 }
 
-trap 'cleanup' EXIT INT TERM HUP
+trap 'lock_state' EXIT INT TERM HUP
 
+# Unlock for the duration of the script
 chmod 700 "$STATE_DIR"
 chmod 700 "$STATE_DIR"/loaded-images
 chmod 400 "$STATE_DIR"/loaded-images/* 2>/dev/null || true
