@@ -43,6 +43,7 @@ let
       in
       {
         Entrypoint = [ (lib.getExe entrypoint) ];
+        StopSignal = "SIGINT";
         ExposedPorts = {
           "5432/tcp" = { };
         };
@@ -87,7 +88,7 @@ in
         {
           source = "postgres-password";
           uid = "1000";
-          mode = "0440";
+          mode = "0400";
         }
       ];
     };
