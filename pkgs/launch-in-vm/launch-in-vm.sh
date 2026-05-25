@@ -3,35 +3,27 @@ if [ -z "${XDG_CONFIG_HOME:-}" ]; then
     XDG_CONFIG_HOME="$HOME/.config"
 fi
 
-CONFIG_FILE="$XDG_CONFIG_HOME/launch-in-vm/config"
+CONFIG_FILE="$XDG_CONFIG_HOME/launch-in-vm/config.toml"
 
-if [ -f "$CONFIG_FILE" ]; then
-    while IFS='=' read -r key value; do
-        [[ "$key" =~ ^[[:space:]]*# ]] && continue
-        [[ -z "$key" ]] && continue
-        value="${value#[\"\']}"
-        value="${value%[\"\']}"
-        case "$key" in
-            VMDIR|VM_NAME|SSH_HOST|VM_RAM|VM_CORES|VM_THREADS|VM_SOCKETS)
-                printf -v "$key" '%s' "$value"
-                ;;
-            *)
-                echo "Warning: ignoring unknown config key '$key'" >&2
-                ;;
-        esac
-    done < "$CONFIG_FILE"
-fi
-
-if [ -z "${VMDIR:-}" ]; then
-    echo "Error: VMDIR environment variable or config option is not set. Please set it to the directory containing your VM's disk image and OVMF_VARS.fd."
+if [ ! -f "$CONFIG_FILE" ]; then
+    echo "Error: Configuration file not found at $CONFIG_FILE."
+    echo "Please create a config.toml file with the necessary settings."
     exit 1
 fi
-VM_NAME="${VM_NAME:-$(basename "$VMDIR")}"
-SSH_HOST="${SSH_HOST:-$VM_NAME}"
-VM_RAM="${VM_RAM:-8G}"
-VM_CORES="${VM_CORES:-2}"
-VM_THREADS="${VM_THREADS:-2}"
-VM_SOCKETS="${VM_SOCKETS:-1}"
+
+
+VM_DIR=$(taplo get -f "$CONFIG_FILE" vm.dir 2>/dev/null || echo "")
+if [ -z "$VM_DIR" ]; then
+    echo "Error: 'vm.dir' is not set in $CONFIG_FILE."
+    exit 1
+fi
+
+VM_NAME=$(taplo get -f "$CONFIG_FILE" vm.name 2>/dev/null || basename "$VM_DIR")
+SSH_HOST=$(taplo get -f "$CONFIG_FILE" ssh.host 2>/dev/null || echo "$VM_NAME")
+VM_RAM=$(taplo get -f "$CONFIG_FILE" vm.ram 2>/dev/null || echo "8G")
+VM_CORES=$(taplo get -f "$CONFIG_FILE" vm.cores 2>/dev/null || echo "2")
+VM_THREADS=$(taplo get -f "$CONFIG_FILE" vm.threads 2>/dev/null || echo "2")
+VM_SOCKETS=$(taplo get -f "$CONFIG_FILE" vm.sockets 2>/dev/null || echo "1")
 
 RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/launch-in-vm/$VM_NAME"
 mkdir -p "$RUNTIME_DIR"
@@ -141,9 +133,9 @@ else
         -global driver=cfi.pflash01,property=secure,value=on \
         \
         -drive if=pflash,format=raw,unit=0,file="${EDK2_CODE_FD}",readonly=on \
-        -drive if=pflash,format=raw,unit=1,file="$VMDIR/OVMF_VARS.fd" \
+        -drive if=pflash,format=raw,unit=1,file="$VM_DIR/OVMF_VARS.fd" \
         -device virtio-blk-pci,drive=SystemDisk \
-        -drive id=SystemDisk,if=none,format=qcow2,file="$VMDIR/disk.qcow2",discard=unmap,detect-zeroes=unmap,cache=writeback,aio=threads \
+        -drive id=SystemDisk,if=none,format=qcow2,file="$VM_DIR/disk.qcow2",discard=unmap,detect-zeroes=unmap,cache=writeback,aio=threads \
         \
         -chardev socket,id=char0,path=/run/virtiofsd/"$USER".sock \
         -device vhost-user-fs-pci,chardev=char0,tag=home_share \
@@ -156,9 +148,16 @@ else
     echo "VM launched successfully. Waiting for it to boot..."
 fi
 
+TIMEOUT=15
 until ssh -o ConnectTimeout=5 -o ConnectionAttempts=1 "$SSH_HOST" exit 2>/dev/null; do
     sleep 5
     echo "Waiting..."
+    TIMEOUT=$((TIMEOUT - 1))
+    if [ $TIMEOUT -le 0 ]; then
+        echo "Error: VM did not boot within expected time. Please check the logs at $RUNTIME_DIR/qemu.log for more details."
+        exit 1
+    fi
+
 done
-ssh -f -n "$SSH_HOST" "nohup /usr/bin/waypipe --vsock -s 1234 --xwls --compress none --unlink-socket server -- $PROGRAM_NAME > /dev/null 2>&1 &"
+ssh -f -n "$SSH_HOST" "nohup /usr/bin/waypipe --vsock -s 1234 --xwls --compress none --unlink-socket server -- $(printf '%q' "$PROGRAM_NAME") > /dev/null 2>&1 &"
 echo "Program '$PROGRAM_NAME' launched successfully in the VM."

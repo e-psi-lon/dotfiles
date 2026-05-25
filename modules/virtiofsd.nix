@@ -6,7 +6,6 @@
     serviceConfig = {
       Type = "simple";
       ExecStart = "${lib.getExe pkgs.virtiofsd} --fd=3 --shared-dir=/home/%i --sandbox chroot";
-      RuntimeDirectory = "virtiofsd";
     };
   };
 
