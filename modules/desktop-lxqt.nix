@@ -2,8 +2,8 @@
 {
   services = {
     xserver = {
-       enable = true;
-       desktopManager.lxqt.enable = true;
+      enable = true;
+      desktopManager.lxqt.enable = true;
     };
     displayManager = {
       sddm.enable = true;
@@ -15,7 +15,7 @@
   environment.systemPackages = [ pkgs.labwc ];
   security = {
     polkit.enable = true;
-    pam.services.swaylock = {};
+    pam.services.swaylock = { };
   };
   programs = {
     dconf.enable = true;
@@ -24,6 +24,9 @@
   xdg.portal = {
     wlr.enable = true;
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-    config.wlroots.default = lib.mkDefault [ "wlr" "gtk" ];
+    config.wlroots.default = lib.mkDefault [
+      "wlr"
+      "gtk"
+    ];
   };
 }

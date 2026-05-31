@@ -1,4 +1,4 @@
-{ pkgs, lib, ... } :
+{ pkgs, lib, ... }:
 
 {
   systemd.services."virtiofsd@" = {
@@ -13,7 +13,7 @@
     socketConfig = {
       ListenStream = "/run/virtiofsd/%i.sock";
       SocketMode = "0060";
-      RuntimeDirectory="virtiofsd";
+      RuntimeDirectory = "virtiofsd";
       SocketGroup = "%i";
     };
   };

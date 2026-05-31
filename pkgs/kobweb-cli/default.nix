@@ -6,7 +6,7 @@
   nix-update-script,
   jdk11,
   gradle,
-  hashes
+  hashes,
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "kobweb-cli";

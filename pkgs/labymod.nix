@@ -2,7 +2,7 @@
   lib,
   fetchurl,
   appimageTools,
-  hashes
+  hashes,
 }:
 
 let

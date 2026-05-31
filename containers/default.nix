@@ -353,7 +353,10 @@
         in
         pkgs.writeShellApplication {
           name = "load-podman-images";
-          runtimeInputs = [ pkgs.podman pkgs.coreutils ];
+          runtimeInputs = [
+            pkgs.podman
+            pkgs.coreutils
+          ];
           text = ''
             # Ensure all host volume directories exist with current user ownership
             ${lib.concatMapStringsSep "\n" (dir: "mkdir -p \"${dir}\"") directoriesToCreate}
@@ -413,9 +416,7 @@
           RestartSec = "10";
         };
 
-        Install = {
-          WantedBy = [ "default.target" ];
-        };
+        Install.WantedBy = [ "default.target" ];
       };
     };
 }

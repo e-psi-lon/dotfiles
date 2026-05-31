@@ -1,4 +1,4 @@
-{ 
+{
   writeShellApplication,
   qemu,
   waypipe,

@@ -1,7 +1,7 @@
-{ pkgs, username, ... }: 
+{ pkgs, username, ... }:
 
 {
-  virtualisation  = {
+  virtualisation = {
     libvirtd = {
       enable = true;
       qemu.swtpm.enable = true;
@@ -10,7 +10,7 @@
   };
 
   programs.virt-manager.enable = true;
-  
+
   systemd.tmpfiles.rules = [ "L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu}/share/qemu/firmware" ];
 
   boot = {
@@ -25,9 +25,11 @@
     '';
   };
 
-
   users.users.${username} = {
-    extraGroups = [ "libvirtd" "qemu-libvirtd" ];
-};
+    extraGroups = [
+      "libvirtd"
+      "qemu-libvirtd"
+    ];
+  };
 
 }

@@ -1,4 +1,10 @@
-{ lib, stdenv, fetchFromGitLab, kernel, hashes }:
+{
+  lib,
+  stdenv,
+  fetchFromGitLab,
+  kernel,
+  hashes,
+}:
 
 stdenv.mkDerivation {
   pname = "hid-nintendolic";
@@ -16,7 +22,7 @@ stdenv.mkDerivation {
   postPatch = ''
     substituteInPlace src/hid-nintendolic.c \
       --replace-fail "#include <asm/unaligned.h>" "#include <linux/unaligned.h>"
-    '';
+  '';
 
   buildPhase = ''
     make -C ${kernel.dev}/lib/modules/${kernel.modDirVersion}/build \

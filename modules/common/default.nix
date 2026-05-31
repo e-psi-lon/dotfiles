@@ -26,8 +26,7 @@
     neededForUsers = true;
   };
 
-
-  users.groups.${username} = { 
+  users.groups.${username} = {
     members = [ username ];
   };
   users.users.${username} = {

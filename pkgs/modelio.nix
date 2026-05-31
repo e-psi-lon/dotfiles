@@ -14,7 +14,7 @@
   makeWrapper,
   unzip,
   libGLU,
-  hashes
+  hashes,
 }:
 
 stdenv.mkDerivation rec {

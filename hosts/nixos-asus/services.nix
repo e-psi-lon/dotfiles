@@ -1,4 +1,11 @@
-{ pkgs, lib, paths, subPath, username, ... }:
+{
+  pkgs,
+  lib,
+  paths,
+  subPath,
+  username,
+  ...
+}:
 {
 
   # systemd.user.services.sunshine.environment = {

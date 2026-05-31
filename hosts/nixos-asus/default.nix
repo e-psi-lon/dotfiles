@@ -20,7 +20,6 @@
 
   programs.fuse.enable = true;
 
-
   nix = {
     optimise.automatic = true;
     settings.trusted-users = [

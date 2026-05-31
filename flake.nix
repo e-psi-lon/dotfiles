@@ -76,17 +76,17 @@
       devShells.x86_64-linux.default = pkgs.mkShell {
         packages = [
           (pkgs.writeShellScriptBin "update-flake" ''
-            nix flake update --commit-lock-file --commit-lockfile-summary \
+            exec nix flake update --commit-lock-file --commit-lockfile-summary \
               "flake: Update flake inputs to their latest versions"
           '')
           (pkgs.writeShellScriptBin "test-rebuild" ''
-            sudo nixos-rebuild test --flake .
+            exec sudo nixos-rebuild test --flake .
           '')
           (pkgs.writeShellScriptBin "switch-rebuild" ''
-            sudo nixos-rebuild switch --flake .
+            exec sudo nixos-rebuild switch --flake .
           '')
           (pkgs.writeShellScriptBin "check" ''
-            nix flake check
+            exec nix flake check
           '')
         ];
       };

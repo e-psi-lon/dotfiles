@@ -11,10 +11,12 @@
     };
 
     kernelPackages = pkgs.linuxPackages_latest;
-    extraModulePackages = [
-      config.boot.kernelPackages.hid-nintendolic
+    extraModulePackages = [ config.boot.kernelPackages.hid-nintendolic ];
+    kernelModules = [
+      "asus-armoury"
+      "hid-nintendolic"
+      "vhost_vsock"
     ];
-    kernelModules = [ "asus-armoury" "hid-nintendolic" "vhost_vsock" ];
 
     tmp = {
       useZram = true;
