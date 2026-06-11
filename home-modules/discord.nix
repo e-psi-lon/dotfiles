@@ -94,8 +94,8 @@
         #  };
         # };
         # };
-        MutualGroupDMs.enable = true;
-        CustomRPC.enable = true;
+        mutualGroupDms.enable = true;
+        customRpc.enable = true;
         noDevtoolsWarning.enable = true;
         noOnboardingDelay.enable = true;
         noReplyMention.enable = true;
@@ -103,7 +103,7 @@
         openInApp.enable = true;
         pauseInvitesForever.enable = true;
         pictureInPicture.enable = true;
-        PinDMs.enable = true;
+        pinDms.enable = true;
         platformIndicators = {
           enable = true;
           messages = false;
