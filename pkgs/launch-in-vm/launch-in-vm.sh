@@ -129,7 +129,7 @@ else
         -device hda-micro,audiodev=audio0 \
         \
         -device virtio-net-pci,netdev=nic \
-        -netdev user,hostname="$VM_NAME",hostfwd=tcp::22220-:22,id=nic \
+        -netdev user,hostname="$VM_NAME",hostfwd=tcp::22220-:22,hostfwd=tcp:127.0.0.1:59090-:9090,id=nic \
         -global driver=cfi.pflash01,property=secure,value=on \
         \
         -drive if=pflash,format=raw,unit=0,file="${EDK2_CODE_FD}",readonly=on \
