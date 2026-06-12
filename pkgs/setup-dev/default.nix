@@ -1,6 +1,6 @@
 { writeShellApplication, paths }:
 let
-  flakes = paths.dev-flakes;
+  flakes = paths.subPath paths.resources "dev-flakes";
   envrc = paths.subPath paths.resources ".envrc";
 in
 writeShellApplication {
