@@ -101,9 +101,7 @@ else
 
     qemu-kvm \
         -name "$VM_NAME",process="$VM_NAME" \
-        -machine q35,smm=off,vmport=off,accel=kvm \
-        -global kvm-pit.lost_tick_policy=discard \
-        -cpu host,topoext \
+        "${QEMU_ARCH_FLAGS[@]}" \
         -smp cores="$VM_CORES",threads="$VM_THREADS",sockets="$VM_SOCKETS" \
         -m "$VM_RAM" \
         -object memory-backend-memfd,id=mem,size="$VM_RAM",share=on \
