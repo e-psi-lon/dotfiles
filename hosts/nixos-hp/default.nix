@@ -1,3 +1,4 @@
+{ config, ... }:
 {
 
   imports = [
@@ -6,13 +7,20 @@
   ];
 
   boot = {
-    loader.systemd-boot = {
-      enable = true;
-      configurationLimit = 2;
+    loader = {
+      efi.canTouchEfiVariables = true;
+      systemd-boot = {
+        enable = true;
+        configurationLimit = 2;
+      };
     };
 
     blacklistedKernelModules = [ "intel-spi" ];
   };
+  users.users.${config.username}.openssh.authorizedKeys.keys = with config.sshKeys; [
+    home-hp # Trust itself
+    home-asus 
+  ];
 
   hardware.graphics.enable = true;
   hardware.enableRedistributableFirmware = true;

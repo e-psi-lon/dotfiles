@@ -1,17 +1,12 @@
-{ lib, username, ... }:
+{ config, lib, ... }:
 
 {
-  networking = {
-    networkmanager.enable = lib.mkDefault true;
-    resolvconf.enable = lib.mkDefault false;
-  };
-
-  services = {
+  config.services = {
     resolved.enable = lib.mkDefault true;
     tailscale = {
       enable = lib.mkDefault true;
       useRoutingFeatures = lib.mkDefault "both";
-      permitCertUid = lib.mkDefault username;
+      permitCertUid = lib.mkDefault config.username;
       # Once Tailscale fixes their SSH implementation this could be re-enabled
       # extraSetFlags = [ "--ssh" ];
     };

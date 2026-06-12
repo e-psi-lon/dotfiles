@@ -1,4 +1,4 @@
-{ lib, username, ... }:
+{ config, lib, ... }:
 
 {
   virtualisation.podman = {
@@ -10,7 +10,7 @@
     };
   };
 
-  users.users.${username} = {
+  users.users.${config.username} = {
     subUidRanges = [
       {
         startUid = 100000;

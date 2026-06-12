@@ -62,7 +62,9 @@
       paths = import ./lib/paths.nix;
       subPath = paths.subPath;
       inherit (import (subPath paths.lib "mkNixosSystem.nix")) mkNixosSystem;
-      commonModule = subPath paths.modules "common";
+      baseModule = subPath paths.modules "base";
+      computerModule = subPath paths.modules "computer";
+      workstationModule = subPath paths.modules "workstation";
       hashesFile = subPath paths.resources "/hashes.toml";
       hashes = fromTOML (builtins.readFile hashesFile);
       overlays = [
@@ -99,7 +101,7 @@
           home-manager = home-manager;
           modules = [
             { nixpkgs.overlays = overlays; }
-            commonModule
+            workstationModule
             (subPath paths.modules "desktop-kde.nix")
             (subPath paths.modules "grub.nix")
             (subPath paths.modules "nvidia.nix")
@@ -130,7 +132,7 @@
           pkgs = nixpkgs;
           home-manager = home-manager;
           modules = [
-            commonModule
+            workstationModule
             (subPath paths.modules "desktop-lxqt.nix")
             nixos-hardware.nixosModules.common-pc-laptop
             nixos-hardware.nixosModules.common-pc-ssd
@@ -150,6 +152,7 @@
       nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
         pkgs = import nixpkgs { system = "aarch64-linux"; };
         modules = [
+          baseModule
           ./hosts/nix-on-droid # Currently empty
         ];
         extraSpecialArgs = { inherit paths subPath flakeRev; };

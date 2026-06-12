@@ -1,19 +1,7 @@
 { lib, ... }:
 
 {
-
   services = {
-    pipewire = {
-      enable = lib.mkDefault true;
-      alsa = {
-        enable = lib.mkDefault true;
-        support32Bit = lib.mkDefault true;
-      };
-      pulse.enable = lib.mkDefault true;
-    };
-
-    flatpak.enable = lib.mkDefault true;
-
     fail2ban = {
       enable = lib.mkDefault true;
       bantime = lib.mkDefault "10m";

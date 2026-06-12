@@ -1,4 +1,4 @@
-{ pkgs, username, ... }:
+{ pkgs, config, ... }:
 
 {
 
@@ -15,6 +15,11 @@
       tpm2-tss
     ];
   };
+
+  users.users.${config.username}.openssh.authorizedKeys.keys = with config.sshKeys; [
+    home-hp
+    home-asus # Trust itself
+  ];
   services.desktopManager.plasma6.notoPackage = pkgs.nerd-fonts.noto;
   services.joycond.enable = true;
 
@@ -24,7 +29,7 @@
     optimise.automatic = true;
     settings.trusted-users = [
       "root"
-      username
+      config.username
     ];
 
     gc = {

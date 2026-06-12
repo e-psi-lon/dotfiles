@@ -1,0 +1,5 @@
+[keys]
+home-asus = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEdsCJp/3BQiAzscw2PT8rmfVWYwd7gVJca0QKWkpnSm e-psi-lon@home-asus"
+home-hp = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMj8zKRB39dPABSBPDkRU+yrgFP2iQaCkJvNLJ9D4/7X e-psi-lon@home-hp"
+nix-on-droid = ""
+nixos-ampere = ""
