@@ -17,6 +17,7 @@
     dust
     dnsutils
     github-copilot-cli
+    ouch
 
     # Development
     uv
