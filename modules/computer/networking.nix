@@ -1,7 +1,7 @@
 { config, lib, ... }:
 
 {
-  config.services = {
+  services = {
     resolved.enable = lib.mkDefault true;
     tailscale = {
       enable = lib.mkDefault true;
