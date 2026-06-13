@@ -44,7 +44,15 @@
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.${username} = (paths.home + "/home-${machineName}.nix");
+          home-manager.users.${username} = {
+            imports = [ (paths.home + "/home-${machineName}.nix") ];
+            paths = {
+              libDirectory = paths.lib;
+              resources = paths.resources;
+              hashesToml = subPath paths.resources "hashes.toml";
+              secretsDir = subPath paths.resources "secrets";
+            };
+          };
           home-manager.extraSpecialArgs = args;
         }
       ];

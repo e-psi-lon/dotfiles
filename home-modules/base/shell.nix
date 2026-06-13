@@ -1,7 +1,6 @@
 {
+  config,
   pkgs,
-  paths,
-  subPath,
   ...
 }:
 {
@@ -15,7 +14,7 @@
       enableZshIntegration = true;
       settings = builtins.fromJSON (
         builtins.unsafeDiscardStringContext (
-          builtins.readFile (subPath paths.resources "oh-my-posh/theme.json")
+          builtins.readFile "${config.paths.resources}/oh-my-posh/theme.json"
         )
       );
     };

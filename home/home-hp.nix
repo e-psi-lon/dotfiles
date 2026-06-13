@@ -6,7 +6,7 @@
 }:
 
 {
-  imports = [ (subPath paths.home-modules "common") ];
+  imports = [ (subPath paths.home-modules "workstation") ];
 
   home.stateVersion = "26.05";
   programs.nixvim.colorschemes.onedark.enable = true;

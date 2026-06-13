@@ -14,7 +14,7 @@
   imports = [
     nixcord.homeModules.nixcord
     android-nixpkgs.hmModule
-    (subPath paths.home-modules "common")
+    (subPath paths.home-modules "workstation")
     (subPath paths.home-modules "spicetify.nix")
     (subPath paths.home-modules "direnv.nix")
     (subPath paths.home-modules "discord.nix")

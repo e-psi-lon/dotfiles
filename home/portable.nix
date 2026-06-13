@@ -1,4 +1,4 @@
 { paths, subPath, ... }:
 {
-  imports = [ (subPath paths.homeModules "common") ];
+  imports = [ (subPath paths.homeModules "base") ];
 }

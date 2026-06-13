@@ -1,0 +1,6 @@
+{
+  imports = [
+    ../computer
+    ./packages.nix
+  ];
+}

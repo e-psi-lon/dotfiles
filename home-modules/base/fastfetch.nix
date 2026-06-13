@@ -1,6 +1,6 @@
-{ paths, subPath, ... }:
+{ config, ... }:
 let
-  ff = import (subPath paths.lib "fastfetch");
+  ff = import "${config.paths.libDirectory}/fastfetch";
   inherit (ff)
     green
     cyan

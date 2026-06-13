@@ -1,13 +1,12 @@
 {
+  config,
   pkgs,
   lib,
-  paths,
-  subPath,
-  hashes,
   ...
 }:
 {
   programs.zsh = {
+    completionInit = "autoload -U compinit && compinit -d ~/.cache/zsh/zcompdump";
     enable = true;
     plugins = with pkgs; [
       {
@@ -31,7 +30,7 @@
           owner = "zap-zsh";
           repo = "exa";
           rev = "master";
-          sha256 = hashes.zsh.zap-exa;
+          sha256 = config.hashes.zsh.zap-exa;
         };
       }
       {
@@ -40,7 +39,7 @@
           owner = "zap-zsh";
           repo = "fzf";
           rev = "master";
-          sha256 = hashes.zsh.zap-fzf;
+          sha256 = config.hashes.zsh.zap-fzf;
         };
       }
       {
@@ -49,15 +48,15 @@
           owner = "ael-code";
           repo = "zsh-colored-man-pages";
           rev = "master";
-          sha256 = hashes.zsh.zsh-colored-man-pages;
+          sha256 = config.hashes.zsh.zsh-colored-man-pages;
         };
       }
     ];
     initContent =
       let
         zshConfigEarlyInit = lib.mkOrder 500 ''
-          ${builtins.readFile (subPath paths.resources "zsh/extract.zsh")}
-          ${builtins.readFile (subPath paths.resources "zsh/fzfd.zsh")}
+          ${builtins.readFile "${config.paths.resources }/zsh/extract.zsh"}
+          ${builtins.readFile "${config.paths.resources }/zsh/fzfd.zsh"}
         '';
         zshConfig = lib.mkOrder 1000 ''
           # Fix key bind for Delete key
