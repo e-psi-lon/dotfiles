@@ -56,7 +56,7 @@
         # It's important to be kind with your computer :)
         please = "sudo";
       };
-      sessionVariables.EDITOR = lib.getExe pkgs.neovim;
+      sessionVariables.EDITOR = config.programs.nixvim.package;
     };
     xdg.enable = true;
     programs.nixvim.imports = [ ./neovim.nix ];
