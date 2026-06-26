@@ -5,6 +5,6 @@ zsh-colored-man-pages = "sha256-087bNmB5gDUKoSriHIjXOVZiUG5+Dy9qv3D69E8GBhs="
 
 [pkgs]
 kobweb-cli = "sha256-zNXQrzito6TGKpBDjqog7oCrhcwARCnVKH2uQjcNAtk="
-labymod = "sha256-aZxnuMh7jMB9nU9YHEV45JiGYV3OiD2hIb/Z/2Rk+MU="
+labymod = "sha256-etrP2kfhaWVyTgRAsw8MeBy3ndScTkKi3ogXiaQZ2g0="
 modelio = "sha256-V7Vq8o5HZmfhGaDwd1vo1PRaaF6UVSmc9N+ggd+Y3M4="
 hid-nintendolic = "sha256-T0jOtk9JblNbA7eYRv4JbtS2NKpLW00A1jGWQlSSKJk="
