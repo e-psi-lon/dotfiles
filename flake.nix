@@ -33,7 +33,6 @@
     };
     nixvim = {
       url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     android-nixpkgs = {
       url = "github:tadfisher/android-nixpkgs/stable";

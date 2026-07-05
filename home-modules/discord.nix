@@ -42,7 +42,6 @@
         fakeNitro.enable = true;
         fixCodeblockGap.enable = true;
         forceOwnerCrown.enable = true;
-        friendsSince.enable = true;
         gameActivityToggle.enable = true;
         iLoveSpam.enable = true;
         implicitRelationships.enable = true;
@@ -145,7 +144,8 @@
         translate = {
           enable = true;
           service = "deepl"; # CONSIDER: Consider moving to pro. If required, an home activation script will be required to patch the json file
-          target = "en";
+          sentOutput = "en";
+          receivedOutput = "fr";
         };
         unlockedAvatarZoom.enable = true;
         unsuppressEmbeds.enable = true;
