@@ -31,15 +31,17 @@
       url = "github:nix-community/nix-on-droid/prerelease-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixvim = {
-      url = "github:nix-community/nixvim";
-    };
+    nixvim.url = "github:nix-community/nixvim";
     android-nixpkgs = {
       url = "github:tadfisher/android-nixpkgs/stable";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix = {
       url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    claude-desktop = {
+      url = "github:aaddrick/claude-desktop-debian";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -58,6 +60,7 @@
       nixvim,
       android-nixpkgs,
       sops-nix,
+      claude-desktop,
       ...
     }:
     let
@@ -71,6 +74,7 @@
       hashes = fromTOML (builtins.readFile hashesFile);
       overlays = [
         android-nixpkgs.overlays.default
+        claude-desktop.overlays.default
         (import paths.custom-pkgs { inherit paths hashes; })
       ];
       flakeRev = self.shortRev or "dirty-${toString self.lastModified}";
