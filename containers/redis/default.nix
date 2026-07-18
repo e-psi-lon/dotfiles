@@ -13,13 +13,14 @@ let
   name = "redis";
   tag = toString flakeRev;
 
-  smallRedis = pkgs.redis.override { withSystemd = false; };
 
+  smallRedis = (pkgs.redis.override { withSystemd = false; }).overrideAttrs {
+    doCheck = false;
+  };
   streamImage = pkgs.dockerTools.streamLayeredImage {
     inherit name tag;
 
     contents = with pkgs; [
-      smallRedis
       cacert
       tzdata
     ];
@@ -35,7 +36,7 @@ let
 
     config = {
       Entrypoint = [
-        (lib.getExe' smallRedis "redis-server")
+        (lib.getExe' smallRedis smallRedis.serverBin)
         "--dir"
         "/data"
         "--maxmemory"
@@ -44,13 +45,9 @@ let
         "allkeys-lru"
       ];
       Cmd = [ ];
-      ExposedPorts = {
-        "6379/tcp" = { };
-      };
+      ExposedPorts."6379/tcp" = { };
       User = "1000:1000";
-      Volumes = {
-        "/data" = { };
-      };
+      Volumes."/data" = { };
       WorkingDir = "/data";
     };
   };
