@@ -135,9 +135,9 @@
             description = "Maximum RAM allocated to the Minecraft server.";
           };
 
-          javaVersion = lib.mkOption {
-            type = lib.types.int;
-            default = 21;
+          jdk = lib.mkOption {
+            type = lib.types.package;
+            default = pkgs.jdk21;
             description = "Java version to run the Minecraft server with.";
           };
 

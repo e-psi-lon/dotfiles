@@ -1,6 +1,8 @@
 {
-  pkgs,
+  dockerTools,
   lib,
+  jre_minimal,
+  cacert,
   mkComposeInfo,
   cfg,
   flakeRev,
@@ -12,14 +14,13 @@
 let
   name = "minecraft-server";
   tag = toString flakeRev;
-  javaVersion = toString cfg.javaVersion;
-  jdk = pkgs."jdk${javaVersion}";
+  jdk = cfg.jdk;
   headlessJdk = jdk.override {
     headless = true;
     enableGtk = false;
     enableJavaFX = false;
   };
-  jre = pkgs."jre${javaVersion}_minimal".override {
+  jre = jre_minimal.override {
     jdk = headlessJdk;
     jdkOnBuild = headlessJdk;
     modules = [
@@ -36,11 +37,11 @@ let
       "java.instrument"
     ];
   };
-  streamImage = pkgs.dockerTools.streamLayeredImage {
+  streamImage = dockerTools.streamLayeredImage {
     inherit name tag;
 
     contents = [
-      pkgs.cacert
+      cacert
       jre
     ];
 

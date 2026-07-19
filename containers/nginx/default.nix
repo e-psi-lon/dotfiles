@@ -1,6 +1,11 @@
 {
-  pkgs,
+  dockerTools,
   lib,
+  writeTextDir,
+  tzdata,
+  curl,
+  cacert,
+  nginx,
   mkComposeInfo,
   cfg,
   autoStart,
@@ -16,7 +21,7 @@ let
 
   hasSsl = cfg.sslCert != null && cfg.sslKey != null;
 
-  nginxConf = pkgs.writeTextDir "etc/nginx/nginx.conf" ''
+  nginxConf = writeTextDir "etc/nginx/nginx.conf" ''
     user nginx nginx;
     worker_processes auto;
     error_log stderr warn;
@@ -27,7 +32,7 @@ let
     }
 
     http {
-      include ${pkgs.nginx}/conf/mime.types;
+      include ${nginx}/conf/mime.types;
       default_type application/octet-stream;
       
       # Route all temp paths to our disposable tmpfs arrays
@@ -64,10 +69,10 @@ let
     }
   '';
 
-  streamImage = pkgs.dockerTools.streamLayeredImage {
+  streamImage = dockerTools.streamLayeredImage {
     inherit name tag;
 
-    contents = with pkgs; [
+    contents = [
       nginx
       tzdata
       curl
@@ -77,7 +82,7 @@ let
 
     enableFakechroot = true;
     fakeRootCommands = ''
-      ${pkgs.dockerTools.shadowSetup}
+      ${dockerTools.shadowSetup}
       groupadd -r nginx -g 1000
       useradd -r -g nginx -u 1000 -d /var/empty -s /bin/sh nginx
       groupadd -r nogroup -g 65534
@@ -88,7 +93,7 @@ let
 
     config = {
       Entrypoint = [
-        (lib.getExe pkgs.nginx)
+        (lib.getExe nginx)
         "-e"
         "stderr"
         "-c"
@@ -134,7 +139,7 @@ in
       healthcheck = {
         test = [
           "CMD"
-          (lib.getExe pkgs.curl)
+          (lib.getExe curl)
           "-f"
           "http://localhost:${toString healthPort}/health"
         ];

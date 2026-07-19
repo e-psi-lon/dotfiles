@@ -1,6 +1,10 @@
 {
-  pkgs,
+  dockerTools,
   lib,
+  postgresql,
+  cacert,
+  tzdata,
+  writeShellApplication,
   mkComposeInfo,
   flakeRev,
   cfg,
@@ -13,10 +17,10 @@ let
   name = "postgres";
   tag = toString flakeRev;
 
-  streamImage = pkgs.dockerTools.streamLayeredImage {
+  streamImage = dockerTools.streamLayeredImage {
     inherit name tag;
 
-    contents = with pkgs; [
+    contents = [
       postgresql
       cacert
       tzdata
@@ -24,7 +28,7 @@ let
 
     enableFakechroot = true;
     fakeRootCommands = ''
-      ${pkgs.dockerTools.shadowSetup}
+      ${dockerTools.shadowSetup}
       groupadd -r postgres -g 1000
       useradd -r -g postgres -u 1000 -d /var/lib/postgresql -s /sbin/nologin postgres
       mkdir -p /var/lib/postgresql/data /run/postgresql
@@ -33,9 +37,9 @@ let
 
     config =
       let
-        entrypoint = pkgs.writeShellApplication {
+        entrypoint = writeShellApplication {
           name = "${name}-entrypoint";
-          runtimeInputs = with pkgs; [ postgresql ];
+          runtimeInputs = [ postgresql ];
           text = ''
             ${builtins.readFile ./entrypoint.sh}
           '';
@@ -70,7 +74,7 @@ in
       healthcheck = {
         test = [
           "CMD"
-          (lib.getExe' pkgs.postgresql "pg_isready")
+          (lib.getExe' postgresql "pg_isready")
           "-h"
           "localhost"
           "-p"

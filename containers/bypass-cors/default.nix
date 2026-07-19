@@ -1,5 +1,7 @@
 {
-  pkgs,
+  dockerTools,
+  buildGoModule,
+  cacert,
   lib,
   mkComposeInfo,
   flakeRev,
@@ -11,7 +13,7 @@
 let
   name = "bypass-cors";
   tag = toString flakeRev;
-  proxyBin = pkgs.buildGoModule {
+  proxyBin = buildGoModule {
     pname = name;
     version = toString flakeRev;
     src = ./.;
@@ -28,10 +30,10 @@ let
       mainProgram = name;
     };
   };
-  streamImage = pkgs.dockerTools.streamLayeredImage {
+  streamImage = dockerTools.streamLayeredImage {
     inherit name tag;
 
-    contents = [ pkgs.cacert ];
+    contents = [ cacert ];
 
     config = {
       Entrypoint = [ (lib.getExe proxyBin) ];

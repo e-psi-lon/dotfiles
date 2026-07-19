@@ -1,6 +1,9 @@
 {
-  pkgs,
   lib,
+  dockerTools,
+  redis,
+  cacert,
+  tzdata,
   mkComposeInfo,
   cfg,
   autoStart,
@@ -14,20 +17,20 @@ let
   tag = toString flakeRev;
 
 
-  smallRedis = (pkgs.redis.override { withSystemd = false; }).overrideAttrs {
+  smallRedis = (redis.override { withSystemd = false; }).overrideAttrs {
     doCheck = false;
   };
-  streamImage = pkgs.dockerTools.streamLayeredImage {
+  streamImage = dockerTools.streamLayeredImage {
     inherit name tag;
 
-    contents = with pkgs; [
+    contents = [
       cacert
       tzdata
     ];
 
     enableFakechroot = true;
     fakeRootCommands = ''
-      ${pkgs.dockerTools.shadowSetup}
+      ${dockerTools.shadowSetup}
       groupadd -r redis -g 1000
       useradd -r -g redis -u 1000 -d /data -s /sbin/nologin redis
       mkdir -p /data

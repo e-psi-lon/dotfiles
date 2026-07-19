@@ -304,7 +304,7 @@
     bypass-cors.enable = true;
     minecraft-server = {
       enable = true;
-      javaVersion = 25;
+      jdk = pkgs.jdk25;
       autoStart = false;
     };
     postgres = {
