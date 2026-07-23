@@ -35,6 +35,11 @@
       };
     };
     udev.packages = with pkgs; [ numworks-udev-rules ];
+
+    scx = {
+      enable = true;
+      scheduler = "scx_lavd";
+    };
   };
 
   systemd.sockets."virtiofsd@${username}" = {
