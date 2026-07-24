@@ -9,6 +9,7 @@
         customIcons = [ ];
       };
     };
+    initrd.systemd.tpm2.enable = true;
 
     kernelPackages = pkgs.linuxPackages_latest;
     extraModulePackages = [ config.boot.kernelPackages.hid-nintendolic ];

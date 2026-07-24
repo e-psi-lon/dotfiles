@@ -20,33 +20,28 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/a45818e0-7998-4e3c-9550-8eee4017f18b";
-    fsType = "btrfs";
-  };
-
-  fileSystems."/mnt/data" = {
-    device = "/dev/disk/by-uuid/993e6b9f-bea1-4a16-95f6-5b6eb2badbb7";
-    fsType = "btrfs";
-  };
-
-  fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/90cc5a25-e3d2-486f-a6a3-73d4cffd8514";
-    fsType = "btrfs";
-  };
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/1328af97-8257-41f1-a200-4f0f6e426565";
-    fsType = "ext4";
-  };
-
-  fileSystems."/boot/efi" = {
-    device = "/dev/disk/by-uuid/CDB4-87A6";
-    fsType = "vfat";
-    options = [
-      "fmask=0022"
-      "dmask=0022"
-    ];
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/a45818e0-7998-4e3c-9550-8eee4017f18b";
+      fsType = "btrfs";
+    };
+    "/mnt/data" = {
+      device = "/dev/disk/by-uuid/993e6b9f-bea1-4a16-95f6-5b6eb2badbb7";
+      fsType = "btrfs";
+    };
+    "/home" = {
+      device = "/dev/disk/by-uuid/90cc5a25-e3d2-486f-a6a3-73d4cffd8514";
+      fsType = "btrfs";
+    };
+    "/boot" = {
+      device = "/dev/disk/by-uuid/1328af97-8257-41f1-a200-4f0f6e426565";
+      fsType = "ext4";
+    };
+    "/boot/efi" = {
+      device = "/dev/disk/by-uuid/CDB4-87A6";
+      fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
+    };
   };
 
   swapDevices = [ { device = "/dev/disk/by-uuid/1062ba32-68f8-4abf-aedd-06d2c162d4fa"; } ];
