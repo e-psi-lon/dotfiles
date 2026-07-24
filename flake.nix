@@ -12,8 +12,11 @@
     };
     nixcord = {
       url = "github:FlameFlag/nixcord";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nixpkgs-nixcord.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        nixpkgs-nixcord.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+      };
     };
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware";
@@ -31,7 +34,10 @@
       url = "github:nix-community/nix-on-droid/prerelease-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixvim.url = "github:nix-community/nixvim";
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.flake-parts.follows = "flake-parts";
+    };
     android-nixpkgs = {
       url = "github:tadfisher/android-nixpkgs/stable";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -42,8 +48,16 @@
     };
     claude-desktop = {
       url = "github:aaddrick/claude-desktop-debian";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+      };
+    };
+    disko = {
+      url = "github:nix-community/disko/latest";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
   outputs =
@@ -61,6 +75,7 @@
       android-nixpkgs,
       sops-nix,
       claude-desktop,
+      disko,
       ...
     }:
     let
@@ -117,6 +132,7 @@
             (subPath paths.modules "virtualisation.nix")
             (subPath paths.modules "virtiofsd.nix")
             minegrub-world-sel-theme.nixosModules.default
+            disko.nixosModules.disko
             nixos-hardware.nixosModules.asus-fa706ic
           ];
           machineName = "asus";
