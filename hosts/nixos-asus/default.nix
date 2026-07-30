@@ -21,8 +21,10 @@
     home-hp
     home-asus # Trust itself
   ];
-  services.desktopManager.plasma6.notoPackage = pkgs.nerd-fonts.noto;
-  services.joycond.enable = true;
+  services = {
+    desktopManager.plasma6.notoPackage = pkgs.nerd-fonts.noto;
+    joycond.enable = true;
+  };
 
   programs.fuse.enable = true;
 
