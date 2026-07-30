@@ -25,18 +25,20 @@
       neededForUsers = true;
     };
 
-    users.groups.${config.username} = {
-      members = [ config.username ];
-    };
-
-    users.users.${config.username} = {
-      isNormalUser = true;
-      group = config.username;
-      description = config.displayName;
-      shell = pkgs.zsh;
-      extraGroups = [ "wheel" "storage" "disk" ];
-      hashedPasswordFile = config.sops.secrets."${config.username}/password".path;
-      createHome = true;
+    users = {
+      mutableUsers = lib.mkDefault true;
+      groups.${config.username} = {
+        members = [ config.username ];
+      };
+      users.${config.username} = {
+        isNormalUser = true;
+        group = config.username;
+        description = config.displayName;
+        shell = pkgs.zsh;
+        extraGroups = [ "wheel" "storage" "disk" ];
+        hashedPasswordFile = config.sops.secrets."${config.username}/password".path;
+        createHome = true;
+      };
     };
   };
 }
