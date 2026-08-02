@@ -8,32 +8,33 @@ import (
     "strings"
 )
 
+func addCORS(h http.Header) {
+	h.Set("Access-Control-Allow-Origin", "*")
+	h.Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH, HEAD")
+	h.Set("Access-Control-Allow-Headers", "*, Authorization, Content-Type, X-Requested-With")
+}
+
 func main() {
     proxy := &httputil.ReverseProxy{
-        Director: func(req *http.Request) {
-            targetURL := strings.TrimPrefix(req.RequestURI, "/")
+        Rewrite: func(pr *httputil.ProxyRequest) {
+            targetURL := strings.TrimPrefix(pr.In.RequestURI, "/")
             if target, err := url.Parse(targetURL); err == nil {
-                req.URL = target
-                req.Host = target.Host
+                pr.SetURL(target)
+                log.Printf("Proxying request to: %s", target.String())
             }
-            req.Header.Del("Origin")
-            req.Header.Del("Referer")
+            pr.Out.Header.Del("Origin")
+            pr.Out.Header.Del("Referer")
         },
         ModifyResponse: func(resp *http.Response) error {
-            resp.Header.Set("Access-Control-Allow-Origin", "*")
-            resp.Header.Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH, HEAD")
-            resp.Header.Set("Access-Control-Allow-Headers", "*, Authorization, Content-Type, X-Requested-With")
+            addCORS(resp.Header)
             return nil
         },
     }
 
     mainHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-        log.Printf("Proxying request to: %s", r.RequestURI)
         
         if r.Method == http.MethodOptions {
-            w.Header().Set("Access-Control-Allow-Origin", "*")
-            w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH, HEAD")
-            w.Header().Set("Access-Control-Allow-Headers", "*, Authorization, Content-Type, X-Requested-With")
+            addCORS(w.Header())
             w.WriteHeader(http.StatusNoContent)
             return
         }
