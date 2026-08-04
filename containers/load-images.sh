@@ -17,7 +17,7 @@ chmod 700 "$STATE_DIR"/loaded-images
 chmod 400 "$STATE_DIR"/loaded-images/* 2>/dev/null || true
 
 declare -A current_hashes
-for img in "${images[@]}"; do
+for img in "${!images[@]}"; do
   current_hashes["$(basename "$img")"]=1
 done
 
@@ -30,9 +30,8 @@ for mark in "$STATE_DIR/loaded-images/"*.loaded; do
   fi
 done
 
-for i in "${!images[@]}"; do
-  img="${images[$i]}"
-  ref="${image_refs[$i]}"
+for img in "${!images[@]}"; do
+  ref="${images[$img]}"
   img_hash="$(basename "$img")"
   marker_file="$STATE_DIR/loaded-images/$img_hash.loaded"
   
@@ -62,7 +61,7 @@ done
 
 declare -A current_refs
 declare -A managed_names
-for ref in "${image_refs[@]}"; do
+for ref in "${images[@]}"; do
   current_refs["$ref"]=1
   managed_names["${ref%%:*}"]=1
 done

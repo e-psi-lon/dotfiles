@@ -361,10 +361,9 @@
             # Ensure all host volume directories exist with current user ownership
             ${lib.concatMapStringsSep "\n" (dir: "mkdir -p \"${dir}\"") directoriesToCreate}
 
-            images=(${lib.concatMapStringsSep " " (img: "\"${img}\"") enabledImages})
-            image_refs=(${
-              lib.concatMapStringsSep " " (img: "\"localhost/${img.imageName}:${img.imageTag}\"") enabledImages
-            })
+            declare -A images=(
+              ${lib.concatMapStringsSep "\n" (img: "\t[\"${img}\"]=${"localhost/${img.imageName}:${img.imageTag}"}") enabledImages}
+            )
             ${builtins.readFile loadImageBase}
           '';
         };
