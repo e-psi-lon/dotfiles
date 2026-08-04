@@ -381,6 +381,7 @@
           ${builtins.readFile ./podman-container.sh}
         '';
       };
+      hasSecrets = config.sops.secrets != { };
 
     in
     lib.mkIf config.podman-containers.enable {
@@ -392,31 +393,50 @@
           message = "podman-containers requires 'virtualisation.podman.enable = true' to be set in your NixOS host configuration.";
         }
       ];
-      systemd.user.services.podman-containers = {
+      systemd.user.services = {
+        podman-containers = {
+          Unit = let 
+            hasSecrets = config.sops.secrets != { };
+          in {
+            Description = "A set of local containers managed all together with podman-compose";
+            
+            Requires = [ "podman.socket" ] ++ lib.optional hasSecrets "sops-nix.service";
+            After = [ 
+              "podman.socket"
+              "network.target"
+            ] ++ lib.optional hasSecrets "sops-nix.service";
+          };
 
-        Unit = {
-          Description = "A set of local containers managed all together with podman-compose";
-          Requires = [ "podman.socket" ];
-          After = [
-            "podman.socket"
-            "network.target"
+          Service = {
+            Type = "simple";
+            ExecStartPre = "${lib.getExe loadImagesScript}";
+            Environment = [
+              "PODMAN_COMPOSE_PROVIDER=${lib.getExe pkgs.podman-compose}"
+              "PODMAN_COMPOSE_WARNING_LOGS=false"
+            ];
+            ExecStart = "${lib.getExe pkgs.podman} compose -p podman-containers -f ${composeFile}/podman-compose.yml up";
+            ExecStop = "${lib.getExe pkgs.podman} compose -p podman-containers -f ${composeFile}/podman-compose.yml down";
+            Restart = "on-failure";
+            RestartSec = "10";
+          };
+
+          Install.WantedBy = [ "default.target" ];
+        };
+      } // lib.optionalAttrs hasSecrets {
+        sops-nix = {
+          Unit.OnSuccess = [ "podman-secrets-chown.service" ];
+          Service.ExecStartPre = [
+            "-${lib.getExe pkgs.podman} unshare ${lib.getExe' pkgs.coreutils "chown"} -R 0:0 ${config.sops.defaultSymlinkPath}/containers"
           ];
         };
 
-        Service = {
-          Type = "simple";
-          ExecStartPre = "${lib.getExe loadImagesScript}";
-          Environment = [
-            "PODMAN_COMPOSE_PROVIDER=${lib.getExe pkgs.podman-compose}"
-            "PODMAN_COMPOSE_WARNING_LOGS=false"
-          ];
-          ExecStart = "${lib.getExe pkgs.podman} compose -p podman-containers -f ${composeFile}/podman-compose.yml up";
-          ExecStop = "${lib.getExe pkgs.podman} compose -p podman-containers -f ${composeFile}/podman-compose.yml down";
-          Restart = "on-failure";
-          RestartSec = "10";
+        podman-secrets-chown = {
+          Unit.Description = "Fix ownership of sops-nix secrets for rootless podman";
+          Service = {
+            Type = "oneshot";
+            ExecStart = "${lib.getExe pkgs.podman} unshare ${lib.getExe' pkgs.coreutils "chown"} -R 1000:1000 ${config.sops.defaultSymlinkPath}/containers";
+          };
         };
-
-        Install.WantedBy = [ "default.target" ];
       };
     };
 }
