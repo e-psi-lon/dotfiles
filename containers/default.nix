@@ -15,6 +15,7 @@
           description,
           defaultExpose ? false,
           defaultRestartPolicy ? "unless-stopped",
+          containerOptions ? { },
         }:
         {
           enable = lib.mkEnableOption description;
@@ -54,7 +55,8 @@
             default = true;
             description = "Start automatically with the stack. If false, it's assigned to a manual profile.";
           };
-        };
+
+        } // containerOptions;
       nginxEnabled = config.podman-containers.nginx.enable;
     in
     {
@@ -65,51 +67,50 @@
           description = "nginx proxy container managing routing between services";
           defaultExpose = true;
           defaultRestartPolicy = "always";
-        }
-        // {
-          domain = lib.mkOption {
-            type = lib.types.str;
-            default = "localhost";
-            description = "Primary domain for the Nginx proxy.";
-          };
+          containerOptions = {
+            domain = lib.mkOption {
+              type = lib.types.str;
+              default = "localhost";
+              description = "Primary domain for the Nginx proxy.";
+            };
 
-          httpConfig = lib.mkOption {
-            type = lib.types.str;
-            default = "";
-            description = "Extra declarative Nginx http {} context configuration.";
-          };
+            httpConfig = lib.mkOption {
+              type = lib.types.str;
+              default = "";
+              description = "Extra declarative Nginx http {} context configuration.";
+            };
 
-          streamConfig = lib.mkOption {
-            type = lib.types.str;
-            default = "";
-            description = "Extra declarative Nginx stream {} context configuration.";
-          };
+            streamConfig = lib.mkOption {
+              type = lib.types.str;
+              default = "";
+              description = "Extra declarative Nginx stream {} context configuration.";
+            };
 
-          sslCert = lib.mkOption {
-            type = lib.types.nullOr lib.types.path;
-            default = null;
-            description = "Path to the host SSL certificate (e.g., from sops-nix).";
-          };
+            sslCert = lib.mkOption {
+              type = lib.types.nullOr lib.types.path;
+              default = null;
+              description = "Path to the host SSL certificate (e.g., from sops-nix).";
+            };
 
-          sslKey = lib.mkOption {
-            type = lib.types.nullOr lib.types.path;
-            default = null;
-            description = "Path to the host SSL key (e.g., from sops-nix).";
-          };
+            sslKey = lib.mkOption {
+              type = lib.types.nullOr lib.types.path;
+              default = null;
+              description = "Path to the host SSL key (e.g., from sops-nix).";
+            };
 
-          extraHttpDirectory = lib.mkOption {
-            type = lib.types.path;
-            default = config.xdg.configHome + "/containers/nginx/http.d";
-            description = "Path to a host directory containing extra Nginx HTTP config files (e.g., for additional server blocks).";
-          };
+            extraHttpDirectory = lib.mkOption {
+              type = lib.types.path;
+              default = config.xdg.configHome + "/containers/nginx/http.d";
+              description = "Path to a host directory containing extra Nginx HTTP config files (e.g., for additional server blocks).";
+            };
 
-          extraStreamDirectory = lib.mkOption {
-            type = lib.types.path;
-            default = config.xdg.configHome + "/containers/nginx/stream.d";
-            description = "Path to a host directory containing extra Nginx Stream config files (e.g., for TCP/UDP services).";
+            extraStreamDirectory = lib.mkOption {
+              type = lib.types.path;
+              default = config.xdg.configHome + "/containers/nginx/stream.d";
+              description = "Path to a host directory containing extra Nginx Stream config files (e.g., for TCP/UDP services).";
+            };
           };
         };
-
       bypass-cors = mkContainerOpts {
         description = "CORS bypass tool";
         defaultExpose = !nginxEnabled;
@@ -121,30 +122,30 @@
           description = "Minecraft server";
           defaultExpose = !nginxEnabled;
           defaultRestartPolicy = "unless-stopped";
-        }
-        // {
-          serverDirectory = lib.mkOption {
-            type = lib.types.path;
-            default = config.xdg.dataHome + "/containers/minecraft-server";
-            description = "Host directory to store the Minecraft world and server properties.";
-          };
+          containerOptions = {
+            serverDirectory = lib.mkOption {
+              type = lib.types.path;
+              default = config.xdg.dataHome + "/containers/minecraft-server";
+              description = "Host directory to store the Minecraft world and server properties.";
+            };
 
-          memoryLimit = lib.mkOption {
-            type = lib.types.str;
-            default = "4G";
-            description = "Maximum RAM allocated to the Minecraft server.";
-          };
+            memoryLimit = lib.mkOption {
+              type = lib.types.str;
+              default = "4G";
+              description = "Maximum RAM allocated to the Minecraft server.";
+            };
 
-          jdk = lib.mkOption {
-            type = lib.types.package;
-            default = pkgs.jdk21;
-            description = "Java version to run the Minecraft server with.";
-          };
+            jdk = lib.mkOption {
+              type = lib.types.package;
+              default = pkgs.jdk21;
+              description = "Java version to run the Minecraft server with.";
+            };
 
-          javaArgs = lib.mkOption {
-            type = lib.types.listOf lib.types.str;
-            default = [ ];
-            description = "Additional JVM arguments for the Minecraft server.";
+            javaArgs = lib.mkOption {
+              type = lib.types.listOf lib.types.str;
+              default = [ ];
+              description = "Additional JVM arguments for the Minecraft server.";
+            };
           };
         };
 
@@ -153,18 +154,18 @@
           description = "PostgreSQL database server";
           defaultExpose = !nginxEnabled;
           defaultRestartPolicy = "always";
-        }
-        // {
-          dataDirectory = lib.mkOption {
-            type = lib.types.path;
-            default = config.xdg.dataHome + "/containers/postgres";
-            description = "Host directory to store PostgreSQL data.";
-          };
+          containerOptions = {
+            dataDirectory = lib.mkOption {
+              type = lib.types.path;
+              default = config.xdg.dataHome + "/containers/postgres";
+              description = "Host directory to store PostgreSQL data.";
+            };
 
-          postgresPasswordPath = lib.mkOption {
-            type = lib.types.str;
-            default = config.xdg.dataHome + "/containers/postgres-password";
-            description = "Path to the file containing the password for the default 'postgres' user.";
+            postgresPasswordPath = lib.mkOption {
+              type = lib.types.str;
+              default = config.xdg.dataHome + "/containers/postgres-password";
+              description = "Path to the file containing the password for the default 'postgres' user.";
+            };
           };
         };
 
@@ -173,12 +174,12 @@
           description = "redis container";
           defaultExpose = !nginxEnabled;
           defaultRestartPolicy = "unless-stopped";
-        }
-        // {
-          dataDirectory = lib.mkOption {
-            type = lib.types.path;
-            default = config.xdg.dataHome + "/containers/redis";
-            description = "Host directory to store Redis data.";
+          containerOptions = {
+            dataDirectory = lib.mkOption {
+              type = lib.types.path;
+              default = config.xdg.dataHome + "/containers/redis";
+              description = "Host directory to store Redis data.";
+            };
           };
         };
     };
