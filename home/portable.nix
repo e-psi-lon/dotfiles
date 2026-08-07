@@ -1,4 +1,1 @@
-{ paths, subPath, ... }:
-{
-  imports = [ (subPath paths.homeModules "base") ];
-}
+{ paths, subPath, ... }: { imports = [ (subPath paths.homeModules "base") ]; }

@@ -55,8 +55,8 @@
     initContent =
       let
         zshConfigEarlyInit = lib.mkOrder 500 ''
-          ${builtins.readFile "${config.paths.resources }/zsh/extract.zsh"}
-          ${builtins.readFile "${config.paths.resources }/zsh/fzfd.zsh"}
+          ${builtins.readFile "${config.paths.resources}/zsh/extract.zsh"}
+          ${builtins.readFile "${config.paths.resources}/zsh/fzfd.zsh"}
         '';
         zshConfig = lib.mkOrder 1000 ''
           # Fix key bind for Delete key

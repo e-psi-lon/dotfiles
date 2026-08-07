@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   imports = [
     ./../base
@@ -35,7 +40,11 @@
         group = config.username;
         description = config.displayName;
         shell = pkgs.zsh;
-        extraGroups = [ "wheel" "storage" "disk" ];
+        extraGroups = [
+          "wheel"
+          "storage"
+          "disk"
+        ];
         hashedPasswordFile = config.sops.secrets."${config.username}/password".path;
         createHome = true;
       };

@@ -8,17 +8,17 @@
   ];
 
   options = {
-    username = lib.mkOption { 
+    username = lib.mkOption {
       type = lib.types.str;
       description = "The username for the main user of the system.";
     };
-    displayName = lib.mkOption { 
-      type = lib.types.str; 
+    displayName = lib.mkOption {
+      type = lib.types.str;
       description = "The display name for the main user of the system.";
     };
     paths = {
-      secretsDir = lib.mkOption { 
-        type = lib.types.path; 
+      secretsDir = lib.mkOption {
+        type = lib.types.path;
         description = "The path to the secrets directory.";
       };
     };
@@ -32,7 +32,10 @@
       optimise.automatic = lib.mkDefault true;
       settings = {
         auto-optimise-store = lib.mkDefault true;
-        experimental-features = [ "nix-command" "flakes" ];
+        experimental-features = [
+          "nix-command"
+          "flakes"
+        ];
       };
     };
   };

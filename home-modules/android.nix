@@ -1,5 +1,4 @@
-{ config, ... }:
-{
+{ config, ... }: {
   android-sdk = {
     enable = true;
     path = "${config.xdg.configHome}/android-sdk";

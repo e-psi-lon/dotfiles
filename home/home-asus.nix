@@ -224,13 +224,13 @@
   podman-containers = {
     enable = true;
 
-    nginx = 
-      let 
-        hasSsl = config.podman-containers.nginx.sslCerts != {};
-      in {
-      enable = true;
-      httpConfig =
-        ''
+    nginx =
+      let
+        hasSsl = config.podman-containers.nginx.sslCerts != { };
+      in
+      {
+        enable = true;
+        httpConfig = ''
           server {
             listen 80;
             ${lib.optionalString hasSsl "listen 443 ssl;"}
@@ -262,43 +262,43 @@
             }
           }
         '';
-      streamConfig =
-        let
-          useSsl = lib.optionalString hasSsl "ssl";
-          sslTemplate = lib.optionalString hasSsl ''
-            ssl_certificate /run/secrets/localhost/ssl.crt;
-            ssl_certificate_key /run/secrets/localhost/ssl.key;
+        streamConfig =
+          let
+            useSsl = lib.optionalString hasSsl "ssl";
+            sslTemplate = lib.optionalString hasSsl ''
+              ssl_certificate /run/secrets/localhost/ssl.crt;
+              ssl_certificate_key /run/secrets/localhost/ssl.key;
+            '';
+          in
+          ''
+            upstream postgres_proto {
+              server postgres:5432;
+            }
+
+            upstream redis_proto {
+              server redis:6379;
+            }
+
+            # Postgres Gateway
+            server {
+              listen 5432 ${useSsl};
+              ${sslTemplate}
+              proxy_pass postgres_proto;
+            }
+
+            # Redis Gateway
+            server {
+              listen 6379 ${useSsl};
+              ${sslTemplate}
+              proxy_pass redis_proto;
+            }
           '';
-        in
-        ''
-          upstream postgres_proto {
-            server postgres:5432;
-          }
 
-          upstream redis_proto {
-            server redis:6379;
-          }
-
-          # Postgres Gateway
-          server {
-            listen 5432 ${useSsl};
-            ${sslTemplate}
-            proxy_pass postgres_proto;
-          }
-
-          # Redis Gateway
-          server {
-            listen 6379 ${useSsl};
-            ${sslTemplate}
-            proxy_pass redis_proto;
-          }
-        '';
-
-      extraPorts = [
-        "5432:5432"
-        "6379:6379"
-      ];
-    };
+        extraPorts = [
+          "5432:5432"
+          "6379:6379"
+        ];
+      };
 
     bypass-cors.enable = true;
     minecraft-server = {

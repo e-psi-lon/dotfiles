@@ -1,5 +1,4 @@
-{ config, ... }:
-{
+{ config, ... }: {
   sops.secrets = {
     "luks/home.key".sopsFile = "${config.paths.secretsDir}/luks-home.asus.bin";
     "luks/data.key".sopsFile = "${config.paths.secretsDir}/luks-data.asus.bin";
@@ -20,7 +19,10 @@
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot/efi";
-                mountOptions = [ "fmask=0022" "dmask=0022" ];
+                mountOptions = [
+                  "fmask=0022"
+                  "dmask=0022"
+                ];
               };
             };
 
@@ -63,12 +65,18 @@
                   extraArgs = [ "-f" ];
                   subvolumes = {
                     "@" = {
-                      mountpoint = "/"; 
-                      mountOptions = [ "compress=zstd:1" "noatime" ];
+                      mountpoint = "/";
+                      mountOptions = [
+                        "compress=zstd:1"
+                        "noatime"
+                      ];
                     };
                     "@nix" = {
                       mountpoint = "/nix";
-                      mountOptions = [ "compress=zstd:3" "noatime" ];
+                      mountOptions = [
+                        "compress=zstd:3"
+                        "noatime"
+                      ];
                     };
                   };
                 };
@@ -89,10 +97,10 @@
                   format = "btrfs";
                   extraArgs = [ "-f" ];
                   mountpoint = "/home";
-                  mountOptions = [ 
-                    "compress=zstd:2" 
+                  mountOptions = [
+                    "compress=zstd:2"
                     "nofail"
-                    "x-systemd.requires-mount-for=/run/secrets" 
+                    "x-systemd.requires-mount-for=/run/secrets"
                   ];
                 };
               };
@@ -112,10 +120,10 @@
                   format = "btrfs";
                   extraArgs = [ "-f" ];
                   mountpoint = "/mnt/data";
-                  mountOptions = [   
+                  mountOptions = [
                     "nofail"
                     "x-systemd.requires-mount-for=/run/secrets"
-                    "compress=zstd:1" 
+                    "compress=zstd:1"
                   ];
                 };
               };

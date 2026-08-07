@@ -40,7 +40,10 @@
     "/boot/efi" = {
       device = "/dev/disk/by-uuid/CDB4-87A6";
       fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" ];
+      options = [
+        "fmask=0022"
+        "dmask=0022"
+      ];
     };
   };
 

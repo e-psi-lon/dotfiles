@@ -1,5 +1,4 @@
-{ pkgs, lib, ... }:
-{
+{ pkgs, lib, ... }: {
   programs.git = {
     lfs.enable = true;
     enable = true;

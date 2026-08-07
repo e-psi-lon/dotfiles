@@ -1,5 +1,4 @@
-{ config, ... }:
-{
+{ config, ... }: {
 
   imports = [
     ./hardware-configuration.nix
@@ -19,7 +18,7 @@
   };
   users.users.${config.username}.openssh.authorizedKeys.keys = with config.sshKeys; [
     home-hp # Trust itself
-    home-asus 
+    home-asus
   ];
 
   hardware.graphics.enable = true;

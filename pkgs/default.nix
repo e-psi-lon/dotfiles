@@ -1,5 +1,4 @@
-{ paths, hashes }:
-final: prev: {
+{ paths, hashes }: final: prev: {
   modelio = final.callPackage ./modelio.nix { inherit hashes; };
   setup-dev = final.callPackage ./setup-dev { inherit paths; };
   kobweb-cli = final.callPackage ./kobweb-cli { inherit hashes; };

@@ -11,5 +11,9 @@
   ];
 
   # Hardware access groups for local interactive seats
-  users.users.${config.username}.extraGroups = [ "audio" "video" "input" ];
+  users.users.${config.username}.extraGroups = [
+    "audio"
+    "video"
+    "input"
+  ];
 }
