@@ -21,6 +21,11 @@
       type = lib.types.attrsOf lib.types.str;
       description = "The available ssh keys for evaluation.";
     };
+    personalId = lib.mkOption {
+      type = lib.types.int;
+      default = 1000;
+      description = "The personal ID for the user (used for both UID and GID).";
+    };
   };
 
   config = {
@@ -33,9 +38,11 @@
     users = {
       mutableUsers = lib.mkDefault true;
       groups.${config.username} = {
+        gid = config.personalId;
         members = [ config.username ];
       };
       users.${config.username} = {
+        uid = config.personalId;
         isNormalUser = true;
         group = config.username;
         description = config.displayName;
