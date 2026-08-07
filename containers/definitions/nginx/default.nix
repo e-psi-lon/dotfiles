@@ -19,7 +19,7 @@ let
 
   healthPort = 43417;
 
-  hasSsl = cfg.sslCert != null && cfg.sslKey != null;
+  hasSsl = cfg.sslCerts != { };
 
   nginxConf = writeTextDir "etc/nginx/nginx.conf" ''
     user nginx nginx;

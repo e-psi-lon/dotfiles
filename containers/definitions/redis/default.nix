@@ -16,10 +16,7 @@ let
   name = "redis";
   tag = toString flakeRev;
 
-
-  smallRedis = (redis.override { withSystemd = false; }).overrideAttrs {
-    doCheck = false;
-  };
+  smallRedis = (redis.override { withSystemd = false; }).overrideAttrs { doCheck = false; };
   streamImage = dockerTools.streamLayeredImage {
     inherit name tag;
 

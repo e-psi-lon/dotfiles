@@ -224,12 +224,12 @@
   podman-containers = {
     enable = true;
 
-    nginx = {
+    nginx = 
+      let 
+        hasSsl = config.podman-containers.nginx.sslCerts != {};
+      in {
       enable = true;
       httpConfig =
-        let
-          hasSsl = config.podman-containers.nginx.sslCert != null;
-        in
         ''
           server {
             listen 80;
@@ -238,8 +238,8 @@
             merge_slashes off;
 
             ${lib.optionalString hasSsl ''
-              ssl_certificate ${config.podman-containers.nginx.sslCert};
-              ssl_certificate_key ${config.podman-containers.nginx.sslKey};
+              ssl_certificate /run/secrets/localhost/ssl.crt;
+              ssl_certificate_key /run/secrets/localhost/ssl.key;
             ''}
 
             location /cors/ {
@@ -253,8 +253,8 @@
             merge_slashes off;
 
             ${lib.optionalString hasSsl ''
-              ssl_certificate ${config.podman-containers.nginx.sslCert};
-              ssl_certificate_key ${config.podman-containers.nginx.sslKey};
+              ssl_certificate /run/secrets/localhost/ssl.crt;
+              ssl_certificate_key /run/secrets/localhost/ssl.key;
             ''}
 
             location / {
@@ -264,11 +264,10 @@
         '';
       streamConfig =
         let
-          hasSsl = config.podman-containers.nginx.sslCert != null;
           useSsl = lib.optionalString hasSsl "ssl";
           sslTemplate = lib.optionalString hasSsl ''
-            ssl_certificate ${config.podman-containers.nginx.sslCert};
-            ssl_certificate_key ${config.podman-containers.nginx.sslKey};
+            ssl_certificate /run/secrets/localhost/ssl.crt;
+            ssl_certificate_key /run/secrets/localhost/ssl.key;
           '';
         in
         ''
