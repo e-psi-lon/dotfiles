@@ -36,7 +36,7 @@
     };
 
     users = {
-      mutableUsers = lib.mkDefault true;
+      mutableUsers = lib.mkDefault false;
       groups.${config.username} = {
         gid = config.personalId;
         members = [ config.username ];

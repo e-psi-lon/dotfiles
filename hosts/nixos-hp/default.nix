@@ -37,8 +37,6 @@
     enableDebugInfo = false;
   };
 
-  users.mutableUsers = false;
-
   system.stateVersion = "26.05";
 
 }
