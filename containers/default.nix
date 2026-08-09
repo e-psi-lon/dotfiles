@@ -15,6 +15,11 @@
     in
     {
       enable = lib.mkEnableOption "custom podman compose user service for local containers";
+      containerUidGid = lib.mkOption {
+        type = lib.types.int;
+        default = 1000;
+        description = "UID and GID for the user running inside containers. This is a temporary option that'll later be replaced with a more flexible approach of giving each container its own option.";
+      };
 
       nginx = mkContainerOpts {
         description = "nginx proxy container managing routing between services";
@@ -143,6 +148,7 @@
       ) containerDefs;
 
       mkComposeInfo = import ./functions/compose-info.nix { inherit lib; };
+      containerUidGid = config.podman-containers.containerUidGid;
 
       # Helper to evaluate container configurations without repetition
       evalContainer = import ./functions/eval-container.nix {
@@ -151,6 +157,7 @@
           pkgs
           config
           mkComposeInfo
+          containerUidGid
           ;
       };
 
@@ -175,7 +182,7 @@
       );
 
       loadImagesScript = pkgs.callPackage ./pkgs/load-images {
-        inherit directoriesToCreate enabledImages;
+        inherit directoriesToCreate enabledImages containerUidGid;
       };
 
       podmanContainerCLI = pkgs.callPackage ./pkgs/podman-container { inherit composeFile; };
@@ -245,7 +252,7 @@
           Unit.Description = "Fix ownership of sops-nix secrets for rootless podman";
           Service = {
             Type = "oneshot";
-            ExecStart = "${lib.getExe pkgs.podman} unshare ${lib.getExe' pkgs.coreutils "chown"} -R 1000:1000 ${config.sops.defaultSymlinkPath}/containers";
+            ExecStart = "${lib.getExe pkgs.podman} unshare ${lib.getExe' pkgs.coreutils "chown"} -R ${toString containerUidGid}:${toString containerUidGid} ${config.sops.defaultSymlinkPath}/containers";
           };
         };
         podman-secrets-failed-chown = {

@@ -10,12 +10,14 @@
   cfg,
   autoStart,
   flakeRev,
+  containerUidGid,
   ...
 }:
 
 let
   name = "nginx";
   tag = toString flakeRev;
+  containerUidGidStr = toString containerUidGid;
 
   healthPort = 43417;
 
@@ -83,8 +85,8 @@ let
     enableFakechroot = true;
     fakeRootCommands = ''
       ${dockerTools.shadowSetup}
-      groupadd -r nginx -g 1000
-      useradd -r -g nginx -u 1000 -d /var/empty -s /bin/sh nginx
+      groupadd -r nginx -g ${containerUidGidStr}
+      useradd -r -g nginx -u ${containerUidGidStr} -d /var/empty -s /bin/sh nginx
       groupadd -r nogroup -g 65534
       useradd -r -g nogroup -u 65534 -d /nonexistent -s /bin/false nobody
       mkdir -p /var/cache/nginx

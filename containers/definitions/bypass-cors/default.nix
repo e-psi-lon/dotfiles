@@ -6,12 +6,14 @@
   flakeRev,
   exposePorts,
   autoStart,
+  containerUidGid,
   ...
 }:
 
 let
   name = "bypass-cors";
   tag = toString flakeRev;
+  containerUidGidStr = toString containerUidGid;
   proxyBin = buildGoModule {
     pname = name;
     version = toString flakeRev;
@@ -37,7 +39,7 @@ let
       ExposedPorts = {
         "8080/tcp" = { };
       };
-      User = "1000:1000";
+      User = "${containerUidGidStr}:${containerUidGidStr}";
       WorkingDir = "/";
     };
   };

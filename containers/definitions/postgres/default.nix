@@ -10,12 +10,14 @@
   cfg,
   autoStart,
   exposePorts,
+  containerUidGid,
   ...
 }:
 
 let
   name = "postgres";
   tag = toString flakeRev;
+  containerUidGidStr = toString containerUidGid;
 
   streamImage = dockerTools.streamLayeredImage {
     inherit name tag;
@@ -29,8 +31,8 @@ let
     enableFakechroot = true;
     fakeRootCommands = ''
       ${dockerTools.shadowSetup}
-      groupadd -r postgres -g 1000
-      useradd -r -g postgres -u 1000 -d /var/lib/postgresql -s /sbin/nologin postgres
+      groupadd -r postgres -g ${containerUidGidStr}
+      useradd -r -g postgres -u ${containerUidGidStr} -d /var/lib/postgresql -s /sbin/nologin postgres
       mkdir -p /var/lib/postgresql/data /run/postgresql
       chown -R postgres:postgres /var/lib/postgresql /run/postgresql
     '';
@@ -51,7 +53,7 @@ let
         ExposedPorts = {
           "5432/tcp" = { };
         };
-        User = "1000:1000";
+        User = "${containerUidGidStr}:${containerUidGidStr}";
         Volumes = {
           "/var/lib/postgresql/data" = { };
         };
@@ -91,7 +93,7 @@ in
       secrets = [
         {
           source = "postgres-password";
-          uid = "1000";
+          uid = containerUidGid;
           mode = "0400";
         }
       ];

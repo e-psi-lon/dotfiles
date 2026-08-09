@@ -8,12 +8,14 @@
   flakeRev,
   autoStart,
   exposePorts,
+  containerUidGid,
   ...
 }:
 
 let
   name = "minecraft-server";
   tag = toString flakeRev;
+  containerUidGidStr = toString containerUidGid;
   jdk = cfg.jdk;
   headlessJdk = jdk.override {
     headless = true;
@@ -59,7 +61,7 @@ let
       ExposedPorts = {
         "25565/tcp" = { };
       };
-      User = "1000:1000";
+      User = "${containerUidGidStr}:${containerUidGidStr}";
       Volumes = {
         "/minecraft" = { };
       };

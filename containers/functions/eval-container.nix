@@ -3,6 +3,7 @@
   config,
   flakeRev,
   mkComposeInfo,
+  containerUidGid,
   ...
 }:
 name:
@@ -24,6 +25,6 @@ pkgs.callPackage (../definitions + "/${name}") {
       }
     );
   cfg = containerCfg;
-  inherit flakeRev;
+  inherit flakeRev containerUidGid;
   inherit (containerCfg) exposePorts autoStart;
 }

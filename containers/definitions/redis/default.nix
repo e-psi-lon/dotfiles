@@ -9,12 +9,14 @@
   autoStart,
   exposePorts,
   flakeRev,
+  containerUidGid,
   ...
 }:
 
 let
   name = "redis";
   tag = toString flakeRev;
+  containerUidGidStr = toString containerUidGid;
 
   smallRedis = (redis.override { withSystemd = false; }).overrideAttrs { doCheck = false; };
   streamImage = dockerTools.streamLayeredImage {
@@ -28,8 +30,8 @@ let
     enableFakechroot = true;
     fakeRootCommands = ''
       ${dockerTools.shadowSetup}
-      groupadd -r redis -g 1000
-      useradd -r -g redis -u 1000 -d /data -s /sbin/nologin redis
+      groupadd -r redis -g ${containerUidGidStr}
+      useradd -r -g redis -u ${containerUidGidStr} -d /data -s /sbin/nologin redis
       mkdir -p /data
       chown -R redis:redis /data
     '';
@@ -46,7 +48,7 @@ let
       ];
       Cmd = [ ];
       ExposedPorts."6379/tcp" = { };
-      User = "1000:1000";
+      User = "${containerUidGidStr}:${containerUidGidStr}";
       Volumes."/data" = { };
       WorkingDir = "/data";
     };
