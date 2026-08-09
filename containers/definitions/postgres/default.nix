@@ -89,7 +89,6 @@ in
         retries = 10;
         start_period = "5s";
       };
-      userns_mode = "keep-id";
       secrets = [
         {
           source = "postgres-password";

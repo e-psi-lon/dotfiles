@@ -5,6 +5,7 @@
   coreutils,
   directoriesToCreate,
   enabledImages,
+  containerUidGid,
 }:
 let
   loadImageBase = ./load-images.sh;
@@ -16,8 +17,11 @@ writeShellApplication {
     coreutils
   ];
   text = ''
-    # Ensure all host volume directories exist with current user ownership
-    ${lib.concatMapStringsSep "\n" (dir: "mkdir -p \"${dir}\"") directoriesToCreate}
+    # Ensure all host volume directories exist with current user ownership by creating an array
+    CONTAINER_UID_GID=${toString containerUidGid}
+    directories_to_create=(
+      ${lib.concatStringsSep " " directoriesToCreate}
+    )
 
     declare -A images=(
       ${lib.concatMapStringsSep "\n" (

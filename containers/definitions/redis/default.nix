@@ -72,7 +72,6 @@ in
         retries = 5;
         start_period = "5s";
       };
-      userns_mode = "keep-id";
       deploy.resources.limits = {
         cpus = "0.5";
         memory = "512M";
