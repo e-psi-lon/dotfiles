@@ -2,8 +2,8 @@
   config,
   lib,
   pkgs,
-  osConfig,
-  flakeRev,
+  osConfig ? null,
+  flakeRev ? "unknown-rev",
   ...
 }:
 
@@ -191,12 +191,12 @@
           message = "podman-containers requires 'virtualisation.podman.enable = true' to be set in your NixOS host configuration.";
         }
       ];
-      sops.age.plugins = lib.mkIf hasSecrets [
-        {
-          type = "derivation";
-          outPath = "/run/wrappers";
-        }
-      ];
+      sops.age.plugins = lib.mkIf hasSecrets (
+        [ 
+          { type = "derivation"; outPath = "/run/wrappers"; }
+        ]
+        ++ lib.optional (pkgs.stdenv.isLinux && osConfig == null) { type = "derivation"; outPath = "/usr"; }
+      );
       systemd.user.services = {
         podman-containers = {
           Unit =
