@@ -4,6 +4,7 @@
   podman,
   coreutils,
   directoriesToCreate,
+  sharedDirs,
   enabledImages,
   containerUidGid,
 }:
@@ -21,6 +22,9 @@ writeShellApplication {
     CONTAINER_UID_GID=${toString containerUidGid}
     directories_to_create=(
       ${lib.concatStringsSep " " directoriesToCreate}
+    )
+    shared_dirs_to_create=(
+      ${lib.concatStringsSep " " sharedDirs}
     )
 
     declare -A images=(

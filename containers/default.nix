@@ -177,12 +177,23 @@
           let
             c = config.podman-containers.${name};
           in
-          if meta ? extraDirs then meta.extraDirs c else [ ]
+          (if meta ? sharedDirs then meta.sharedDirs c else [ ])
+          ++ (if meta ? dataDirs then meta.dataDirs c else [ ])
+        ) enabledContainers
+      );
+
+      sharedDirs = lib.flatten (
+        lib.mapAttrsToList (
+          name: meta:
+          let
+            c = config.podman-containers.${name};
+          in
+          if meta ? sharedDirs then meta.sharedDirs c else [ ]
         ) enabledContainers
       );
 
       loadImagesScript = pkgs.callPackage ./pkgs/load-images {
-        inherit directoriesToCreate enabledImages containerUidGid;
+        inherit directoriesToCreate sharedDirs enabledImages containerUidGid;
       };
 
       podmanContainerCLI = pkgs.callPackage ./pkgs/podman-container { inherit composeFile; };

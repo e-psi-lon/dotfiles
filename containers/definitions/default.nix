@@ -1,16 +1,16 @@
 {
   nginx = {
-    extraDirs = c: [
+    sharedDirs = c: [
       c.extraHttpDirectory
       c.extraStreamDirectory
     ];
   };
   bypass-cors = { };
   minecraft-server = {
-    extraDirs = c: [ c.serverDirectory ];
+    sharedDirs = c: [ c.serverDirectory ];
   };
   postgres = {
-    extraDirs = c: [ c.dataDirectory ];
+    dataDirs = c: [ c.dataDirectory ];
     secrets = c: {
       postgres-password = {
         file = c.postgresPasswordPath;
@@ -18,6 +18,6 @@
     };
   };
   redis = {
-    extraDirs = c: [ c.dataDirectory ];
+    sharedDirs = c: [ c.dataDirectory ];
   };
 }
