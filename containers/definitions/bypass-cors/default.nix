@@ -3,17 +3,17 @@
   buildGoModule,
   lib,
   mkComposeInfo,
+  cfg,
   flakeRev,
   exposePorts,
   autoStart,
-  containerUidGid,
   ...
 }:
 
 let
   name = "bypass-cors";
   tag = toString flakeRev;
-  containerUidGidStr = toString containerUidGid;
+  containerUidGidStr = toString cfg.uidGid;
   proxyBin = buildGoModule {
     pname = name;
     version = toString flakeRev;

@@ -15,11 +15,6 @@
     in
     {
       enable = lib.mkEnableOption "custom podman compose user service for local containers";
-      containerUidGid = lib.mkOption {
-        type = lib.types.int;
-        default = 1000;
-        description = "UID and GID for the user running inside containers. This is a temporary option that'll later be replaced with a more flexible approach of giving each container its own option.";
-      };
 
       nginx = mkContainerOpts {
         description = "nginx proxy container managing routing between services";
@@ -148,7 +143,6 @@
       ) containerDefs;
 
       mkComposeInfo = import ./functions/compose-info.nix { inherit lib; };
-      containerUidGid = config.podman-containers.containerUidGid;
 
       # Helper to evaluate container configurations without repetition
       evalContainer = import ./functions/eval-container.nix {
@@ -157,7 +151,6 @@
           pkgs
           config
           mkComposeInfo
-          containerUidGid
           ;
       };
 
@@ -188,12 +181,15 @@
           let
             c = config.podman-containers.${name};
           in
-          if meta ? sharedDirs then meta.sharedDirs c else [ ]
+          if meta ? sharedDirs then
+            map (path: { inherit path; uid = c.uidGid; }) (meta.sharedDirs c)
+          else
+            [ ]
         ) enabledContainers
       );
 
       loadImagesScript = pkgs.callPackage ./pkgs/load-images {
-        inherit directoriesToCreate sharedDirs enabledImages containerUidGid;
+        inherit directoriesToCreate sharedDirs enabledImages;
       };
 
       podmanContainerCLI = pkgs.callPackage ./pkgs/podman-container { inherit composeFile; };
@@ -259,11 +255,39 @@
           ];
         };
 
-        podman-secrets-chown = {
+        podman-secrets-chown = let
+          secretsFilesUids = lib.flatten (
+            lib.mapAttrsToList (
+              name: meta:
+              let
+                c = config.podman-containers.${name};
+              in
+              if meta ? secrets then
+                map (secret: { path = secret.file; uid = c.uidGid; }) (lib.attrValues (meta.secrets c))
+              else
+                [ ]
+            ) enabledContainers
+          );
+          secretsChownScript = pkgs.writeShellApplication {
+            name = "podman-secrets-chown";
+            runtimeInputs = [ pkgs.podman ];
+            text = ''
+              declare -A secrets_files_uids=(
+                ${lib.concatMapStringsSep "\n" (d: "\t[${lib.escapeShellArg d.path}]=${toString d.uid}") secretsFilesUids}
+              )
+
+              for file in "''${!secrets_files_uids[@]}"; do
+                uid="''${secrets_files_uids[$file]}"
+                podman unshare chown "$uid:$uid" "$file"
+              done
+            '';
+          };
+         in 
+         {
           Unit.Description = "Fix ownership of sops-nix secrets for rootless podman";
           Service = {
             Type = "oneshot";
-            ExecStart = "${lib.getExe pkgs.podman} unshare ${lib.getExe' pkgs.coreutils "chown"} -R ${toString containerUidGid}:${toString containerUidGid} ${config.sops.defaultSymlinkPath}/containers";
+            ExecStart = lib.getExe secretsChownScript;
           };
         };
         podman-secrets-failed-chown = {

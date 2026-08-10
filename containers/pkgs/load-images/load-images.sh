@@ -2,14 +2,15 @@ for dir in "${directories_to_create[@]}"; do
   mkdir -p "$dir"
 done
 
-for dir in "${shared_dirs_to_create[@]}"; do
-    acl_output=$(podman unshare getfacl -a "$dir" 2>/dev/null)
+for dir in "${!shared_dirs_to_create[@]}"; do
+  uid="${shared_dirs_to_create[$dir]}"
+  acl_output=$(podman unshare getfacl -a "$dir" 2>/dev/null)
 
   if ! grep -qE '^user:0:rwx$' <<< "$acl_output" || \
-     ! grep -qE "^user:$CONTAINER_UID_GID:rwx$" <<< "$acl_output"; then
+     ! grep -qE "^user:$uid:rwx$" <<< "$acl_output"; then
     podman unshare setfacl -R \
       -m u:0:rwx -d -m u:0:rwx \
-      -m u:$CONTAINER_UID_GID:rwx -d -m u:$CONTAINER_UID_GID:rwx \
+      -m u:"$uid":rwx -d -m u:"$uid":rwx \
       "$dir"
   fi
 done

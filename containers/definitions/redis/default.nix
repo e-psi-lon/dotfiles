@@ -9,14 +9,13 @@
   autoStart,
   exposePorts,
   flakeRev,
-  containerUidGid,
   ...
 }:
 
 let
   name = "redis";
   tag = toString flakeRev;
-  containerUidGidStr = toString containerUidGid;
+  containerUidGidStr = toString cfg.uidGid;
 
   smallRedis = (redis.override { withSystemd = false; }).overrideAttrs { doCheck = false; };
   streamImage = dockerTools.streamLayeredImage {

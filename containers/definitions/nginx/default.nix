@@ -10,14 +10,13 @@
   cfg,
   autoStart,
   flakeRev,
-  containerUidGid,
   ...
 }:
 
 let
   name = "nginx";
   tag = toString flakeRev;
-  containerUidGidStr = toString containerUidGid;
+  containerUidGidStr = toString cfg.uidGid;
 
   healthPort = 43417;
 

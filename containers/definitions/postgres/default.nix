@@ -10,14 +10,13 @@
   cfg,
   autoStart,
   exposePorts,
-  containerUidGid,
   ...
 }:
 
 let
   name = "postgres";
   tag = toString flakeRev;
-  containerUidGidStr = toString containerUidGid;
+  containerUidGidStr = toString cfg.uidGid;
 
   streamImage = dockerTools.streamLayeredImage {
     inherit name tag;
@@ -92,7 +91,7 @@ in
       secrets = [
         {
           source = "postgres-password";
-          uid = containerUidGid;
+          uid = cfg.uidGid;
           mode = "0400";
         }
       ];

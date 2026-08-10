@@ -44,5 +44,10 @@
     description = "Start automatically with the stack. If false, it's assigned to a manual profile.";
   };
 
+  uidGid = lib.mkOption {
+    type = lib.types.int;
+    default = 1000;
+    description = "The value that'll act as both the UID and GID for the user running inside the container.";
+  };
 }
 // containerOptions
