@@ -290,6 +290,7 @@
       in
       {
         enable = true;
+        uidGid = 46148;
         httpConfig = ''
           server {
             listen 80;
@@ -360,17 +361,25 @@
         ];
       };
 
-    bypass-cors.enable = true;
+    bypass-cors = {
+      enable = true;
+      uidGid = 4200;
+    };
     minecraft-server = {
+      uidGid = 25565;
       enable = true;
       jdk = pkgs.jdk25;
       autoStart = false;
     };
     postgres = {
+      uidGid = 1000;
       enable = true;
       postgresPasswordPath = config.sops.secrets."containers/postgres-password".path;
     };
 
-    redis.enable = true;
+    redis = {
+      enable = true;
+      uidGid = 6379;
+    };
   };
 }
