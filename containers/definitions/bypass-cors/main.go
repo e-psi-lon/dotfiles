@@ -18,10 +18,18 @@ func main() {
     proxy := &httputil.ReverseProxy{
         Rewrite: func(pr *httputil.ProxyRequest) {
             targetURL := strings.TrimPrefix(pr.In.RequestURI, "/")
-            if target, err := url.Parse(targetURL); err == nil {
-                pr.SetURL(target)
-                log.Printf("Proxying request to: %s", target.String())
+            
+            target, err := url.Parse(targetURL)
+            if err != nil {
+                log.Printf("Error parsing target URL %q: %v", targetURL, err)
+                return
             }
+
+            pr.Out.URL = target
+            pr.Out.Host = target.Host
+
+            log.Printf("Proxying request to: %s", target.String())
+
             pr.Out.Header.Del("Origin")
             pr.Out.Header.Del("Referer")
         },

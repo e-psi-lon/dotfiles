@@ -2,6 +2,7 @@
   dockerTools,
   buildGoModule,
   lib,
+  cacert,
   mkComposeInfo,
   cfg,
   flakeRev,
@@ -34,6 +35,7 @@ let
   streamImage = dockerTools.streamLayeredImage {
     inherit name tag;
 
+    contents = [ cacert ];
     config = {
       Entrypoint = [ (lib.getExe proxyBin) ];
       ExposedPorts = {
