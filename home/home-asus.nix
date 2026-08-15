@@ -29,197 +29,257 @@
     subPath paths.resources "secrets/containers.e-psi-lon.yaml";
 
   hasNvidiaGpu = true;
-  programs.tmux = {
-    enable = true;
-    reverseSplit = true;
-    plugins = with pkgs.tmuxPlugins; [
-      prefix-highlight
-      yank
-      battery
-      onedark-theme
-      vim-tmux-focus-events
-    ];
-  };
-  programs.fzf.tmux.enableShellIntegration = true;
-  programs.nixvim = {
-    extraPlugins = with pkgs.vimPlugins; [
-      onedarkpro-nvim
-      vim-tmux-focus-events
-    ];
-    colorscheme = "onedark_vivid";
-    keymaps = [
-      {
-        key = "<leader>mp";
-        action = "<cmd>MarkdownPreview toggle<CR>";
-        options.desc = "Toggle markdown preview";
-      }
-    ];
-    plugins = {
-      render-markdown = {
-        enable = true;
-        settings = {
-          heading = {
-            icons = [
-              "# "
-              "## "
-              "### "
-              "#### "
-              "##### "
-              "###### "
-            ];
+
+  programs = {
+    tmux = {
+      enable = true;
+      reverseSplit = true;
+      plugins = with pkgs.tmuxPlugins; [
+        prefix-highlight
+        yank
+        battery
+        onedark-theme
+        vim-tmux-focus-events
+      ];
+    };
+    fzf.tmux.enableShellIntegration = true;
+    nixvim = {
+      extraPlugins = with pkgs.vimPlugins; [
+        onedarkpro-nvim
+        vim-tmux-focus-events
+      ];
+      colorscheme = "onedark_vivid";
+      keymaps = [
+        {
+          key = "<leader>mp";
+          action = "<cmd>MarkdownPreview toggle<CR>";
+          options.desc = "Toggle markdown preview";
+        }
+      ];
+      plugins = {
+        render-markdown = {
+          enable = true;
+          settings = {
+            heading = {
+              icons = [
+                "# "
+                "## "
+                "### "
+                "#### "
+                "##### "
+                "###### "
+              ];
+            };
+            bullets = {
+              icons = [
+                "• "
+                "◦ "
+                "▪ "
+              ];
+            };
+            enabled = true;
+            debounce = 100;
           };
-          bullets = {
-            icons = [
-              "• "
-              "◦ "
-              "▪ "
-            ];
-          };
-          enabled = true;
-          debounce = 100;
+        };
+        treesitter.grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
+          cpp
+          java
+          python
+          html
+          css
+          javascript
+          typescript
+          php
+          xml
+          yaml
+        ];
+        cmp = {
+          enable = true;
+          autoEnableSources = false;
+          settings.sources = [
+            { name = "nvim_lsp"; }
+            { name = "path"; }
+            { name = "buffer"; }
+          ];
+        };
+        copilot-lua = {
+          enable = true;
+        };
+        copilot-chat = {
+          enable = true;
+        };
+        copilot-cmp = {
+          enable = true;
+        };
+        copilot-lsp = {
+          enable = true;
         };
       };
-      treesitter.grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
-        cpp
-        java
-        python
-        html
-        css
-        javascript
-        typescript
-        php
-        xml
-        yaml
-      ];
-      cmp = {
-        enable = true;
-        autoEnableSources = false;
-        settings.sources = [
-          { name = "nvim_lsp"; }
-          { name = "path"; }
-          { name = "buffer"; }
-        ];
-      };
-      copilot-lua = {
-        enable = true;
-      };
-      copilot-chat = {
-        enable = true;
-      };
-      copilot-cmp = {
-        enable = true;
-      };
-      copilot-lsp = {
-        enable = true;
-      };
     };
+
+    zsh.initContent = ''
+      [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(${lib.getExe pkgs.vscode} --locate-shell-integration-path zsh)"
+    '';
   };
 
-  programs.zsh.initContent = ''
-    [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(${lib.getExe pkgs.vscode} --locate-shell-integration-path zsh)"
-  '';
+  home = {
+    stateVersion = "26.05";
+    packages = with pkgs; [
+      # Web browser
+      zen-browser.packages.${stdenv.hostPlatform.system}.default
+      ungoogled-chromium # Required for some APIs Firefox (and forks) doesn't support...
+      claude-desktop # Not really a browseer but anyway it fits
 
-  home.stateVersion = "26.05";
-  home.packages = with pkgs; [
-    # Web browser
-    zen-browser.packages.${stdenv.hostPlatform.system}.default
-    ungoogled-chromium # Required for some APIs Firefox (and forks) doesn't support...
-    claude-desktop # Not really a browseer but anyway it fits
+      # IDEs, text editor and other dev tools
+      vscode
+      nixfmt
+      nixd
+      jetbrains-toolbox
+      jetbrains.idea
+      jetbrains.pycharm
+      jetbrains.webstorm
+      jetbrains.clion
+      android-studio
+      gource
+      kobweb-cli
 
-    # IDEs, text editor and other dev tools
-    vscode
-    nixfmt
-    nixd
-    jetbrains-toolbox
-    jetbrains.idea
-    jetbrains.pycharm
-    jetbrains.webstorm
-    jetbrains.clion
-    android-studio
-    gource
-    kobweb-cli
+      # Misc
+      libreoffice-qt
+      proton-pass
+      xwayland-satellite
+      pear-desktop
+      setup-dev # Custom script to setup a dev environment with direnv and a flake
+      launch-in-vm # Custom script to launch an application in a VM and forward it using waypipe
+      sl # Yes.
 
-    # Misc
-    libreoffice-qt
-    proton-pass
-    xwayland-satellite
-    pear-desktop
-    setup-dev # Custom script to setup a dev environment with direnv and a flake
-    launch-in-vm # Custom script to launch an application in a VM and forward it using waypipe
-    sl # Yes.
+      # Games
+      prismlauncher
+      labymod
+      ryubing
+      dolphin-emu
+      melonds
+      azahar
+      nestopia-ue
+      cemu
+      pcsx2
+      mgba
+      pegasus-frontend
+      steam-rom-manager
 
-    # Games
-    prismlauncher
-    labymod
-    ryubing
-    dolphin-emu
-    melonds
-    azahar
-    nestopia-ue
-    cemu
-    pcsx2
-    mgba
-    pegasus-frontend
-    steam-rom-manager
+      # Global languages
+      nodejs_24
+      php
 
-    # Global languages
-    nodejs_24
-    php
+      # Class stuff
+      ganttproject-bin
+      modelio
+    ];
+    file =
+      let
+        xdgConfig = config.xdg.configHome;
+        xdgData = config.xdg.dataHome;
+        emulation = "/mnt/data/Emulation";
+        jdkHome = pkg: subPath pkg "lib/openjdk";
+        emuPath = rel: config.lib.file.mkOutOfStoreSymlink "${emulation}/${rel}";
+      in
+      {
+        ".jdks/jdk21".source = jdkHome pkgs.jdk21;
+        ".jdks/jdk25".source = jdkHome pkgs.jdk25;
+        ".jdks/jdk17".source = jdkHome pkgs.jdk17;
+        ".jdks/jdk8".source = jdkHome pkgs.jdk8;
 
-    # Class stuff
-    ganttproject-bin
-    modelio
-  ];
+        "Desktop/Zen Browser.desktop".source =
+          subPath zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
+            "share/applications/zen.desktop";
 
-  home.file =
-    let
-      xdgConfig = config.xdg.configHome;
-      xdgData = config.xdg.dataHome;
-      emulation = "/mnt/data/Emulation";
-      jdkHome = pkg: subPath pkg "lib/openjdk";
-      emuPath = rel: config.lib.file.mkOutOfStoreSymlink "${emulation}/${rel}";
-    in
-    {
-      ".jdks/jdk21".source = jdkHome pkgs.jdk21;
-      ".jdks/jdk25".source = jdkHome pkgs.jdk25;
-      ".jdks/jdk17".source = jdkHome pkgs.jdk17;
-      ".jdks/jdk8".source = jdkHome pkgs.jdk8;
+        # Emulators
+        ## Ryujinx
+        "${xdgConfig}/Ryujinx/bis".source = emuPath "saves/ryujinx";
+        "${xdgConfig}/Ryujinx/games".source = emuPath "storage/ryujinx/games";
+        "${xdgConfig}/Ryujinx/mods".source = emuPath "storage/ryujinx/mods";
+        "${xdgConfig}/Ryujinx/sdcard".source = emuPath "storage/ryujinx/sdcard";
+        "${xdgConfig}/Ryujinx/system".source = emuPath "bios/ryujinx";
 
-      "Desktop/Zen Browser.desktop".source =
-        subPath zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
-          "share/applications/zen.desktop";
+        ## Dolphin
+        "${xdgData}/dolphin-emu/Dump".source = emuPath "storage/dolphin/Dump";
+        "${xdgData}/dolphin-emu/GC".source = emuPath "saves/dolphin/GC";
+        "${xdgData}/dolphin-emu/Load".source = emuPath "storage/dolphin/Load";
+        "${xdgData}/dolphin-emu/ResourcePacks".source = emuPath "texturepacks/dolphin/ResourcePacks";
+        "${xdgData}/dolphin-emu/ScreenShots".source = emuPath "storage/dolphin/ScreenShots";
+        "${xdgData}/dolphin-emu/StateSaves".source = emuPath "saves/dolphin/StateSaves";
+        "${xdgData}/dolphin-emu/WFS".source = emuPath "storage/dolphin/WFS";
+        "${xdgData}/dolphin-emu/Wii".source = emuPath "saves/dolphin/Wii";
 
-      # Emulators
-      ## Ryujinx
-      "${xdgConfig}/Ryujinx/bis".source = emuPath "saves/ryujinx";
-      "${xdgConfig}/Ryujinx/games".source = emuPath "storage/ryujinx/games";
-      "${xdgConfig}/Ryujinx/mods".source = emuPath "storage/ryujinx/mods";
-      "${xdgConfig}/Ryujinx/sdcard".source = emuPath "storage/ryujinx/sdcard";
-      "${xdgConfig}/Ryujinx/system".source = emuPath "bios/ryujinx";
-
-      ## Dolphin
-      "${xdgData}/dolphin-emu/Dump".source = emuPath "storage/dolphin/Dump";
-      "${xdgData}/dolphin-emu/GC".source = emuPath "saves/dolphin/GC";
-      "${xdgData}/dolphin-emu/Load".source = emuPath "storage/dolphin/Load";
-      "${xdgData}/dolphin-emu/ResourcePacks".source = emuPath "texturepacks/dolphin/ResourcePacks";
-      "${xdgData}/dolphin-emu/ScreenShots".source = emuPath "storage/dolphin/ScreenShots";
-      "${xdgData}/dolphin-emu/StateSaves".source = emuPath "saves/dolphin/StateSaves";
-      "${xdgData}/dolphin-emu/WFS".source = emuPath "storage/dolphin/WFS";
-      "${xdgData}/dolphin-emu/Wii".source = emuPath "saves/dolphin/Wii";
-
-      ## Azahar
-      "${xdgData}/azahar-emu/sysdata".source = emuPath "bios/azahar";
-      "${xdgData}/azahar-emu/cheats".source = emuPath "storage/azahar/cheats";
-      "${xdgData}/azahar-emu/nand".source = emuPath "storage/azahar/nand";
-      "${xdgData}/azahar-emu/screenshots".source = emuPath "storage/azahar/screenshots";
-      "${xdgData}/azahar-emu/sdmc".source = emuPath "saves/azahar/sdmc";
-      "${xdgData}/azahar-emu/states".source = emuPath "saves/azahar/states";
+        ## Azahar
+        "${xdgData}/azahar-emu/sysdata".source = emuPath "bios/azahar";
+        "${xdgData}/azahar-emu/cheats".source = emuPath "storage/azahar/cheats";
+        "${xdgData}/azahar-emu/nand".source = emuPath "storage/azahar/nand";
+        "${xdgData}/azahar-emu/screenshots".source = emuPath "storage/azahar/screenshots";
+        "${xdgData}/azahar-emu/sdmc".source = emuPath "saves/azahar/sdmc";
+        "${xdgData}/azahar-emu/states".source = emuPath "saves/azahar/states";
 
       ## Cemu
       "${xdgData}/Cemu/mlc01/sys".source = emuPath "storage/Cemu";
       "${xdgData}/Cemu/mlc01/usr".source = emuPath "saves/Cemu";
       "${xdgData}/Cemu/graphicPacks".source = emuPath "texturepacks/Cemu";
     };
+  };
+
+  systemd.user = {
+    services =
+      let
+        certDir = "${config.xdg.dataHome}/certs";
+      in
+      {
+        tailscale-cert = {
+          Unit.Description = "Renew Tailscale TLS cert";
+          Service = {
+            Type = "oneshot";
+            ExecStartPre = "mkdir -p ${certDir}/tailnet";
+            ExecStart = ''
+              ${lib.getExe pkgs.tailscale} cert \
+                --cert-file ${certDir}/tailnet/cert.crt \
+                --key-file ${certDir}/tailnet/key.key \
+                home.tail2c6aae.ts.net
+            '';
+          };
+        };
+
+        localhost-cert = {
+          Unit.Description = "Renew self-signed localhost TLS cert";
+          Service = {
+            Type = "oneshot";
+            ExecStartPre = "mkdir -p ${certDir}/localhost";
+            ExecStart = [
+              "${lib.getExe pkgs.mkcert} -install"
+              ''
+              ${lib.getExe pkgs.mkcert} \
+                -cert-file ${certDir}/localhost/cert.crt -key-file ${certDir}/localhost/key.key \
+                "*.localhost" localhost 127.0.0.1 ::1
+            ''
+            ];
+          };
+        };
+      };
+
+    timers = {
+      tailscale-cert = {
+        Install.WantedBy = [ "timers.target" ];
+        Timer = {
+          OnStartupSec = "5m";
+          OnUnitActiveSec = "12h";
+          Persistent = true;
+        };
+      };
+      localhost-cert = {
+        Install.WantedBy = [ "timers.target" ];
+        Timer = {
+          OnCalendar = "weekly";
+          Persistent = true;
+        };
+      };
+    };
+  };
 
   podman-containers = {
     enable = true;
