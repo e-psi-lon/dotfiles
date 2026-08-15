@@ -126,9 +126,7 @@ in
       volumes = [
         "${cfg.extraHttpDirectory}:/etc/nginx/http.d:ro"
         "${cfg.extraStreamDirectory}:/etc/nginx/stream.d:ro"
-      ]
-      ++ lib.optional hasSsl "${cfg.sslCert}:/etc/nginx/ssl/cert.pem:ro"
-      ++ lib.optional hasSsl "${cfg.sslKey}:/etc/nginx/ssl/key.pem:ro";
+      ];
       tmpfs = [
         "/var/cache/nginx"
         "/var/run"
