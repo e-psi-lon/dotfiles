@@ -1,7 +1,7 @@
 { config, ... }: {
   sops.secrets = {
-    "luks/home.key".sopsFile = "${config.paths.secretsDir}/luks-home.asus.bin";
-    "luks/data.key".sopsFile = "${config.paths.secretsDir}/luks-data.asus.bin";
+    "luks/home.key".sopsFile = "${config.paths.secretsDir}/luks/home.asus.bin";
+    "luks/data.key".sopsFile = "${config.paths.secretsDir}/luks/data.asus.bin";
   };
 
   disko.devices = {
