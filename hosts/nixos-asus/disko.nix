@@ -1,4 +1,24 @@
-{ config, ... }: {
+{ config, lib, ... }: 
+let 
+  nonInitrdLuksDevices = [
+    "home"
+    "data"
+  ];
+
+  luksInfo = partName: {
+    inherit
+      (config.disko.devices.disk.main.content.partitions.${partName}.content)
+      name
+      device
+      ;
+    keyFile = config.disko.devices.disk.main.content.partitions.${partName}.content.settings.keyFile;
+  };
+
+  devices = map luksInfo nonInitrdLuksDevices;
+
+  crypttabLine = d: "${d.name} ${d.device} ${d.keyFile} luks\n";
+in
+{
   sops.secrets = {
     "luks/home.key".sopsFile = "${config.paths.secretsDir}/luks/home.asus.bin";
     "luks/data.key".sopsFile = "${config.paths.secretsDir}/luks/data.asus.bin";
@@ -58,6 +78,7 @@
                 name = "ROOT";
                 settings = {
                   allowDiscards = true;
+                  crypttabExtraOpts = [ "tpm2-device=auto" ];
                   # Interactive prompt/TPM2
                 };
                 content = {
@@ -88,6 +109,7 @@
               content = {
                 type = "luks";
                 name = "HOME";
+                initrdUnlock = false;
                 settings = {
                   keyFile = config.sops.secrets."luks/home.key".path;
                   allowDiscards = true;
@@ -100,7 +122,7 @@
                   mountOptions = [
                     "compress=zstd:2"
                     "nofail"
-                    "x-systemd.requires-mount-for=/run/secrets"
+                    "x-systemd.before=display-manager.service"
                   ];
                 };
               };
@@ -111,6 +133,7 @@
               content = {
                 type = "luks";
                 name = "DATA";
+                initrdUnlock = false;
                 settings = {
                   keyFile = config.sops.secrets."luks/data.key".path;
                   allowDiscards = true;
@@ -122,7 +145,6 @@
                   mountpoint = "/mnt/data";
                   mountOptions = [
                     "nofail"
-                    "x-systemd.requires-mount-for=/run/secrets"
                     "compress=zstd:1"
                   ];
                 };
@@ -133,4 +155,17 @@
       };
     };
   };
+
+  environment.etc."crypttab".text = lib.concatMapStrings crypttabLine devices;
+
+  systemd.services = lib.listToAttrs (
+    map (d: {
+      name = "systemd-cryptsetup@${d.name}";
+      value = {
+        after = [ "sops-install-secrets.service" ];
+        requires = [ "sops-install-secrets.service" ];
+      };
+    }) devices
+  );
+
 }
