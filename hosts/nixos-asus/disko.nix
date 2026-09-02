@@ -20,8 +20,14 @@ let
 in
 {
   sops.secrets = {
-    "luks/home.key".sopsFile = "${config.paths.secretsDir}/luks/home.asus.bin";
-    "luks/data.key".sopsFile = "${config.paths.secretsDir}/luks/data.asus.bin";
+    "luks/home.key" = {
+      sopsFile = "${config.paths.secretsDir}/luks/home.asus.bin";
+      format = "binary";
+    };
+    "luks/data.key" = {
+      sopsFile = "${config.paths.secretsDir}/luks/data.asus.bin";
+      format = "binary";
+    };
   };
 
   disko.devices = {
