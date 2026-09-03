@@ -1,7 +1,7 @@
 {
   lib,
   config,
-  mkBindMount,
+  mkBindMountWithOptions,
   username,
   ...
 }:
@@ -10,8 +10,18 @@
     configuration.hardware.nvidia.prime.sync.enable = lib.mkForce false;
   };
   fileSystems = {
-    "/home/${username}/Dev" = mkBindMount "/mnt/data/Dev";
-    "/home/${username}/.local/share/containers" = mkBindMount "/mnt/data/containers";
+    "/home/${username}/Dev" = mkBindMountWithOptions "/mnt/data/Dev" [ 
+      "noauto" 
+      "x-systemd.wanted-by=multi-user.target"
+      "x-systemd.requires=mnt-data.mount"
+      "x-systemd.after=mnt-data.mount" 
+    ];
+    "/home/${username}/.local/share/containers" = mkBindMountWithOptions "/mnt/data/containers" [ 
+      "noauto" 
+      "x-systemd.wanted-by=multi-user.target"
+      "x-systemd.requires=mnt-data.mount"
+      "x-systemd.after=mnt-data.mount" 
+    ];
   };
 
   hardware = {

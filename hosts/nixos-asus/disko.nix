@@ -16,7 +16,7 @@ let
 
   devices = map luksInfo nonInitrdLuksDevices;
 
-  crypttabLine = d: "${d.name} ${d.device} ${d.keyFile} luks\n";
+  crypttabLine = d: "${d.name} ${d.device} ${d.keyFile} luks,x-systemd.wanted-by=multi-user.target\n";
 in
 {
   sops.secrets = {
@@ -133,7 +133,8 @@ in
                   mountOptions = [
                     "compress=zstd:2"
                     "nofail"
-                    "x-systemd.before=display-manager.service"
+                    "noauto"
+                    "x-systemd.wanted-by=multi-user.target"
                   ];
                 };
               };
@@ -158,6 +159,8 @@ in
                   mountOptions = [
                     "nofail"
                     "compress=zstd:1"
+                    "noauto"
+                    "x-systemd.wanted-by=multi-user.target"
                   ];
                 };
               };
@@ -176,6 +179,7 @@ in
       value = {
         after = [ "sops-install-secrets.service" ];
         requires = [ "sops-install-secrets.service" ];
+        overrideStrategy = "asDropin";
       };
     }) devices
   );
