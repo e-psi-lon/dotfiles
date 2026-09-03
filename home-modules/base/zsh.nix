@@ -6,7 +6,7 @@
 }:
 {
   programs.zsh = {
-    completionInit = "autoload -U compinit && compinit -d ~/.cache/zsh/zcompdump";
+    completionInit = "zstyle '*:compinit' arguments -d ~/.cache/zsh/zcompdump";
     enable = true;
     plugins = with pkgs; [
       {
@@ -22,7 +22,23 @@
       {
         name = "zsh-autocomplete";
         file = "share/zsh-autocomplete/zsh-autocomplete.plugin.zsh";
-        src = zsh-autocomplete;
+        src = zsh-autocomplete.overrideAttrs (old: let
+            version = "26.08.04";
+          in {
+          inherit version;
+          src = fetchFromGitHub {
+            owner = "marlonrichert";
+            repo = "zsh-autocomplete";
+            rev = version;
+            sha256 = config.hashes.zsh.zsh-autocomplete;
+          };
+          installPhase = ''
+            install -D zsh-autocomplete.plugin.zsh $out/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+            install -D z-async/z-async $out/share/zsh-autocomplete/z-async/z-async
+            cp -R Completions $out/share/zsh-autocomplete/Completions
+            cp -R Functions $out/share/zsh-autocomplete/Functions
+          '';
+        });
       }
       {
         name = "eza";

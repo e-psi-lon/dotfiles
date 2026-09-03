@@ -87,10 +87,11 @@
       workstationModule = subPath paths.modules "workstation";
       hashesFile = subPath paths.resources "/hashes.toml";
       hashes = fromTOML (builtins.readFile hashesFile);
+      customPkgs = import paths.custom-pkgs { inherit paths hashes; };
       overlays = [
         android-nixpkgs.overlays.default
         claude-desktop.overlays.default
-        (import paths.custom-pkgs { inherit paths hashes; })
+        customPkgs
       ];
       flakeRev = self.shortRev or "dirty-${toString self.lastModified}";
       pkgs = import nixpkgs {
@@ -98,7 +99,10 @@
         overlays = overlays;
       };
     in
-    {
+    { 
+      packages.x86_64-linux = {
+        kobweb-cli = pkgs.kobweb-cli;
+      };
       devShells.x86_64-linux.default = pkgs.mkShell {
         packages = [
           (pkgs.writeShellScriptBin "update-flake" ''

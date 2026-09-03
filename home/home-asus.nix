@@ -102,18 +102,11 @@
             { name = "buffer"; }
           ];
         };
-        copilot-lua = {
-          enable = true;
-        };
-        copilot-chat = {
-          enable = true;
-        };
-        copilot-cmp = {
-          enable = true;
-        };
-        copilot-lsp = {
-          enable = true;
-        };
+        # Disabled for now due to a unfree license issue
+        # copilot-lua.enable = true;
+        # copilot-chat.enable = true;
+        # copilot-cmp.enable = true;
+        # copilot-lsp.enable = true;
       };
     };
 

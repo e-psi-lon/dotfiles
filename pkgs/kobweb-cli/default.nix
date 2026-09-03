@@ -4,13 +4,21 @@
   fetchFromGitHub,
   makeWrapper,
   nix-update-script,
-  jdk11,
-  gradle,
+  jdk21,
+  gradle-packages,
   hashes,
 }:
+let
+
+  gradle = (gradle-packages.mkGradle {
+    version = "9.7.1";
+    hash = hashes.pkgs.kobweb-cli-gradle;
+    defaultJava = jdk21;
+  }).wrapped;
+in
 stdenv.mkDerivation (finalAttrs: {
   pname = "kobweb-cli";
-  version = "0.9.21";
+  version = "0.9.23";
 
   src = fetchFromGitHub {
     owner = "varabyte";
@@ -21,6 +29,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   gradleFlags = [ "-Dfile.encoding=utf-8" ];
 
+  gradleUpdateTask = "dependencies --write-verification-metadata sha256";
   gradleBuildTask = "assembleShadowDist";
 
   nativeBuildInputs = [
@@ -36,13 +45,16 @@ stdenv.mkDerivation (finalAttrs: {
   strictDeps = true;
 
   installPhase = ''
+    runHook preInstall
     mkdir -p $out/bin
     mkdir -p $out/lib
     cp -r kobweb/build/scriptsShadow/* $out/bin
+    rm -f $out/bin/kobweb.bat
     cp -r kobweb/build/libs/* $out/lib
     chmod +x $out/bin/kobweb
     wrapProgram $out/bin/kobweb \
-      --prefix PATH : ${jdk11}/bin
+      --prefix PATH : ${jdk21}/bin
+    runHook postInstall
   '';
 
   passthru.updateScript = nix-update-script { };

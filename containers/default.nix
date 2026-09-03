@@ -209,7 +209,7 @@
         [ 
           { type = "derivation"; outPath = "/run/wrappers"; }
         ]
-        ++ lib.optional (pkgs.stdenv.isLinux && osConfig == null) { type = "derivation"; outPath = "/usr"; }
+        ++ lib.optional (pkgs.stdenv.hostPlatform.isLinux && osConfig == null) { type = "derivation"; outPath = "/usr"; }
       );
       systemd.user.services = {
         podman-containers = {
