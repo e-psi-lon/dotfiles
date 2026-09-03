@@ -1,6 +1,6 @@
 keys:
   - &user_e-psi-lon "age1kgu5c0xcajwg3wnc39s5ulg3ktsz405x65sp3wqgpay2tncgqfrqs5s5s8"
-  - &host_asus "age1sgy75g9y78e4s5kh420cgu9u8yt3k9u27yxjvvtu7czwtct3s49s0h8q3r"
+  - &host_asus "age1cyp8vvhgcspqvsvjm42xt0ezqkuyxcps9yhleh4ghr0lxxwczstsnkk8k3"
   - &host_hp "age1eva2w8azzuw4nunuy4t0tjn0ajfcj525e58j59j6hleu5gxdav5qgcgf34"
 
 creation_rules:
