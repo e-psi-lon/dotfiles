@@ -39,6 +39,7 @@ in
           type = "gpt";
           partitions = {
             ESP = {
+              priority = 1;
               size = "512M";
               type = "EF00";
               content = {
@@ -53,6 +54,7 @@ in
             };
 
             boot = {
+              priority = 2;
               size = "1G";
               content = {
                 type = "filesystem";
@@ -62,6 +64,7 @@ in
             };
 
             swap = {
+              priority = 3;
               size = "12G";
               content = {
                 type = "luks";
@@ -78,6 +81,7 @@ in
             };
 
             root = {
+              priority = 4;
               size = "256G";
               content = {
                 type = "luks";
@@ -111,6 +115,7 @@ in
             };
 
             home = {
+              priority = 5;
               size = "128G";
               content = {
                 type = "luks";
@@ -135,6 +140,7 @@ in
             };
 
             data = {
+              priority = 6;
               size = "100%";
               content = {
                 type = "luks";
