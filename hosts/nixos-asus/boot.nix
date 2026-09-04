@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 
 {
   boot = {
@@ -18,6 +18,10 @@
       "hid-nintendolic"
       "vhost_vsock"
     ];
+    supportedFilesystems =  {
+      ntfs = true;
+      ntfs-3g = lib.mkForce false;
+    };
 
     tmp = {
       useZram = true;
