@@ -106,6 +106,11 @@
         defaultExpose = !nginxEnabled;
         defaultRestartPolicy = "always";
         containerOptions = {
+          package = lib.mkOption {
+            type = lib.types.package;
+            default = pkgs.postgresql_18;
+            description = "PostgreSQL version to run.";
+          };
           dataDirectory = lib.mkOption {
             type = lib.types.path;
             default = config.xdg.dataHome + "/containers/postgres";

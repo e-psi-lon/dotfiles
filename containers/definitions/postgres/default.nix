@@ -1,7 +1,6 @@
 {
   dockerTools,
   lib,
-  postgresql,
   cacert,
   tzdata,
   writeShellApplication,
@@ -22,7 +21,7 @@ let
     inherit name tag;
 
     contents = [
-      postgresql
+      cfg.package
       cacert
       tzdata
     ];
@@ -40,7 +39,7 @@ let
       let
         entrypoint = writeShellApplication {
           name = "${name}-entrypoint";
-          runtimeInputs = [ postgresql ];
+          runtimeInputs = [ cfg.package ];
           text = ''
             ${builtins.readFile ./entrypoint.sh}
           '';
@@ -75,7 +74,7 @@ in
       healthcheck = {
         test = [
           "CMD"
-          (lib.getExe' postgresql "pg_isready")
+          (lib.getExe' cfg.package "pg_isready")
           "-h"
           "localhost"
           "-p"
