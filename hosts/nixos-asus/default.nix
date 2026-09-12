@@ -10,6 +10,19 @@
     ./services.nix
   ];
 
+  networking.networkmanager.settings = {
+    "connection-wifi" = {
+      match-device = "type:wifi";
+      "ipv4.route-metric" = 50;
+      "ipv6.route-metric" = 50;
+    };
+    "connection-ethernet" = {
+      match-device = "type:ethernet";
+      "ipv4.route-metric" = 100;
+      "ipv6.route-metric" = 100;
+    };
+  };
+
   environment = {
     systemPackages = with pkgs; [
       cryptsetup
