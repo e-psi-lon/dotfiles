@@ -62,9 +62,11 @@
         # It's important to be kind with your computer :)
         please = "sudo";
       };
-      sessionVariables.EDITOR = lib.getExe config.programs.nixvim.package;
     };
     xdg.enable = true;
-    programs.nixvim.imports = [ ./neovim.nix ];
+    programs.nixvim = {
+      defaultEditor = true;
+      imports = [ ./neovim.nix ];
+    };
   };
 }
