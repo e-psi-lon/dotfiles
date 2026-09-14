@@ -15,7 +15,7 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         nixpkgs-nixcord.follows = "nixpkgs";
-        flake-parts.follows = "flake-parts";
+        home-manager.follows = "home-manager";
       };
     };
     nixos-hardware = {

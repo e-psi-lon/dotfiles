@@ -12,10 +12,10 @@
     };
 
     thermald.enable = true;
-    journald.extraConfig = ''
-      SystemMaxUse=5M
-      RuntimeMaxUse=50M
-    '';
+    journald.settings.Journal = {
+      SystemMaxUse = "5M";
+      RuntimeMaxUse = "50M";
+    };
 
     scx = {
       enable = true;
