@@ -57,6 +57,10 @@
       url = "github:nix-community/disko/latest";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    kobweb-cli = {
+      url = "github:varabyte/kobweb-cli-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
@@ -75,6 +79,7 @@
       android-nixpkgs,
       sops-nix,
       claude-desktop,
+      kobweb-cli,
       disko,
       ...
     }:
@@ -91,6 +96,7 @@
       overlays = [
         android-nixpkgs.overlays.default
         claude-desktop.overlays.default
+	kobweb-cli.overlays.default
         customPkgs
       ];
       flakeRev = self.shortRev or "dirty-${toString self.lastModified}";
@@ -99,10 +105,7 @@
         overlays = overlays;
       };
     in
-    { 
-      packages.x86_64-linux = {
-        kobweb-cli = pkgs.kobweb-cli;
-      };
+    {
       devShells.x86_64-linux.default = pkgs.mkShell {
         packages = [
           (pkgs.writeShellScriptBin "update-flake" ''

@@ -134,7 +134,7 @@
       jetbrains.clion
       android-studio
       gource
-      kobweb-cli
+      kobweb-cli-bin
 
       # Misc
       libreoffice-qt

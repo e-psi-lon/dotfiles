@@ -165,6 +165,26 @@
         "type": "github"
       }
     },
+    "kobweb-cli": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789362319,
+        "narHash": "sha256-cnwO814OjfSx2QE2ZSKub9hom4nVlGSXRpRYiIXmCR4=",
+        "owner": "varabyte",
+        "repo": "kobweb-cli-nix",
+        "rev": "4e946593464ee01b3183dfc666c49c425898f5ad",
+        "type": "github"
+      },
+      "original": {
+        "owner": "varabyte",
+        "repo": "kobweb-cli-nix",
+        "type": "github"
+      }
+    },
     "minegrub-world-sel-theme": {
       "inputs": {
         "nixpkgs": [
@@ -453,6 +473,7 @@
         "disko": "disko",
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
+        "kobweb-cli": "kobweb-cli",
         "minegrub-world-sel-theme": "minegrub-world-sel-theme",
         "nix-on-droid": "nix-on-droid",
         "nixcord": "nixcord",
