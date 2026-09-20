@@ -118,6 +118,9 @@
           (pkgs.writeShellScriptBin "switch-rebuild" ''
             exec sudo nixos-rebuild switch --flake .
           '')
+          (pkgs.writeShellScriptBin "boot-rebuild" ''
+            exec sudo nixos-rebuild boot --flake .
+          '')
           (pkgs.writeShellScriptBin "check" ''
             exec nix flake check
           '')
