@@ -132,8 +132,6 @@ in
                   mountpoint = "/home";
                   mountOptions = [
                     "compress=zstd:2"
-                    "nofail"
-                    "noauto"
                     "x-systemd.wanted-by=multi-user.target"
                   ];
                 };
@@ -157,9 +155,7 @@ in
                   extraArgs = [ "-f" ];
                   mountpoint = "/mnt/data";
                   mountOptions = [
-                    "nofail"
                     "compress=zstd:1"
-                    "noauto"
                     "x-systemd.wanted-by=multi-user.target"
                   ];
                 };
