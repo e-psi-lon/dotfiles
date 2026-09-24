@@ -147,6 +147,7 @@
 
       # Games
       prismlauncher
+      heroic
       labymod
       ryubing
       dolphin-emu
