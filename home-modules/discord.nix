@@ -126,7 +126,7 @@
           showDates = true;
         };
         whoReacted.enable = true;
-        summaries.enable = true;
+        # summaries.enable = true;
         webContextMenus.enable = true;
         userVoiceShow.enable = true;
         fixSpotifyEmbeds.enable = true;

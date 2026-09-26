@@ -26,7 +26,7 @@ in
       phraseToPlaylist
       songStats
       history
-      betterGenres
+      # betterGenres
     ];
 
     enabledCustomApps = with spicePkgs.apps; [

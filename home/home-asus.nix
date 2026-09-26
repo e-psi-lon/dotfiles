@@ -121,7 +121,7 @@
       # Web browser
       zen-browser.packages.${stdenv.hostPlatform.system}.default
       ungoogled-chromium # Required for some APIs Firefox (and forks) doesn't support...
-      claude-desktop # Not really a browseer but anyway it fits
+      claude-desktop # Not really a browser but anyway it fits
 
       # IDEs, text editor and other dev tools
       vscode
