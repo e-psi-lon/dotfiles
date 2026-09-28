@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  username,
   ...
 }:
 let
@@ -172,15 +173,27 @@ in
 
   environment.etc."crypttab".text = lib.concatMapStrings crypttabLine devices;
 
-  systemd.services = lib.listToAttrs (
-    map (d: {
-      name = "systemd-cryptsetup@${d.name}";
-      value = {
-        after = [ "sops-install-secrets.service" ];
-        requires = [ "sops-install-secrets.service" ];
+  systemd.services = lib.mkMerge [
+    {
+      "user@" = {
         overrideStrategy = "asDropin";
+        unitConfig.RequiresMountsFor = [
+          "/home"
+          "/home/${username}/Dev"
+          "/home/${username}/.local/share/containers"
+        ];
       };
-    }) devices
-  );
+    }
+    (lib.listToAttrs (
+      map (d: {
+        name = "systemd-cryptsetup@${d.name}";
+        value = {
+          after = [ "sops-install-secrets.service" ];
+          requires = [ "sops-install-secrets.service" ];
+          overrideStrategy = "asDropin";
+        };
+      }) devices
+    ))
+  ];
 
 }
