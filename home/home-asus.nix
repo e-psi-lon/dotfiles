@@ -212,11 +212,11 @@
         "${xdgData}/azahar-emu/sdmc".source = emuPath "saves/azahar/sdmc";
         "${xdgData}/azahar-emu/states".source = emuPath "saves/azahar/states";
 
-      ## Cemu
-      "${xdgData}/Cemu/mlc01/sys".source = emuPath "storage/Cemu";
-      "${xdgData}/Cemu/mlc01/usr".source = emuPath "saves/Cemu";
-      "${xdgData}/Cemu/graphicPacks".source = emuPath "texturepacks/Cemu";
-    };
+        ## Cemu
+        "${xdgData}/Cemu/mlc01/sys".source = emuPath "storage/Cemu";
+        "${xdgData}/Cemu/mlc01/usr".source = emuPath "saves/Cemu";
+        "${xdgData}/Cemu/graphicPacks".source = emuPath "texturepacks/Cemu";
+      };
   };
 
   systemd.user = {
@@ -247,10 +247,10 @@
             ExecStart = [
               "${lib.getExe pkgs.mkcert} -install"
               ''
-              ${lib.getExe pkgs.mkcert} \
-                -cert-file ${certDir}/localhost/cert.crt -key-file ${certDir}/localhost/key.key \
-                "*.localhost" localhost 127.0.0.1 ::1
-            ''
+                ${lib.getExe pkgs.mkcert} \
+                  -cert-file ${certDir}/localhost/cert.crt -key-file ${certDir}/localhost/key.key \
+                  "*.localhost" localhost 127.0.0.1 ::1
+              ''
             ];
           };
         };

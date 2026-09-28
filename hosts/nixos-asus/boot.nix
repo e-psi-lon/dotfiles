@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 {
   boot = {
@@ -18,7 +23,7 @@
       "hid-nintendolic"
       "vhost_vsock"
     ];
-    supportedFilesystems =  {
+    supportedFilesystems = {
       ntfs = true;
       ntfs-3g = lib.mkForce false;
     };

@@ -77,7 +77,10 @@
 
     certs."int.e-psi-lon.dev" = {
       domain = "int.e-psi-lon.dev";
-      extraDomainNames = [ "*.int.e-psi-lon.dev" "*.home.int.e-psi-lon.dev" ];
+      extraDomainNames = [
+        "*.int.e-psi-lon.dev"
+        "*.home.int.e-psi-lon.dev"
+      ];
     };
   };
 

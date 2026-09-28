@@ -96,7 +96,7 @@
       overlays = [
         android-nixpkgs.overlays.default
         claude-desktop.overlays.default
-	kobweb-cli.overlays.default
+        kobweb-cli.overlays.default
         customPkgs
       ];
       flakeRev = self.shortRev or "dirty-${toString self.lastModified}";

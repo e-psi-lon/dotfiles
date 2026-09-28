@@ -1,13 +1,16 @@
-{ config, lib, ... }: 
-let 
+{
+  config,
+  lib,
+  ...
+}:
+let
   nonInitrdLuksDevices = [
     "home"
     "data"
   ];
 
   luksInfo = partName: {
-    inherit
-      (config.disko.devices.disk.main.content.partitions.${partName}.content)
+    inherit (config.disko.devices.disk.main.content.partitions.${partName}.content)
       name
       device
       ;

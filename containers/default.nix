@@ -187,7 +187,10 @@
             c = config.podman-containers.${name};
           in
           if meta ? sharedDirs then
-            map (path: { inherit path; uid = c.uidGid; }) (meta.sharedDirs c)
+            map (path: {
+              inherit path;
+              uid = c.uidGid;
+            }) (meta.sharedDirs c)
           else
             [ ]
         ) enabledContainers
@@ -211,10 +214,16 @@
         }
       ];
       sops.age.plugins = lib.mkIf hasSecrets (
-        [ 
-          { type = "derivation"; outPath = "/run/wrappers"; }
+        [
+          {
+            type = "derivation";
+            outPath = "/run/wrappers";
+          }
         ]
-        ++ lib.optional (pkgs.stdenv.hostPlatform.isLinux && osConfig == null) { type = "derivation"; outPath = "/usr"; }
+        ++ lib.optional (pkgs.stdenv.hostPlatform.isLinux && osConfig == null) {
+          type = "derivation";
+          outPath = "/usr";
+        }
       );
       systemd.user.services = {
         podman-containers = {
@@ -260,41 +269,47 @@
           ];
         };
 
-        podman-secrets-chown = let
-          secretsFilesUids = lib.flatten (
-            lib.mapAttrsToList (
-              name: meta:
-              let
-                c = config.podman-containers.${name};
-              in
-              if meta ? secrets then
-                map (secret: { path = secret.file; uid = c.uidGid; }) (lib.attrValues (meta.secrets c))
-              else
-                [ ]
-            ) enabledContainers
-          );
-          secretsChownScript = pkgs.writeShellApplication {
-            name = "podman-secrets-chown";
-            runtimeInputs = [ pkgs.podman ];
-            text = ''
-              declare -A secrets_files_uids=(
-                ${lib.concatMapStringsSep "\n" (d: "\t[${lib.escapeShellArg d.path}]=${toString d.uid}") secretsFilesUids}
-              )
+        podman-secrets-chown =
+          let
+            secretsFilesUids = lib.flatten (
+              lib.mapAttrsToList (
+                name: meta:
+                let
+                  c = config.podman-containers.${name};
+                in
+                if meta ? secrets then
+                  map (secret: {
+                    path = secret.file;
+                    uid = c.uidGid;
+                  }) (lib.attrValues (meta.secrets c))
+                else
+                  [ ]
+              ) enabledContainers
+            );
+            secretsChownScript = pkgs.writeShellApplication {
+              name = "podman-secrets-chown";
+              runtimeInputs = [ pkgs.podman ];
+              text = ''
+                declare -A secrets_files_uids=(
+                  ${lib.concatMapStringsSep "\n" (
+                    d: "\t[${lib.escapeShellArg d.path}]=${toString d.uid}"
+                  ) secretsFilesUids}
+                )
 
-              for file in "''${!secrets_files_uids[@]}"; do
-                uid="''${secrets_files_uids[$file]}"
-                podman unshare chown "$uid:$uid" "$file"
-              done
-            '';
+                for file in "''${!secrets_files_uids[@]}"; do
+                  uid="''${secrets_files_uids[$file]}"
+                  podman unshare chown "$uid:$uid" "$file"
+                done
+              '';
+            };
+          in
+          {
+            Unit.Description = "Fix ownership of sops-nix secrets for rootless podman";
+            Service = {
+              Type = "oneshot";
+              ExecStart = lib.getExe secretsChownScript;
+            };
           };
-         in 
-         {
-          Unit.Description = "Fix ownership of sops-nix secrets for rootless podman";
-          Service = {
-            Type = "oneshot";
-            ExecStart = lib.getExe secretsChownScript;
-          };
-        };
         podman-secrets-failed-chown = {
           Unit.Description = "Fix ownership of sops-nix secrets for rootless podman when sops-nix fails to run";
           Service = {
