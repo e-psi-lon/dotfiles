@@ -48,10 +48,14 @@ in
 
         (magenta display { format = "{width}x{height} @ {refresh-rate} Hz in {inch}″ [{type}]"; })
         (magenta wifi { })
-        (magenta localip { format = "{ipv4} @ {speed} ({mac})"; })
+        (magenta localip { 
+          format = "{ipv4} @ {speed} ({mac})";
+          showMac = true;
+          showSpeed = true;
+        })
 
         (red battery {
-          format = "{capacity-bar} {capacity}% [{status}] {time-formatted}";
+          format = "{capacity-bar} {capacity} [{status}] {time-formatted}";
           percent = {
             type = [
               "num"
