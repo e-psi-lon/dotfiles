@@ -157,7 +157,9 @@
       cemu
       pcsx2
       mgba
-      pegasus-frontend
+      (pegasus-frontend.overrideAttrs (old: {
+        cmakeFlags = (old.cmakeFlags or [ ]) ++ [ "-DCMAKE_CXX_STANDARD=17" ];
+      }))
       steam-rom-manager
 
       # Global languages
