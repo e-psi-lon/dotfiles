@@ -23,9 +23,13 @@
   };
 
   hardware = {
-    nvidia.prime.sync.enable = lib.mkOverride 900 true;
-    nvidia.prime.offload.enable = lib.mkOverride 900 false;
-    nvidia.primeBatterySaverSpecialisation = false; # Setting to true will create a specialisation that disable the GPU entirely
+    nvidia = {
+      prime = {
+        sync.enable = lib.mkOverride 900 true;
+        offload.enable = lib.mkOverride 900 false;
+      };
+      primeBatterySaverSpecialisation = false; # Setting to true will create a specialisation that disable the GPU entirely
+    };
     nvidia-container-toolkit.enable = true;
     enableRedistributableFirmware = true;
 

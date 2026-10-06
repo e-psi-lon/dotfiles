@@ -70,17 +70,19 @@
       };
     };
 
-    certs."e-psi-lon.dev" = {
-      domain = "e-psi-lon.dev";
-      extraDomainNames = [ "*.e-psi-lon.dev" ];
-    };
+    certs = {
+      "e-psi-lon.dev" = {
+        domain = "e-psi-lon.dev";
+        extraDomainNames = [ "*.e-psi-lon.dev" ];
+      };
 
-    certs."int.e-psi-lon.dev" = {
-      domain = "int.e-psi-lon.dev";
-      extraDomainNames = [
-        "*.int.e-psi-lon.dev"
-        "*.home.int.e-psi-lon.dev"
-      ];
+      "int.e-psi-lon.dev" = {
+        domain = "int.e-psi-lon.dev";
+        extraDomainNames = [
+          "*.int.e-psi-lon.dev"
+          "*.home.int.e-psi-lon.dev"
+        ];
+      };
     };
   };
 

@@ -21,14 +21,18 @@
     home-asus
   ];
 
-  hardware.graphics.enable = true;
-  hardware.enableRedistributableFirmware = true;
-  programs.mtr.enable = true;
+  hardware = {
+    graphics.enable = true;
+    enableRedistributableFirmware = true;
+  };
 
-  services.xserver.videoDrivers = [ "modesetting" ];
-  services.udev.extraRules = ''
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="22d9", ATTRS{idProduct}=="2769", MODE="0666"
-  '';
+  programs.mtr.enable = true;
+  services = {
+    xserver.videoDrivers = [ "modesetting" ];
+    udev.extraRules = ''
+      SUBSYSTEM=="usb", ATTRS{idVendor}=="22d9", ATTRS{idProduct}=="2769", MODE="0666"
+    '';
+  };
 
   environment = {
     sessionVariables = {
