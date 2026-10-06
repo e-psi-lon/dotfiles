@@ -25,6 +25,7 @@
 
   zramSwap = {
     enable = true;
+    priority = 50;
     # CONSIDER: adjust size as needed
     # memoryPercent = 50;
   };

@@ -166,8 +166,10 @@
           modules = [
             workstationModule
             (subPath paths.modules "desktop-lxqt.nix")
+            (subPath paths.modules "limine.nix")
             nixos-hardware.nixosModules.common-pc-laptop
-            nixos-hardware.nixosModules.common-pc-ssd
+            nixos-hardware.nixosModules.common-pc-ssd # Also works for eMMC
+            disko.nixosModules.disko
             "${nixos-hardware}/common/cpu/intel/braswell"
           ];
           machineName = "hp";

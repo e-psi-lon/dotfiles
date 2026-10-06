@@ -1,17 +1,15 @@
 { config, ... }: {
 
   imports = [
+    ./disko.nix
     ./hardware-configuration.nix
     ./optimization.nix
   ];
 
   boot = {
-    loader = {
-      efi.canTouchEfiVariables = true;
-      systemd-boot = {
-        enable = true;
-        configurationLimit = 2;
-      };
+    loader.limine = {
+      maxGenerations = 2;
+      secureBoot.autoEnrollKeys.extraArgs = [ ];
     };
 
     blacklistedKernelModules = [ "intel-spi" ];
