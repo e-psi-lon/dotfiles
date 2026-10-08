@@ -3,7 +3,7 @@
     disk = {
       main = {
         type = "disk";
-        device = "/dev/disk/by-id/temp-id";
+        device = "/dev/disk/by-id/mmc-BJNB4R_0x3100ea86";
         content = {
           type = "gpt";
           partitions = {
