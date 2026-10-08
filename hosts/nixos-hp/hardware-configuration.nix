@@ -17,15 +17,19 @@
         "xhci_pci"
         "rtsx_pci_sdmmc"
         "sdhci_acpi"
-      ];  
+      ];
       kernelModules = [ ];
     };
     kernelModules = [ "kvm-intel" ];
     extraModulePackages = [ ];
   };
 
-  swapDevices = [ 
-    { device = "/var/lib/swapfile"; size = 2048; priority = 10; }
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 2048;
+      priority = 10;
+    }
   ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

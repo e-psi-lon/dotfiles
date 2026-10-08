@@ -48,7 +48,7 @@ in
 
         (magenta display { format = "{width}x{height} @ {refresh-rate} Hz in {inch}″ [{type}]"; })
         (magenta wifi { })
-        (magenta localip { 
+        (magenta localip {
           format = "{ipv4} @ {speed} ({mac})";
           showMac = true;
           showSpeed = true;
