@@ -32,6 +32,7 @@
 
   users.users.${config.username}.openssh.authorizedKeys.keys = with config.sshKeys; [
     home-hp
+    my-phone
     home-asus # Trust itself
   ];
   services = {
