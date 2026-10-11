@@ -14,7 +14,7 @@
       url = "github:FlameFlag/nixcord";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        nixpkgs-nixcord.follows = "nixpkgs";
+        nixpkgs-packages.follows = "nixpkgs";
         home-manager.follows = "home-manager";
       };
     };
