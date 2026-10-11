@@ -14,6 +14,9 @@
 
     blacklistedKernelModules = [ "intel-spi" ];
   };
+
+  tpmUnlockPcrs = "4+7";
+  
   users.users.${config.username}.openssh.authorizedKeys.keys = with config.sshKeys; [
     home-hp # Trust itself
     home-asus

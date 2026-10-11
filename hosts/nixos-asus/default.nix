@@ -23,12 +23,12 @@
     };
   };
 
-  environment = {
-    systemPackages = with pkgs; [
-      cryptsetup
-      tpm2-tss
-    ];
-  };
+  environment.systemPackages = with pkgs; [
+    cryptsetup
+    tpm2-tss
+  ];
+
+  tpmUnlockPcrs = "0+2+4";
 
   users.users.${config.username}.openssh.authorizedKeys.keys = with config.sshKeys; [
     home-hp

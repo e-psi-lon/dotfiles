@@ -10,6 +10,7 @@
     ./locale-time.nix
     ./networking.nix
     ./services.nix
+    ./encryption.nix
   ];
 
   options = {
@@ -25,6 +26,11 @@
       type = lib.types.int;
       default = 1000;
       description = "The personal ID for the user (used for both UID and GID).";
+    };
+    tpmUnlockPcrs = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      description = "The PCRs to use for TPM unlocking. Must be a plus separated list of PCRs (e.g. '0+1+2').";
     };
   };
 

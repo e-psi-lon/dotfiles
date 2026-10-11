@@ -75,6 +75,7 @@ in
                 name = "SWAP";
                 settings = {
                   allowDiscards = true;
+                  crypttabExtraOpts = [ "tpm2-device=auto" ];
                   # Reuse the same passphrase as the root partition (builtin behavior of systemd-cryptsetup)
                 };
                 content = {
