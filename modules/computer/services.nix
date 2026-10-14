@@ -17,11 +17,10 @@
         X11Forwarding = lib.mkDefault true;
         MaxAuthTries = lib.mkDefault 3;
         MaxSessions = lib.mkDefault 2;
-
       };
     };
   };
   networking.firewall.interfaces = lib.mkIf config.services.tailscale.enable {
-    "tailscale0".allowedTCPPorts = [ 22 ];
+    ${config.services.tailscale.interfaceName}.allowedTCPPorts = [ 22 ];
   };
 }
