@@ -1,6 +1,5 @@
 {
   pkgs,
-  config,
   lib,
   ...
 }:
@@ -17,10 +16,8 @@
     initrd.systemd.tpm2.enable = true;
 
     kernelPackages = pkgs.linuxPackages_latest;
-    extraModulePackages = [ config.boot.kernelPackages.hid-nintendolic ];
     kernelModules = [
       "asus-armoury"
-      "hid-nintendolic"
       "vhost_vsock"
     ];
     supportedFilesystems = {

@@ -3,13 +3,4 @@
   setup-dev = final.callPackage ./setup-dev { inherit paths; };
   labymod = final.callPackage ./labymod.nix { inherit hashes; };
   launch-in-vm = final.callPackage ./launch-in-vm { };
-  linuxKernel = prev.linuxKernel // {
-    packagesFor =
-      kernel:
-      (prev.linuxKernel.packagesFor kernel).extend (
-        lpFinal: lpPrev: {
-          hid-nintendolic = lpFinal.callPackage ./hid-nintendolic.nix { inherit hashes; };
-        }
-      );
-  };
 }
