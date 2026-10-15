@@ -4,14 +4,12 @@ done
 
 for dir in "${!shared_dirs_to_create[@]}"; do
   uid="${shared_dirs_to_create[$dir]}"
-  acl_output=$(podman unshare getfacl -a "$dir" 2>/dev/null)
 
-  if ! grep -qE '^user:0:rwx$' <<< "$acl_output" || \
-     ! grep -qE "^user:$uid:rwx$" <<< "$acl_output"; then
-    podman unshare setfacl -R \
-      -m u:0:rwx -d -m u:0:rwx \
-      -m u:"$uid":rwx -d -m u:"$uid":rwx \
-      "$dir"
+  total=$(podman unshare find "$dir" ! -type l | wc -l)
+  have=$(podman unshare getfacl -R -n -p "$dir" | grep -c "^user:$uid:rwx")
+
+  if (( have < total )); then
+    podman unshare setfacl -R -m "u:0:rwx,u:$uid:rwx,d:u:0:rwx,d:u:$uid:rwx" "$dir"
   fi
 done
 
