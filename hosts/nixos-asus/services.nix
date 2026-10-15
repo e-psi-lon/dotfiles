@@ -42,10 +42,7 @@
     };
   };
 
-  systemd.sockets."virtiofsd@${username}" = {
-    overrideStrategy = "asDropin";
-    wantedBy = [ "sockets.target" ];
-  };
+  virtiofsd.users = [ username ];
 
   sops.secrets."univ-tours.ovpn" = {
     sopsFile = subPath paths.resources "secrets/univ-tours.asus.ovpn";
