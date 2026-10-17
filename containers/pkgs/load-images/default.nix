@@ -3,6 +3,9 @@
   writeShellApplication,
   podman,
   coreutils,
+  acl,
+  findutils,
+  gnugrep,
   directoriesToCreate,
   sharedDirs,
   enabledImages,
@@ -15,6 +18,9 @@ writeShellApplication {
   runtimeInputs = [
     podman
     coreutils
+    acl
+    findutils
+    gnugrep
   ];
   text = ''
     # Ensure all host volume directories exist with current user ownership by creating an array

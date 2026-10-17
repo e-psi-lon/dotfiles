@@ -6,7 +6,7 @@ for dir in "${!shared_dirs_to_create[@]}"; do
   uid="${shared_dirs_to_create[$dir]}"
 
   total=$(podman unshare find "$dir" ! -type l | wc -l)
-  have=$(podman unshare getfacl -R -n -p "$dir" | grep -c "^user:$uid:rwx")
+  have=$(podman unshare getfacl -R -n -p "$dir" | grep -c "^user:$uid:rwx" || true)
 
   if (( have < total )); then
     podman unshare setfacl -R -m "u:0:rwx,u:$uid:rwx,d:u:0:rwx,d:u:$uid:rwx" "$dir"
