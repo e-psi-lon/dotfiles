@@ -3,7 +3,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     zen-browser = {
-      url = "github:youwen5/zen-browser-flake";
+      url = "github:youwen5/zen-browser-flake/458cd16116c362a5e92d5db6bdc3599e4e8b1f4a";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     spicetify-nix = {
