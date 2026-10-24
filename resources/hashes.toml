@@ -2,7 +2,6 @@
 zap-exa = "sha256-gYyLML7tTRtMskKks/cxHXZL4MxAfGb1T7GJJCQUFTk="
 zap-fzf = "sha256-jwcOmhPNmE8g+xOTDsysAFxE76xdUwxvi5211xlwM7s="
 zsh-colored-man-pages = "sha256-087bNmB5gDUKoSriHIjXOVZiUG5+Dy9qv3D69E8GBhs="
-zsh-autocomplete = "sha256-aba38Cmnps2n6Tr/1i3BjPZ4TbQPsDBURXF1fcd8cDI="
 
 [pkgs]
 labymod = "sha256-m5gbsMZwdBq/OBjxaQGOBcf4khky/ZGeytSzNw6K1HM="
