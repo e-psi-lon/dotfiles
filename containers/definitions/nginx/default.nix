@@ -23,7 +23,6 @@ let
   hasSsl = cfg.sslCerts != { };
 
   nginxConf = writeTextDir "etc/nginx/nginx.conf" ''
-    user nginx nginx;
     worker_processes auto;
     error_log stderr warn;
     pid /var/run/nginx.pid;
@@ -88,8 +87,6 @@ let
       useradd -r -g nginx -u ${containerUidGidStr} -d /var/empty -s /bin/sh nginx
       groupadd -r nogroup -g 65534
       useradd -r -g nogroup -u 65534 -d /nonexistent -s /bin/false nobody
-      mkdir -p /var/cache/nginx
-      chown -R nginx:nginx /var/cache/nginx
     '';
 
     config = {
@@ -102,6 +99,7 @@ let
         "-g"
         "daemon off;"
       ];
+      User = "${containerUidGidStr}:${containerUidGidStr}";
       ExposedPorts = {
         "80/tcp" = { };
         "443/tcp" = { };
@@ -110,8 +108,7 @@ let
       Volumes = {
         "/etc/nginx/http.d" = { };
         "/etc/nginx/stream.d" = { };
-      }
-      // lib.optionalAttrs hasSsl { "/etc/nginx/ssl" = { }; };
+      };
       WorkingDir = "/";
     };
   };
@@ -123,13 +120,14 @@ in
     inherit name autoStart;
     exposePorts = true;
     base = {
+      sysctls = [ "net.ipv4.ip_unprivileged_port_start=80" ];
       volumes = [
         "${cfg.extraHttpDirectory}:/etc/nginx/http.d:ro"
         "${cfg.extraStreamDirectory}:/etc/nginx/stream.d:ro"
       ];
       tmpfs = [
-        "/var/cache/nginx"
-        "/var/run"
+        "/var/cache/nginx:mode=1777,size=32m"
+        "/var/run:mode=1777,size=1m"
       ];
       deploy.resources.limits = {
         cpus = "0.3";
