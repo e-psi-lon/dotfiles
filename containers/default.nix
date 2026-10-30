@@ -135,6 +135,12 @@
             default = config.xdg.dataHome + "/containers/redis";
             description = "Host directory to store Redis data.";
           };
+
+          redisRequirepassPath = lib.mkOption {
+            type = lib.types.str;
+            default = config.xdg.dataHome + "/containers/redis-auth.conf";
+            description = "Path to the file containing the requirepass <password> for Redis authentication.";
+          };
         };
       };
     };

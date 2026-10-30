@@ -44,6 +44,9 @@ let
         "400mb" # Leave some overhead for the 512M container limit
         "--maxmemory-policy"
         "allkeys-lru"
+        "--include"
+        "/run/secrets/redis-auth.conf"
+        "--user" "healthcheck" "on" "nopass" "-@all" "+ping"
       ];
       Cmd = [ ];
       ExposedPorts."6379/tcp" = { };
@@ -64,6 +67,11 @@ in
         test = [
           "CMD"
           (lib.getExe smallRedis)
+          "--user"
+          "healthcheck"
+          "-a"
+          "x"
+          "--no-auth-warning"
           "ping"
         ];
         interval = "10s";
@@ -75,6 +83,13 @@ in
         cpus = "0.5";
         memory = "512M";
       };
+      secrets = [
+        {
+          source = "redis-auth.conf";
+          uid = cfg.uidGid;
+          mode = "0400";
+        }
+      ];
     };
     ports = [ "6379:6379" ];
   };

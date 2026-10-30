@@ -19,5 +19,10 @@
   };
   redis = {
     sharedDirs = c: [ c.dataDirectory ];
+    secrets = c: {
+      "redis-auth.conf" = {
+        file = c.redisRequirepassPath;
+      };
+    };
   };
 }

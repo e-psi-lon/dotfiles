@@ -25,8 +25,19 @@
     paths.containers
   ];
 
-  sops.secrets."containers/postgres-password".sopsFile =
-    subPath paths.resources "secrets/containers.e-psi-lon.yaml";
+  sops = {
+    secrets = {
+      "containers/postgres-password".sopsFile =
+        subPath paths.resources "secrets/containers.e-psi-lon.yaml";
+      "containers/redis-password".sopsFile =
+        subPath paths.resources "secrets/containers.e-psi-lon.yaml";
+    };
+    templates."containers/redis-auth.conf" = {
+      content = ''
+        requirepass ${config.sops.placeholder."containers/redis-password"}
+      '';
+    };
+  };
 
   hasNvidiaGpu = true;
 
@@ -376,6 +387,7 @@
     redis = {
       enable = true;
       uidGid = 6379;
+      redisRequirepassPath = config.sops.templates."containers/redis-auth.conf".path;
     };
   };
 }
