@@ -1,1 +1,4 @@
-{ paths, ... }: { imports = [ (paths.homeModules + "/base") ]; }
+{ paths, ... }: { 
+  imports = [ (paths.home-modules + "/base") ]; 
+  home.stateVersion = "26.11";
+}

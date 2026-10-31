@@ -1,7 +1,7 @@
 { config, ... }:
 
 let
-  mcp = import "${config.paths.libDirectory}/mcp";
+  mcp = import (config.paths.libDirectory + "/mcp");
 in
 {
   config = {
