@@ -1,7 +1,7 @@
 {
   mkNixosSystem =
     allArgs@{
-      pkgs,
+      nixpkgs,
       system ? "x86_64-linux",
       home-manager,
       modules,
@@ -14,14 +14,14 @@
     let
       username = "e-psi-lon";
       extraArgs = removeAttrs allArgs [
-        "pkgs"
+        "nixpkgs"
         "home-manager"
         "modules"
         "machineName"
       ];
       args = extraArgs // { inherit hashes username; } // (import (paths.lib + "/mkBindMount.nix"));
     in
-    pkgs.lib.nixosSystem {
+    nixpkgs.lib.nixosSystem {
       system = system;
       specialArgs = args;
       modules = modules ++ [

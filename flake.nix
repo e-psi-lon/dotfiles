@@ -99,35 +99,19 @@
         customPkgs
       ];
       flakeRev = self.shortRev or "dirty-${toString self.lastModified}";
-      pkgs = import nixpkgs {
-        system = "x86_64-linux";
-        overlays = overlays;
-      };
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
+      forAllSystems =
+        f: nixpkgs.lib.genAttrs systems (system: f (import nixpkgs { inherit system overlays; }));
     in
     {
-      devShells.x86_64-linux.default = pkgs.mkShell {
-        packages = [
-          (pkgs.writeShellScriptBin "update-flake" ''
-            exec nix flake update --commit-lock-file --commit-lockfile-summary \
-              "flake: Update flake inputs to their latest versions"
-          '')
-          (pkgs.writeShellScriptBin "test-rebuild" ''
-            exec sudo nixos-rebuild test --flake .
-          '')
-          (pkgs.writeShellScriptBin "switch-rebuild" ''
-            exec sudo nixos-rebuild switch --flake .
-          '')
-          (pkgs.writeShellScriptBin "boot-rebuild" ''
-            exec sudo nixos-rebuild boot --flake .
-          '')
-          (pkgs.writeShellScriptBin "check" ''
-            exec nix flake check
-          '')
-        ];
-      };
+      devShells = forAllSystems (pkgs: {
+        default = pkgs.callPackage ./shell.nix { };
+      });
       nixosConfigurations = {
         nixos-asus = mkNixosSystem {
-          pkgs = nixpkgs;
           home-manager = home-manager;
           modules = [
             { nixpkgs.overlays = overlays; }
@@ -146,7 +130,8 @@
           ];
           machineName = "asus";
           inherit
-            paths            
+            nixpkgs
+            paths
             flakeRev
             zen-browser
             spicetify-nix
@@ -159,7 +144,6 @@
         };
 
         nixos-hp = mkNixosSystem {
-          pkgs = nixpkgs;
           home-manager = home-manager;
           modules = [
             workstationModule
@@ -172,6 +156,7 @@
           ];
           machineName = "hp";
           inherit
+            nixpkgs
             paths
             flakeRev
             nixvim
