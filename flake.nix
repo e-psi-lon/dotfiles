@@ -85,12 +85,11 @@
     }:
     let
       paths = import ./lib/paths.nix;
-      subPath = paths.subPath;
-      inherit (import (subPath paths.lib "mkNixosSystem.nix")) mkNixosSystem;
-      baseModule = subPath paths.modules "base";
-      computerModule = subPath paths.modules "computer";
-      workstationModule = subPath paths.modules "workstation";
-      hashesFile = subPath paths.resources "/hashes.toml";
+      inherit (import (paths.lib + "/mkNixosSystem.nix")) mkNixosSystem;
+      baseModule = paths.modules + "/base";
+      computerModule = paths.modules + "/computer";
+      workstationModule = paths.modules + "/workstation";
+      hashesFile = paths.resources + "/hashes.toml";
       hashes = fromTOML (builtins.readFile hashesFile);
       customPkgs = import paths.custom-pkgs { inherit paths hashes; };
       overlays = [
@@ -133,22 +132,21 @@
           modules = [
             { nixpkgs.overlays = overlays; }
             workstationModule
-            (subPath paths.modules "desktop-kde.nix")
-            (subPath paths.modules "grub.nix")
-            (subPath paths.modules "nvidia.nix")
-            (subPath paths.modules "steam.nix")
-            (subPath paths.modules "containerisation.nix")
-            (subPath paths.modules "waydroid.nix")
-            (subPath paths.modules "virtualisation.nix")
-            (subPath paths.modules "virtiofsd.nix")
+            (paths.modules + "/desktop-kde.nix")
+            (paths.modules + "/grub.nix")
+            (paths.modules + "/nvidia.nix")
+            (paths.modules + "/steam.nix")
+            (paths.modules + "/containerisation.nix")
+            (paths.modules + "/waydroid.nix")
+            (paths.modules + "/virtualisation.nix")
+            (paths.modules + "/virtiofsd.nix")
             minegrub-world-sel-theme.nixosModules.default
             disko.nixosModules.disko
             nixos-hardware.nixosModules.asus-fa706ic
           ];
           machineName = "asus";
           inherit
-            paths
-            subPath
+            paths            
             flakeRev
             zen-browser
             spicetify-nix
@@ -165,17 +163,16 @@
           home-manager = home-manager;
           modules = [
             workstationModule
-            (subPath paths.modules "desktop-lxqt.nix")
-            (subPath paths.modules "limine.nix")
+            (paths.modules + "/desktop-lxqt.nix")
+            (paths.modules + "/limine.nix")
             nixos-hardware.nixosModules.common-pc-laptop
             nixos-hardware.nixosModules.common-pc-ssd # Also works for eMMC
             disko.nixosModules.disko
-            "${nixos-hardware}/common/cpu/intel/braswell"
+            (nixos-hardware + "/common/cpu/intel/braswell")
           ];
           machineName = "hp";
           inherit
             paths
-            subPath
             flakeRev
             nixvim
             sops-nix
@@ -187,9 +184,9 @@
         pkgs = import nixpkgs { system = "aarch64-linux"; };
         modules = [
           baseModule
-          ./hosts/nix-on-droid # Currently empty
+          (paths.hosts + "/nix-on-droid") # Currently empty
         ];
-        extraSpecialArgs = { inherit paths subPath flakeRev; };
+        extraSpecialArgs = { inherit paths flakeRev; };
       };
     };
 }

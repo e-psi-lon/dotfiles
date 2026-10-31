@@ -7,6 +7,4 @@
   resources = ../resources;
   custom-pkgs = ../pkgs;
   containers = ../containers;
-
-  subPath = base: name: "${base}/${name}";
 }

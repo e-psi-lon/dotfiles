@@ -7,7 +7,6 @@
       modules,
       machineName,
       paths,
-      subPath,
       hashes,
       flakeRev,
       ...
@@ -20,7 +19,7 @@
         "modules"
         "machineName"
       ];
-      args = extraArgs // { inherit hashes username; } // (import (subPath paths.lib "mkBindMount.nix"));
+      args = extraArgs // { inherit hashes username; } // (import (paths.lib + "/mkBindMount.nix"));
     in
     pkgs.lib.nixosSystem {
       system = system;
@@ -36,8 +35,8 @@
           inherit username;
           displayName = "e_ψ_lon";
           paths = {
-            secretsDir = subPath paths.resources "secrets";
-            sshToml = subPath paths.resources "ssh.toml";
+            secretsDir = paths.resources + "/secrets";
+            sshToml = paths.resources + "/ssh.toml";
           };
         }
         home-manager.nixosModules.home-manager
@@ -49,8 +48,8 @@
             paths = {
               libDirectory = paths.lib;
               resources = paths.resources;
-              hashesToml = subPath paths.resources "hashes.toml";
-              secretsDir = subPath paths.resources "secrets";
+              hashesToml = paths.resources + "/hashes.toml";
+              secretsDir = paths.resources + "/secrets";
             };
           };
           home-manager.extraSpecialArgs = args;

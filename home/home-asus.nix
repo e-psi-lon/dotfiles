@@ -6,7 +6,6 @@
   nixcord,
   android-nixpkgs,
   paths,
-  subPath,
   ...
 }:
 
@@ -14,23 +13,23 @@
   imports = [
     nixcord.homeModules.nixcord
     android-nixpkgs.hmModule
-    (subPath paths.home-modules "workstation")
-    (subPath paths.home-modules "spicetify.nix")
-    (subPath paths.home-modules "direnv.nix")
-    (subPath paths.home-modules "discord.nix")
-    (subPath paths.home-modules "containerisation.nix")
-    (subPath paths.home-modules "android.nix")
-    (subPath paths.home-modules "mcp.nix")
-    (subPath paths.home-modules "virtualisation.nix")
+    (paths.home-modules + "/workstation")
+    (paths.home-modules + "/spicetify.nix")
+    (paths.home-modules + "/direnv.nix")
+    (paths.home-modules + "/discord.nix")
+    (paths.home-modules + "/containerisation.nix")
+    (paths.home-modules + "/android.nix")
+    (paths.home-modules + "/mcp.nix")
+    (paths.home-modules + "/virtualisation.nix")
     paths.containers
   ];
 
   sops = {
     secrets = {
       "containers/postgres-password".sopsFile =
-        subPath paths.resources "secrets/containers.e-psi-lon.yaml";
+        paths.resources + "/secrets/containers.e-psi-lon.yaml";
       "containers/redis-password".sopsFile =
-        subPath paths.resources "secrets/containers.e-psi-lon.yaml";
+        paths.resources + "/secrets/containers.e-psi-lon.yaml";
     };
     templates."containers/redis-auth.conf" = {
       content = ''
@@ -186,7 +185,7 @@
         xdgConfig = config.xdg.configHome;
         xdgData = config.xdg.dataHome;
         emulation = "/mnt/data/Emulation";
-        jdkHome = pkg: subPath pkg "lib/openjdk";
+        jdkHome = pkg: pkg + "/lib/openjdk";
         emuPath = rel: config.lib.file.mkOutOfStoreSymlink "${emulation}/${rel}";
       in
       {
@@ -196,8 +195,7 @@
         ".jdks/jdk8".source = jdkHome pkgs.jdk8;
 
         "Desktop/Zen Browser.desktop".source =
-          subPath zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
-            "share/applications/zen.desktop";
+          zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default + "/share/applications/zen.desktop";
 
         # Emulators
         ## Ryujinx

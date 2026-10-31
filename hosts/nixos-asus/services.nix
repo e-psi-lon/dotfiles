@@ -2,7 +2,6 @@
   pkgs,
   lib,
   paths,
-  subPath,
   username,
   ...
 }:
@@ -22,7 +21,7 @@
 
     openvpn.servers = {
       univ-tours = {
-        config = "config ${subPath paths.resources "vpn/univ-tours.ovpn"}";
+        config = "config ${paths.resources}/vpn/univ-tours.ovpn";
         up = ''
           ${lib.getExe' pkgs.systemd "resolvectl"} dns tun0 10.195.2.1 10.196.20.10 10.195.2.2
           ${lib.getExe' pkgs.systemd "resolvectl"} domain tun0 '~univ-tours.local' '~univ-tours.fr'
@@ -45,7 +44,7 @@
   virtiofsd.users = [ username ];
 
   sops.secrets."univ-tours.ovpn" = {
-    sopsFile = subPath paths.resources "secrets/univ-tours.asus.ovpn";
+    sopsFile = paths.resources + "/secrets/univ-tours.asus.ovpn";
     format = "binary";
   };
 }

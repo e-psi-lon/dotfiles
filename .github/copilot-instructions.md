@@ -25,7 +25,6 @@ The project depends on custom arguments passed through `specialArgs` and `extraS
   lib,
   pkgs,
   paths,
-  subPath,
   username,
   hashes,
   ...
@@ -35,11 +34,11 @@ The project depends on custom arguments passed through `specialArgs` and `extraS
 }
 ```
 
-*   **`paths` / `subPath`:** Always use the `paths` attribute set and the `subPath` helper function to construct paths for cross-directory imports. **Do not use raw relative string interpolations** (like `../modules/common`). Instead, use:
+*   **`paths`:** Always use the `paths` attribute set for cross-directory imports. **Do not use raw relative string interpolations** (like `../modules/common`). Instead, use:
     ```nix
     imports = [
-      (subPath paths.modules "common")
-      (subPath paths.home-modules "discord.nix")
+      (paths.modules + "/common")
+      (paths.home-modules + "/discord.nix")
     ];
     ```
 *   **`hashes`:** Contains external data parsed from `resources/hashes.toml`.
