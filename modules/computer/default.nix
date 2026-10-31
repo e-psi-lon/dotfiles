@@ -38,7 +38,7 @@
     sshKeys = lib.mkDefault (fromTOML (builtins.readFile config.paths.sshToml)).keys;
     sops = {
       secrets."${config.username}/password" = {
-        sopsFile = "${config.paths.secretsDir}/password.shared.yaml";
+        sopsFile = config.paths.secretsDir + "/password.shared.yaml";
         neededForUsers = true;
       };
       useSystemdActivation = true;

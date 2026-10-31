@@ -61,6 +61,11 @@
       url = "github:varabyte/kobweb-cli-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    impermanence = {
+      url = "github:nix-community/impermanence";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
     flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
@@ -80,6 +85,7 @@
       sops-nix,
       claude-desktop,
       kobweb-cli,
+      impermanence,
       disko,
       ...
     }:
@@ -155,6 +161,25 @@
             (nixos-hardware + "/common/cpu/intel/braswell")
           ];
           machineName = "hp";
+          inherit
+            nixpkgs
+            paths
+            flakeRev
+            nixvim
+            sops-nix
+            hashes
+            ;
+        };
+        nixos-server = mkNixosSystem {
+          system = "aarch64-linux";
+          home-manager = home-manager;
+          modules = [
+            computerModule
+            (paths.modules + "/containerisation.nix")
+            (paths.modules + "/limine.nix")
+            disko.nixosModules.disko
+          ];
+          machineName = "server";
           inherit
             nixpkgs
             paths
