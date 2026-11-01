@@ -19,6 +19,12 @@
   };
 
   config = {
+    users.users.${config.username}.openssh.authorizedKeys.keys = with config.sshKeys; [
+      home-hp
+      my-phone
+      home-asus
+      server # Trust itself
+    ];
     boot = {
       kernelParams = [
         "console=ttyAMA0"

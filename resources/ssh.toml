@@ -2,4 +2,4 @@
 home-asus = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINEOYzA8DrWCrQU2AF6zrVvgZQBe76068UBt9/PXFjcr e-psi-lon@nixos-asus"
 home-hp = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAQ9CGyBd1b1iJjvSSDeTerODHfvDGqaz2AsBWT+tOO9 e-psi-lon@nixos-hp"
 my-phone = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEOvAuWI2aoLIGpsQG98zmg0XmhEsSKO2ibZWTuja4AI u0_a384@chp2645"
-nixos-ampere = ""
+server = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIcecrXbgtyjzZS2D/STnl7c3kwSrXVx8oBv+pbFq3CJ e-psi-lon@nixos-server"
