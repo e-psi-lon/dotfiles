@@ -31,11 +31,9 @@
       "containers/redis-password".sopsFile =
         paths.resources + "/secrets/containers.e-psi-lon.yaml";
     };
-    templates."containers/redis-auth.conf" = {
-      content = ''
-        requirepass ${config.sops.placeholder."containers/redis-password"}
-      '';
-    };
+    templates."containers/redis-auth.conf".content = ''
+      requirepass ${config.sops.placeholder."containers/redis-password"}
+    '';
   };
 
   hasNvidiaGpu = true;
