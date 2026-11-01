@@ -2,6 +2,7 @@ keys:
   - &user_e-psi-lon "age1kgu5c0xcajwg3wnc39s5ulg3ktsz405x65sp3wqgpay2tncgqfrqs5s5s8"
   - &host_asus "age1cyp8vvhgcspqvsvjm42xt0ezqkuyxcps9yhleh4ghr0lxxwczstsnkk8k3"
   - &host_hp "age1eva2w8azzuw4nunuy4t0tjn0ajfcj525e58j59j6hleu5gxdav5qgcgf34"
+  - &host_server "age1m97umadawfw3th53atcddgqdn6g06zgvk8lj8sn5qkch43v8lasqqnqpgc"
 
 creation_rules:
   - path_regex: resources/secrets/.*\.asus\.[^/]+$
@@ -16,6 +17,12 @@ creation_rules:
           - *user_e-psi-lon
           - *host_hp
 
+  - path_regex: resources/secrets/.*\.server\.[^/]+$
+    key_groups:
+      - age:
+          - *user_e-psi-lon
+          - *host_server
+
   - path_regex: resources/secrets/.*\.e-psi-lon\.[^/]+$
     key_groups:
       - age:
@@ -27,6 +34,7 @@ creation_rules:
           - *user_e-psi-lon
           - *host_asus
           - *host_hp
+          - *host_server
 
   - path_regex: resources/secrets/.*
     key_groups:
@@ -34,3 +42,4 @@ creation_rules:
           - *user_e-psi-lon
           - *host_asus
           - *host_hp
+          - *host_server

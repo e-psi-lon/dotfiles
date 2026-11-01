@@ -1,4 +1,4 @@
-{
+{ pkgs, ... }:{
   # This is not actually a service but rather a user with podman available
   users = let
     username = "podman-user";
@@ -15,7 +15,10 @@
       description = "User for running podman containers";
       autoSubUidGidRange = true;
       linger = true;
-      
+      packages = with pkgs; [
+        podman
+        podman-compose
+      ];
     };
   };
 }

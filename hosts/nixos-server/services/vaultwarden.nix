@@ -5,8 +5,9 @@
       enable = true;
       domain = "vault.${config.mainInternalDomain}";
       dbBackend = "postgresql";
-      backupDir = "/var/backup/vaultwarden";
       configurePostgres = true;
+      configureNginx = true;
+      config = {}; # TODO: Research the settings for vaultwarden
     };
     nginx.virtualHosts."${config.services.vaultwarden.domain}".useACMEHost = config.mainInternalDomain;
   };

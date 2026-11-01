@@ -1,0 +1,11 @@
+{
+  networking = {
+    useDHCP = true;
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [ 80 443 8080 4173 ];
+      # Minecraft server in UDP
+      allowedUDPPorts = [ 25565 ];
+    };
+  };
+}
