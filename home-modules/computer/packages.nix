@@ -11,7 +11,6 @@
     nasm
 
     glab
-    github-copilot-cli
 
     ffmpeg
   ];

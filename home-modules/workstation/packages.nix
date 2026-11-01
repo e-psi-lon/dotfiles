@@ -5,6 +5,9 @@
     # Media
     vlc
 
+    # Tooling
+    github-copilot-cli
+
     # Networking
     networkmanager
     waypipe
