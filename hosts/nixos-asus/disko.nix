@@ -34,137 +34,133 @@ in
     };
   };
 
-  disko.devices = {
-    disk = {
-      main = {
-        type = "disk";
-        device = "/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_2TB_S7HENU0YA05207M";
-        content = {
-          type = "gpt";
-          partitions = {
-            ESP = {
-              priority = 1;
-              size = "512M";
-              type = "EF00";
-              content = {
-                type = "filesystem";
-                format = "vfat";
-                mountpoint = "/boot/efi";
-                mountOptions = [
-                  "fmask=0022"
-                  "dmask=0022"
-                ];
-              };
-            };
+  disko.devices.disk.main = {
+    type = "disk";
+    device = "/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_2TB_S7HENU0YA05207M";
+    content = {
+      type = "gpt";
+      partitions = {
+        ESP = {
+          priority = 1;
+          size = "512M";
+          type = "EF00";
+          content = {
+            type = "filesystem";
+            format = "vfat";
+            mountpoint = "/boot/efi";
+            mountOptions = [
+              "fmask=0022"
+              "dmask=0022"
+            ];
+          };
+        };
 
-            boot = {
-              priority = 2;
-              size = "1G";
-              content = {
-                type = "filesystem";
-                format = "ext4";
-                mountpoint = "/boot";
-              };
-            };
+        boot = {
+          priority = 2;
+          size = "1G";
+          content = {
+            type = "filesystem";
+            format = "ext4";
+            mountpoint = "/boot";
+          };
+        };
 
-            swap = {
-              priority = 3;
-              size = "12G";
-              content = {
-                type = "luks";
-                name = "SWAP";
-                settings = {
-                  allowDiscards = true;
-                  crypttabExtraOpts = [ "tpm2-device=auto" ];
-                  # Reuse the same passphrase as the root partition (builtin behavior of systemd-cryptsetup)
-                };
-                content = {
-                  type = "swap";
-                  resumeDevice = true;
-                };
-              };
+        swap = {
+          priority = 3;
+          size = "12G";
+          content = {
+            type = "luks";
+            name = "SWAP";
+            settings = {
+              allowDiscards = true;
+              crypttabExtraOpts = [ "tpm2-device=auto" ];
+              # Reuse the same passphrase as the root partition (builtin behavior of systemd-cryptsetup)
             };
-
-            root = {
-              priority = 4;
-              size = "256G";
-              content = {
-                type = "luks";
-                name = "ROOT";
-                settings = {
-                  allowDiscards = true;
-                  crypttabExtraOpts = [ "tpm2-device=auto" ];
-                  # Interactive prompt/TPM2
-                };
-                content = {
-                  type = "btrfs";
-                  extraArgs = [ "-f" ];
-                  subvolumes = {
-                    "@" = {
-                      mountpoint = "/";
-                      mountOptions = [
-                        "compress=zstd:1"
-                        "noatime"
-                      ];
-                    };
-                    "@nix" = {
-                      mountpoint = "/nix";
-                      mountOptions = [
-                        "compress=zstd:3"
-                        "noatime"
-                      ];
-                    };
-                  };
-                };
-              };
+            content = {
+              type = "swap";
+              resumeDevice = true;
             };
+          };
+        };
 
-            home = {
-              priority = 5;
-              size = "128G";
-              content = {
-                type = "luks";
-                name = "HOME";
-                initrdUnlock = false;
-                settings = {
-                  keyFile = config.sops.secrets."luks/home.key".path;
-                  allowDiscards = true;
-                };
-                content = {
-                  type = "filesystem";
-                  format = "btrfs";
-                  extraArgs = [ "-f" ];
-                  mountpoint = "/home";
-                  mountOptions = [
-                    "compress=zstd:2"
-                    "x-systemd.wanted-by=multi-user.target"
-                  ];
-                };
-              };
+        root = {
+          priority = 4;
+          size = "256G";
+          content = {
+            type = "luks";
+            name = "ROOT";
+            settings = {
+              allowDiscards = true;
+              crypttabExtraOpts = [ "tpm2-device=auto" ];
+              # Interactive prompt/TPM2
             };
-
-            data = {
-              priority = 6;
-              size = "100%";
-              content = {
-                type = "luks";
-                name = "DATA";
-                initrdUnlock = false;
-                settings = {
-                  keyFile = config.sops.secrets."luks/data.key".path;
-                  allowDiscards = true;
-                };
-                content = {
-                  type = "filesystem";
-                  format = "btrfs";
-                  extraArgs = [ "-f" ];
-                  mountpoint = "/mnt/data";
+            content = {
+              type = "btrfs";
+              extraArgs = [ "-f" ];
+              subvolumes = {
+                "@" = {
+                  mountpoint = "/";
                   mountOptions = [
                     "compress=zstd:1"
-                    "x-systemd.wanted-by=multi-user.target"
+                    "noatime"
+                  ];
+                };
+                "@nix" = {
+                  mountpoint = "/nix";
+                  mountOptions = [
+                    "compress=zstd:3"
+                    "noatime"
                   ];
                 };
               };
+            };
+          };
+        };
+
+        home = {
+          priority = 5;
+          size = "128G";
+          content = {
+            type = "luks";
+            name = "HOME";
+            initrdUnlock = false;
+            settings = {
+              keyFile = config.sops.secrets."luks/home.key".path;
+              allowDiscards = true;
+            };
+            content = {
+              type = "filesystem";
+              format = "btrfs";
+              extraArgs = [ "-f" ];
+              mountpoint = "/home";
+              mountOptions = [
+                "compress=zstd:2"
+                "x-systemd.wanted-by=multi-user.target"
+              ];
+            };
+          };
+        };
+
+        data = {
+          priority = 6;
+          size = "100%";
+          content = {
+            type = "luks";
+            name = "DATA";
+            initrdUnlock = false;
+            settings = {
+              keyFile = config.sops.secrets."luks/data.key".path;
+              allowDiscards = true;
+            };
+            content = {
+              type = "filesystem";
+              format = "btrfs";
+              extraArgs = [ "-f" ];
+              mountpoint = "/mnt/data";
+              mountOptions = [
+                "compress=zstd:1"
+                "x-systemd.wanted-by=multi-user.target"
+              ];
             };
           };
         };
