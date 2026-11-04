@@ -1,9 +1,4 @@
 { config, ... }: {
-  
-  sops.secrets.cloudflare-acme-credentials = {
-    sopsFile = config.paths.secretsDir + "/cloudflare-dns.server.txt";
-    format = "binary";
-  };
   security.acme = {
     acceptTerms = true;
     defaults = {

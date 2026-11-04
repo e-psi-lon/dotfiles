@@ -19,6 +19,10 @@
   };
 
   config = {
+    sops.secrets.cloudflare-acme-credentials = {
+      sopsFile = config.paths.secretsDir + "/cloudflare-dns.server.txt";
+      format = "binary";
+    };
     users.users.${config.username}.openssh.authorizedKeys.keys = with config.sshKeys; [
       home-hp
       my-phone
@@ -38,20 +42,33 @@
     mainDomain = "e-psi-lon.dev";
     documentation.enable = false;
 
-      nix = {
-        optimise.automatic = true;
-        settings.trusted-users = [
-          "root"
-          config.username
-        ];
+    nix = {
+      optimise.automatic = true;
+      settings.trusted-users = [
+        "root"
+        config.username
+      ];
 
-        gc = {
-          automatic = true;
-          dates = "weekly";
-          options = "--delete-older-than 14d";
-        };
+      gc = {
+        automatic = true;
+        dates = "weekly";
+        options = "--delete-older-than 14d";
       };
+    };
 
+    services.cloudflare-dyndns = {
+      enable = true;
+      deleteMissing = true;
+      ipv4 = true;
+      ipv6 = true;
+      proxied = false;
+      apiTokenFile = config.sops.secrets.cloudflare-acme-credentials.path;
+      domains = [
+        "files.${config.mainDomain}"
+        "vault.${config.mainDomain}"
+        
+      ];
+    };
     system.stateVersion = "26.11";
   };
   
