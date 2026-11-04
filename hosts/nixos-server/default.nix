@@ -70,6 +70,7 @@
 
     services = {
       tailscale.authKeyFile = config.sops.secrets."tailscale/auth-key".path;
+      openssh.settings.X11Forwarding = false;
       cloudflare-dyndns = {
         enable = true;
         deleteMissing = true;

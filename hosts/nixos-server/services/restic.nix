@@ -18,7 +18,17 @@
     repositoryFile = config.sops.secrets."restic/repository".path;
     passwordFile = config.sops.secrets."restic/password".path;
     environmentFile = config.sops.templates."restic-environment".path;
-    paths = [ "/persist" ];
+    paths = [
+      "/persist/etc/machine-id"
+      "/persist/etc/ssh"
+      "/persist/var/backup/postgresql"
+      "/persist/var/lib/acme"
+      "/persist/var/lib/gokapi"
+      "/persist/var/lib/nixos"
+      "/persist/var/lib/tailscale"
+      "/persist/var/lib/vaultwarden"
+    ];
+    runCheck = true;
     timerConfig = {
       OnCalendar = "daily";
       Persistent = true;

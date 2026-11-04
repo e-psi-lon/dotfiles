@@ -9,6 +9,7 @@
     ".config/gh"
     ".config/sops/age"
     ".local/share"
+    "dotfiles"
   ];
 
   home.stateVersion = "26.11";
