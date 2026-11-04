@@ -1,24 +1,55 @@
-{ config, ...}: 
+{ config, pkgs, lib, ...}: 
 let
-  url = "files.${config.mainDomain}"; 
+  url = "files.${config.mainDomain}";
+  dataDir = "/var/lib/gokapi/data";
 in
 {
+  sops = {
+    secrets =  {
+      "gokapi/cipher".sopsFile = config.paths.secretsDir + "/gokapi.server.yaml";
+      "gokapi/db" = {
+        path = config.paths.secretsDir + "/gokapi-db.server.bin";
+        format = "binary";
+      };
+    };
+    templates."gokapi-secrets.json".content = builtins.toJSON {
+      Encryption = {
+        Level = 3;
+        Cipher = config.sops.placeholder."gokapi/cipher";
+        Salt = "";
+        Checksum = "";
+        ChecksumSalt = "";
+      };
+    };
+  };
   services = {
     gokapi = {
       enable = true;
       mutableSettings = false;
+      settingsFile = "%d/gokapi-secrets.json";
       settings = {
+        Authentication = {
+          Method = 0;
+          Username = "e-psi-lon";
+          OnlyRegisteredUsers = false;
+          SaltAdmin = "LUwnGEeEG436NehPpanaxpJ1YvY64j";
+          SaltFiles = "ymAkh9IlIoJ0txnZFf51EcrjykCZkK";
+        };
         Port = "127.0.0.1:53842";
         ServerUrl = "https://${url}";
         RedirectUrl = "https://${config.mainDomain}";
         PublicName = "Gokapi";
-        UseSsl = false;
-        LengthId = 15;
-        MaxFileSizeMB = 102400;
+        DataDir = dataDir;
+        DatabaseUrl = "sqlite:///${dataDir}/gokapi.sqlite";
+        ConfigVersion = 22;
+        MaxFileSizeMB = 1024;
         MaxMemory = 50;
         ChunkSize = 45;
         MaxParallelUploads = 3;
-        
+        UseSsl = false;
+        PicturesAlwaysLocal = false;
+        SaveIp = false;
+        IncludeFilename = true;
       };
     };
 
@@ -28,12 +59,28 @@ in
       locations."/" = {
         proxyPass = "http://${config.services.gokapi.settings.Port}";
         extraConfig = ''
-          client_max_body_size 100m;
+          client_max_body_size 50m;
           proxy_request_buffering off;
           proxy_read_timeout 600s;
           proxy_send_timeout 600s;
         '';
       };
     };
+  };
+  systemd.services.gokapi.serviceConfig = {
+    ExecStartPre = let
+      gokapiStart = pkgs.writeShellScript "gokapi-start" ''
+        db="${dataDir}/gokapi.sqlite"
+        if [ ! -e "$db" ]; then
+          mkdir -p "$(dirname "$db")"
+          cp "$CREDENTIALS_DIRECTORY/gokapi.sqlite" "$db"
+        fi
+        exec ${lib.getExe config.services.gokapi.package}
+      '';
+    in gokapiStart;
+    LoadCredential = [
+      "gokapi.sqlite:${config.sops.secrets."gokapi/db".path}"
+      "gokapi-secrets.json:${config.sops.templates."gokapi-secrets.json".path}"
+    ];
   };
 }
