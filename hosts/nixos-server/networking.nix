@@ -1,8 +1,10 @@
+{ config, ... }:
 {
   networking = {
     useDHCP = true;
     firewall = {
       enable = true;
+      interfaces.${config.services.tailscale.interfaceName}.allowedTCPPorts = [ 9100 ];
       allowedTCPPorts = [
         80
         443
