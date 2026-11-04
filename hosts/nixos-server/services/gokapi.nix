@@ -8,7 +8,7 @@ in
     secrets =  {
       "gokapi/cipher".sopsFile = config.paths.secretsDir + "/gokapi.server.yaml";
       "gokapi/db" = {
-        path = config.paths.secretsDir + "/gokapi-db.server.bin";
+        sopsFile = config.paths.secretsDir + "/gokapi-db.server.bin";
         format = "binary";
       };
     };
@@ -77,7 +77,7 @@ in
         fi
         exec ${lib.getExe config.services.gokapi.package}
       '';
-    in gokapiStart;
+    in [ gokapiStart ];
     LoadCredential = [
       "gokapi.sqlite:${config.sops.secrets."gokapi/db".path}"
       "gokapi-secrets.json:${config.sops.templates."gokapi-secrets.json".path}"
