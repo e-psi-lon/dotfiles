@@ -6,7 +6,7 @@ in
 {
   sops = {
     secrets =  {
-      "gokapi/cipher".sopsFile = config.paths.secretsDir + "/gokapi.server.yaml";
+      "gokapi/cipher" = {};
       "gokapi/db" = {
         sopsFile = config.paths.secretsDir + "/gokapi-db.server.bin";
         format = "binary";

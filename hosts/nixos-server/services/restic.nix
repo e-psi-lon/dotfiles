@@ -1,10 +1,10 @@
 { config, ... }:
 {
   sops.secrets = {
-    "restic/access-key".sopsFile = config.paths.secretsDir + "/restic.server.yaml";
-    "restic/password".sopsFile = config.paths.secretsDir + "/restic.server.yaml";
-    "restic/repository".sopsFile = config.paths.secretsDir + "/restic.server.yaml";
-    "restic/secret-key".sopsFile = config.paths.secretsDir + "/restic.server.yaml";
+    "restic/access-key" = {};
+    "restic/password" = {};
+    "restic/repository" = {};
+    "restic/secret-key" = {};
   };
 
   sops.templates."restic-environment".content = ''

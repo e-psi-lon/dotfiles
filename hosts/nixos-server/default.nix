@@ -26,9 +26,13 @@
   };
 
   config = {
-    sops.secrets.cloudflare-acme-credentials = {
-      sopsFile = config.paths.secretsDir + "/cloudflare-dns.server.txt";
-      format = "binary";
+    sops.defaultSopsFile = config.paths.secretsDir + "/default.server.yaml";
+    sops.secrets = {
+      cloudflare-acme-credentials = {
+        sopsFile = config.paths.secretsDir + "/cloudflare-dns.server.txt";
+        format = "binary";
+      };
+      "tailscale/auth-key" = {};
     };
     users.users.${config.username}.openssh.authorizedKeys.keys = with config.sshKeys; [
       home-hp
@@ -63,17 +67,20 @@
       };
     };
 
-    services.cloudflare-dyndns = {
-      enable = true;
-      deleteMissing = true;
-      ipv4 = true;
-      ipv6 = true;
-      proxied = false;
-      apiTokenFile = config.sops.secrets.cloudflare-acme-credentials.path;
-      domains = [
-        "files.${config.mainDomain}"
-        "vault.${config.mainDomain}"
-      ];
+    services = {
+      tailscale.authKeyFile = config.sops.secrets."tailscale/auth-key".path;
+      cloudflare-dyndns = {
+        enable = true;
+        deleteMissing = true;
+        ipv4 = true;
+        ipv6 = true;
+        proxied = false;
+        apiTokenFile = config.sops.secrets.cloudflare-acme-credentials.path;
+        domains = [
+          "files.${config.mainDomain}"
+          "vault.${config.mainDomain}"
+        ];
+      };
     };
     system.stateVersion = "26.11";
   };

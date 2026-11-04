@@ -2,6 +2,7 @@
   environment.persistence."/persist" = {
     directories = [
       "/var/lib/acme"
+      "/var/lib/tailscale"
       "/var/lib/gokapi"
       "/var/lib/nixos"
       "/var/lib/postgresql"
@@ -9,6 +10,7 @@
       "/var/lib/systemd"
       "/var/lib/vaultwarden"
       "/var/backup/postgresql"
+      { directory = "/var/lib/private"; mode = "0700"; }
     ];
 
     files = [
