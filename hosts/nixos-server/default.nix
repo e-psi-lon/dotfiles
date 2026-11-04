@@ -12,6 +12,7 @@
     ./impermanence.nix
     ./services
     ./networking.nix
+    ./vm.nix
     (modulesPath + "/profiles/qemu-guest.nix")
   ];
 

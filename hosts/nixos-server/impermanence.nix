@@ -1,4 +1,60 @@
 {
+  config,
+  lib,
+  pkgs,
+  utils,
+  ...
+}:
+let
+  rootDevice = config.fileSystems."/".device;
+  rootDeviceUnit = "${utils.escapeSystemdPath rootDevice}.device";
+  btrfs = lib.getExe pkgs.btrfs-progs;
+  mount = lib.getExe' pkgs.util-linux "mount";
+  umount = lib.getExe' pkgs.util-linux "umount";
+in
+{
+  assertions = [
+    {
+      assertion = config.fileSystems."/".fsType == "btrfs";
+      message = "nixos-server root wipe requires the root filesystem to use Btrfs.";
+    }
+  ];
+
+  boot.initrd.systemd = {
+    initrdBin = [
+      pkgs.btrfs-progs
+      pkgs.util-linux
+    ];
+
+    services.wipe-root-subvolume = {
+      description = "Recreate the ephemeral root Btrfs subvolume";
+      wantedBy = [ "initrd-root-fs.target" ];
+      before = [
+        "sysroot.mount"
+        "initrd-root-fs.target"
+      ];
+      requires = [ rootDeviceUnit ];
+      after = [ rootDeviceUnit ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = pkgs.writeShellScript "wipe-root-subvolume" ''
+          set -eu
+
+          mountPoint=/run/root-btrfs
+          mkdir -p "$mountPoint"
+          ${mount} -t btrfs -o subvolid=5 ${lib.escapeShellArg rootDevice} "$mountPoint"
+          trap '${umount} "$mountPoint"' EXIT
+
+          if ${btrfs} subvolume show "$mountPoint/root" >/dev/null 2>&1; then
+            ${btrfs} subvolume delete "$mountPoint/root"
+            ${btrfs} subvolume sync "$mountPoint"
+          fi
+          ${btrfs} subvolume create "$mountPoint/root"
+        '';
+      };
+    };
+  };
+
   environment.persistence."/persist" = {
     directories = [
       "/var/lib/acme"
@@ -10,7 +66,10 @@
       "/var/lib/systemd"
       "/var/lib/vaultwarden"
       "/var/backup/postgresql"
-      { directory = "/var/lib/private"; mode = "0700"; }
+      {
+        directory = "/var/lib/private";
+        mode = "0700";
+      }
     ];
 
     files = [
