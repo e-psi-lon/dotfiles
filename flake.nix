@@ -178,6 +178,7 @@
             (paths.modules + "/containerisation.nix")
             (paths.modules + "/limine.nix")
             disko.nixosModules.disko
+            impermanence.nixosModules.impermanence
           ];
           machineName = "server";
           inherit
@@ -187,6 +188,7 @@
             nixvim
             sops-nix
             hashes
+            impermanence
             ;
         };
       };

@@ -1,8 +1,15 @@
-{ config, lib, modulesPath, ... }: {
+{
+  config,
+  lib,
+  modulesPath,
+  ...
+}:
+{
 
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
+    ./impermanence.nix
     ./services
     ./networking.nix
     (modulesPath + "/profiles/qemu-guest.nix")
@@ -66,10 +73,8 @@
       domains = [
         "files.${config.mainDomain}"
         "vault.${config.mainDomain}"
-        
       ];
     };
     system.stateVersion = "26.11";
   };
-  
 }

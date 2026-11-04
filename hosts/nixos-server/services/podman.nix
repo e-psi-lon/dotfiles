@@ -1,8 +1,9 @@
-{ pkgs, ... }: 
+{ pkgs, ... }:
 let
   username = "podman-user";
   uidGid = 7630;
-in {
+in
+{
   # This is not actually a service but rather a user with podman available
   users = {
     groups.${username} = {
@@ -28,5 +29,9 @@ in {
         podman-compose
       ];
     };
+    home.persistence."/persist".directories = [
+      ".config/containers"
+      ".local/share/containers"
+    ];
   };
 }
