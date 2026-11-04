@@ -1,12 +1,17 @@
-{ config, pkgs, lib, ...}: 
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   url = "files.${config.mainDomain}";
   dataDir = "/var/lib/gokapi/data";
 in
 {
   sops = {
-    secrets =  {
-      "gokapi/cipher" = {};
+    secrets = {
+      "gokapi/cipher" = { };
       "gokapi/db" = {
         sopsFile = config.paths.secretsDir + "/gokapi-db.server.bin";
         format = "binary";
@@ -68,16 +73,18 @@ in
     };
   };
   systemd.services.gokapi.serviceConfig = {
-    ExecStartPre = let
-      gokapiStart = pkgs.writeShellScript "gokapi-start" ''
-        db="${dataDir}/gokapi.sqlite"
-        if [ ! -e "$db" ]; then
-          mkdir -p "$(dirname "$db")"
-          cp "$CREDENTIALS_DIRECTORY/gokapi.sqlite" "$db"
-        fi
-        exec ${lib.getExe config.services.gokapi.package}
-      '';
-    in [ gokapiStart ];
+    ExecStartPre =
+      let
+        gokapiStart = pkgs.writeShellScript "gokapi-start" ''
+          db="${dataDir}/gokapi.sqlite"
+          if [ ! -e "$db" ]; then
+            mkdir -p "$(dirname "$db")"
+            cp "$CREDENTIALS_DIRECTORY/gokapi.sqlite" "$db"
+          fi
+          exec ${lib.getExe config.services.gokapi.package}
+        '';
+      in
+      [ gokapiStart ];
     LoadCredential = [
       "gokapi.sqlite:${config.sops.secrets."gokapi/db".path}"
       "gokapi-secrets.json:${config.sops.templates."gokapi-secrets.json".path}"

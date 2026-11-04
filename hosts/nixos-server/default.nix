@@ -33,7 +33,7 @@
         sopsFile = config.paths.secretsDir + "/cloudflare-dns.server.txt";
         format = "binary";
       };
-      "tailscale/auth-key" = {};
+      "tailscale/auth-key" = { };
     };
     users.users.${config.username}.openssh.authorizedKeys.keys = with config.sshKeys; [
       home-hp

@@ -1,8 +1,8 @@
 { config, ... }: {
   sops = {
     secrets = {
-      "vaultwarden/admin-token" = {};
-      "vaultwarden/smtp-password" = {};
+      "vaultwarden/admin-token" = { };
+      "vaultwarden/smtp-password" = { };
     };
     templates."vaultwarden-env".content = ''
       ADMIN_TOKEN='${config.sops.placeholder."vaultwarden/admin-token"}'

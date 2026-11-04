@@ -1,10 +1,10 @@
 { config, ... }:
 {
   sops.secrets = {
-    "restic/access-key" = {};
-    "restic/password" = {};
-    "restic/repository" = {};
-    "restic/secret-key" = {};
+    "restic/access-key" = { };
+    "restic/password" = { };
+    "restic/repository" = { };
+    "restic/secret-key" = { };
   };
 
   sops.templates."restic-environment".content = ''
