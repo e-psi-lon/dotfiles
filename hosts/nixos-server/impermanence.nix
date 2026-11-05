@@ -28,7 +28,7 @@ in
 
     services.wipe-root-subvolume = {
       description = "Recreate the ephemeral root Btrfs subvolume";
-      wantedBy = [ "initrd-root-fs.target" ];
+      requiredBy = [ "initrd-root-fs.target" ];
       before = [
         "sysroot.mount"
         "initrd-root-fs.target"
@@ -46,7 +46,7 @@ in
           trap '${umount} "$mountPoint"' EXIT
 
           if ${btrfs} subvolume show "$mountPoint/root" >/dev/null 2>&1; then
-            ${btrfs} subvolume delete "$mountPoint/root"
+            ${btrfs} subvolume delete --recursive "$mountPoint/root"
             ${btrfs} subvolume sync "$mountPoint"
           fi
           ${btrfs} subvolume create "$mountPoint/root"
@@ -56,16 +56,17 @@ in
   };
 
   environment.persistence."/persist" = {
+    hideMounts = true;
     directories = [
       "/var/lib/acme"
       "/var/lib/tailscale"
-      "/var/lib/gokapi"
       "/var/lib/nixos"
       "/var/lib/postgresql"
       "/var/lib/redis"
       "/var/lib/systemd"
       "/var/lib/vaultwarden"
       "/var/backup/postgresql"
+      "/var/log"
       {
         directory = "/var/lib/private";
         mode = "0700";

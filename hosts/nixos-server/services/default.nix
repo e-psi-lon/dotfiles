@@ -1,3 +1,4 @@
+{ config, ... }:
 {
   imports = [
     ./acme.nix
@@ -11,4 +12,24 @@
     ./restic.nix
     ./vaultwarden.nix
   ];
+
+  config = {
+    sops.secrets."tailscale/auth-key" = { };
+    services = {
+      tailscale.authKeyFile = config.sops.secrets."tailscale/auth-key".path;
+      openssh.settings.X11Forwarding = false;
+      cloudflare-dyndns = {
+        enable = true;
+        deleteMissing = true;
+        ipv4 = true;
+        ipv6 = true;
+        proxied = false;
+        apiTokenFile = config.sops.secrets.cloudflare-acme-credentials.path;
+        domains = [
+          "files.${config.mainDomain}"
+          "vault.${config.mainDomain}"
+        ];
+      };
+    };
+  };
 }

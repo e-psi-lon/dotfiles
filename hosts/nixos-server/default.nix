@@ -7,7 +7,7 @@
 {
 
   imports = [
-    ./hardware-configuration.nix
+    ./boot.nix
     ./disko.nix
     ./impermanence.nix
     ./services
@@ -27,31 +27,23 @@
   };
 
   config = {
-    sops.defaultSopsFile = config.paths.secretsDir + "/default.server.yaml";
-    sops.secrets = {
-      cloudflare-acme-credentials = {
-        sopsFile = config.paths.secretsDir + "/cloudflare-dns.server.txt";
-        format = "binary";
+    mainDomain = "e-psi-lon.dev";
+    sops = {
+      defaultSopsFile = config.paths.secretsDir + "/default.server.yaml";
+      secrets = {
+        cloudflare-acme-credentials = {
+          sopsFile = config.paths.secretsDir + "/cloudflare-dns.server.txt";
+          format = "binary";
+        };
       };
-      "tailscale/auth-key" = { };
     };
+    
     users.users.${config.username}.openssh.authorizedKeys.keys = with config.sshKeys; [
       home-hp
       my-phone
       home-asus
       server # Trust itself
     ];
-    boot = {
-      kernelParams = [
-        "console=ttyAMA0"
-      ];
-      tmp = {
-        useZram = true;
-        zramSettings.zram-size = "ram * 0.25";
-      };
-      loader.limine.secureBoot.enable = false;
-    };
-    mainDomain = "e-psi-lon.dev";
     documentation.enable = false;
 
     nix = {
@@ -65,23 +57,6 @@
         automatic = true;
         dates = "weekly";
         options = "--delete-older-than 14d";
-      };
-    };
-
-    services = {
-      tailscale.authKeyFile = config.sops.secrets."tailscale/auth-key".path;
-      openssh.settings.X11Forwarding = false;
-      cloudflare-dyndns = {
-        enable = true;
-        deleteMissing = true;
-        ipv4 = true;
-        ipv6 = true;
-        proxied = false;
-        apiTokenFile = config.sops.secrets.cloudflare-acme-credentials.path;
-        domains = [
-          "files.${config.mainDomain}"
-          "vault.${config.mainDomain}"
-        ];
       };
     };
     system.stateVersion = "26.11";
