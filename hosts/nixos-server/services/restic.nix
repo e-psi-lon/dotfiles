@@ -1,4 +1,24 @@
-{ config, ... }:
+{ config, lib, pkgs, ... }:
+let
+  alertScript = pkgs.writeShellApplication {
+    name = "restic-failure-alert";
+    runtimeInputs = [
+      pkgs.coreutils
+      pkgs.msmtp
+      pkgs.systemd
+    ];
+    text = ''
+      {
+        printf 'To: me@${config.mainDomain}\n'
+        printf 'Subject: Restic backup failed on %s\n' "$(hostname --fqdn)"
+        printf '\n'
+        printf 'The Restic backup or repository check failed on %s.\n\n' "$(hostname --fqdn)"
+        printf 'Recent service output:\n'
+        journalctl --unit=restic-backups-server.service --no-pager --lines=50
+      } | msmtp --account=backups --set-from-header=on "me@${config.mainDomain}"
+    '';
+  };
+in
 {
   sops.secrets = {
     "restic/access-key" = { };
@@ -23,8 +43,8 @@
       "/persist/etc/ssh"
       "/persist/var/backup/postgresql"
       "/persist/var/lib/acme"
-      "/persist/var/lib/gokapi"
       "/persist/var/lib/nixos"
+      "/persist/var/lib/private/gokapi"
       "/persist/var/lib/tailscale"
       "/persist/var/lib/vaultwarden"
     ];
@@ -40,5 +60,15 @@
       "--keep-weekly 1"
       "--keep-monthly 0"
     ];
+  };
+
+  systemd.services.restic-backups-server.unitConfig.OnFailure = [ "restic-failure-alert.service" ];
+
+  systemd.services.restic-failure-alert = {
+    description = "Send an alert when the Restic backup fails";
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = lib.getExe alertScript;
+    };
   };
 }

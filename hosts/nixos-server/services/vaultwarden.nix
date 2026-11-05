@@ -2,11 +2,10 @@
   sops = {
     secrets = {
       "vaultwarden/admin-token" = { };
-      "vaultwarden/smtp-password" = { };
     };
     templates."vaultwarden-env".content = ''
       ADMIN_TOKEN='${config.sops.placeholder."vaultwarden/admin-token"}'
-      SMTP_PASSWORD=${config.sops.placeholder."vaultwarden/smtp-password"}
+      SMTP_PASSWORD=${config.sops.placeholder."mail/smtp-password"}
     '';
   };
   services = {
@@ -21,12 +20,12 @@
         SIGNUPS_ALLOWED = false;
         SIGNUPS_VERIFY = true;
         INVITATIONS_ALLOWED = true;
-        SMTP_HOST = "smtp-relay.brevo.com";
-        SMTP_PORT = 587;
+        SMTP_HOST = config.mailing.host;
+        SMTP_PORT = config.mailing.port;
         SMTP_SECURITY = "starttls";
-        SMTP_FROM = "vaultwarden@mail.${config.mainDomain}";
+        SMTP_FROM = "vaultwarden@${config.mailing.domain}";
         SMTP_FROM_NAME = "${config.username}'s Vaultwarden";
-        SMTP_USERNAME = "c12c44001@smtp-brevo.com";
+        SMTP_USERNAME = config.mailing.username;
       };
     };
     nginx.virtualHosts."${config.services.vaultwarden.domain}" = {
