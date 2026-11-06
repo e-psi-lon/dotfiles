@@ -56,8 +56,8 @@ in
     };
     pruneOpts = [
       "--keep-last 3"
-      "--keep-daily 3"
-      "--keep-weekly 1"
+      "--keep-daily 7"
+      "--keep-weekly 4"
       "--keep-monthly 0"
     ];
   };

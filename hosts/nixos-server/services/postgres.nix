@@ -7,6 +7,7 @@
     postgresqlBackup = {
       enable = true;
       backupAll = true;
+      compression = "none";  # Better for restic, which already compresses 
       location = "/var/backup/postgresql";
     };
   };
