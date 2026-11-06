@@ -4,9 +4,6 @@
       enable = true;
       listenAddress = "127.0.0.1";
       port = 9090;
-      storage = {
-        path = "/var/lib/prometheus";
-      };
       stateDir = "prometheus";
       exporters.node = {
         enable = true;
