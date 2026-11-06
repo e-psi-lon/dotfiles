@@ -11,6 +11,23 @@ let
   btrfs = lib.getExe pkgs.btrfs-progs;
   mount = lib.getExe' pkgs.util-linux "mount";
   umount = lib.getExe' pkgs.util-linux "umount";
+  wipeScript = pkgs.writeShellScript "wipe-root-subvolume" ''
+    set -eu
+
+    mountPoint=/run/root-btrfs
+    mkdir -p "$mountPoint"
+    ${mount} -t btrfs -o subvolid=5 ${lib.escapeShellArg rootDevice} "$mountPoint"
+    trap '${umount} "$mountPoint"' EXIT
+
+    if ${btrfs} subvolume show "$mountPoint/root" >/dev/null 2>&1; then
+      ${btrfs} subvolume delete --recursive "$mountPoint/root"
+      ${btrfs} subvolume sync "$mountPoint"
+    fi
+    ${btrfs} subvolume create "$mountPoint/root"
+    for d in /var/log /var/lib/nixos; do
+      mkdir -p "$mountPoint/root$d" "$mountPoint/persist$d"
+    done
+  '';
 in
 {
   assertions = [
@@ -21,6 +38,7 @@ in
   ];
 
   boot.initrd.systemd = {
+    storePaths = with pkgs; [ wipeScript util-linux btrfs-progs ];
     initrdBin = [
       pkgs.btrfs-progs
       pkgs.util-linux
@@ -35,22 +53,14 @@ in
       ];
       requires = [ rootDeviceUnit ];
       after = [ rootDeviceUnit ];
+      unitConfig = {
+        DefaultDependencies = "no";
+        ConditionPathIsMountPoint = "!/sysroot";
+      };
       serviceConfig = {
         Type = "oneshot";
-        ExecStart = pkgs.writeShellScript "wipe-root-subvolume" ''
-          set -eu
-
-          mountPoint=/run/root-btrfs
-          mkdir -p "$mountPoint"
-          ${mount} -t btrfs -o subvolid=5 ${lib.escapeShellArg rootDevice} "$mountPoint"
-          trap '${umount} "$mountPoint"' EXIT
-
-          if ${btrfs} subvolume show "$mountPoint/root" >/dev/null 2>&1; then
-            ${btrfs} subvolume delete --recursive "$mountPoint/root"
-            ${btrfs} subvolume sync "$mountPoint"
-          fi
-          ${btrfs} subvolume create "$mountPoint/root"
-        '';
+        RemainAfterExit = true;
+        ExecStart = wipeScript;
       };
     };
   };

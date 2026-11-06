@@ -1,6 +1,10 @@
 { lib, ... }:
 
 {
+  console = {
+    keyMap = lib.mkDefault "fr";
+    earlySetup = lib.mkDefault true;
+  };
   time.timeZone = lib.mkDefault "Europe/Paris";
 
   i18n = {
