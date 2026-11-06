@@ -171,7 +171,6 @@
             ;
         };
         nixos-server = mkNixosSystem {
-          system = "aarch64-linux";
           home-manager = home-manager;
           modules = [
             computerModule
