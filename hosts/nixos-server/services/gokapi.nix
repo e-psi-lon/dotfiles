@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  lib,
   ...
 }:
 let
@@ -80,8 +79,8 @@ in
           if [ ! -e "$db" ]; then
             mkdir -p "$(dirname "$db")"
             cp "$CREDENTIALS_DIRECTORY/gokapi.sqlite" "$db"
+            chmod +w "$db"
           fi
-          exec ${lib.getExe config.services.gokapi.package}
         '';
       in
       [ gokapiStart ];
