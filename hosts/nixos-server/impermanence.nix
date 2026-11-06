@@ -65,6 +65,7 @@ in
       "/var/lib/redis"
       "/var/lib/systemd"
       "/var/lib/vaultwarden"
+      "/var/lib/prometheus"
       "/var/backup/postgresql"
       "/var/log"
       {
