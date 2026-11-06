@@ -29,6 +29,7 @@
   config = {
     mainDomain = "e-psi-lon.dev";
     sops = {
+      age.sshKeyPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
       defaultSopsFile = config.paths.secretsDir + "/default.server.yaml";
       secrets = {
         cloudflare-acme-credentials = {
