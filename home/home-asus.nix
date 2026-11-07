@@ -146,7 +146,7 @@
 
       # Misc
       libreoffice-qt
-      proton-pass
+      bitwarden-desktop
       xwayland-satellite
       pear-desktop
       setup-dev # Custom script to setup a dev environment with direnv and a flake
