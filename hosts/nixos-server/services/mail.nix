@@ -33,7 +33,7 @@
   config = {
     mailing = {
       host = "smtp-relay.brevo.com";
-      port = 587;
+      port = 2525;
       username = "c12c44001@smtp-brevo.com";
       accounts.backups.from = "backups@${config.mailing.domain}";
     };
