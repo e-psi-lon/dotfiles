@@ -16,7 +16,7 @@
         device = lib.mkForce "/dev/vda";
         imageSize = "30G";
       };
-      fileSystems."/persist".neededForBoot = lib.mkForce true;
+      virtualisation.fileSystems."/persist".neededForBoot = lib.mkForce true;
     };
   };
 }
