@@ -16,6 +16,7 @@
   config = {
     sops.secrets."tailscale/auth-key" = { };
     services = {
+      qemuGuest.enable = true;
       tailscale.authKeyFile = config.sops.secrets."tailscale/auth-key".path;
       openssh.settings.X11Forwarding = false;
       cloudflare-dyndns = {
