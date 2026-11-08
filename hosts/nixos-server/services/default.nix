@@ -18,7 +18,14 @@
     services = {
       qemuGuest.enable = true;
       tailscale.authKeyFile = config.sops.secrets."tailscale/auth-key".path;
-      openssh.settings.X11Forwarding = false;
+      openssh = { 
+        ports = [ 22 ];
+        extraConfig = ''
+          Match LocalPort 22
+            AllowUsers ${config.username}
+        '';
+        settings.X11Forwarding = false;
+      };
       cloudflare-dyndns = {
         enable = true;
         deleteMissing = true;
