@@ -10,6 +10,7 @@
     ".config/sops/age"
     ".local/share"
     "dotfiles"
+    ".ssh"
   ];
 
   home.stateVersion = "26.11";
