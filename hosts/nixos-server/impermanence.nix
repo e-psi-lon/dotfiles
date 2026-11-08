@@ -76,6 +76,8 @@ in
       "/var/lib/systemd"
       "/var/lib/vaultwarden"
       "/var/lib/prometheus"
+      "/var/lib/forgejo"
+      "/var/lib/containers"
       "/var/backup/postgresql"
       "/var/log"
       {

@@ -20,18 +20,20 @@ let
   };
 in
 {
-  sops.secrets = {
-    "restic/access-key" = { };
-    "restic/password" = { };
-    "restic/repository" = { };
-    "restic/secret-key" = { };
-  };
 
-  sops.templates."restic-environment".content = ''
-    AWS_ACCESS_KEY_ID=${config.sops.placeholder."restic/access-key"}
-    AWS_SECRET_ACCESS_KEY=${config.sops.placeholder."restic/secret-key"}
-    AWS_DEFAULT_REGION=auto
-  '';
+  sops = {
+    secrets = {
+      "restic/access-key" = { };
+      "restic/password" = { };
+      "restic/repository" = { };
+      "restic/secret-key" = { };
+    };
+    templates."restic-environment".content = ''
+      AWS_ACCESS_KEY_ID=${config.sops.placeholder."restic/access-key"}
+      AWS_SECRET_ACCESS_KEY=${config.sops.placeholder."restic/secret-key"}
+      AWS_DEFAULT_REGION=auto
+    '';
+  };
 
   services.restic.backups.server = {
     initialize = true;
@@ -47,7 +49,9 @@ in
       "/persist/var/lib/private/gokapi"
       "/persist/var/lib/tailscale"
       "/persist/var/lib/vaultwarden"
+      "/persist/var/lib/forgejo"
     ];
+    exclude = [ "/persist/var/lib/forgejo/log" ];
     runCheck = true;
     timerConfig = {
       OnCalendar = "daily";
@@ -61,14 +65,14 @@ in
       "--keep-monthly 0"
     ];
   };
-
-  systemd.services.restic-backups-server.unitConfig.OnFailure = [ "restic-failure-alert.service" ];
-
-  systemd.services.restic-failure-alert = {
-    description = "Send an alert when the Restic backup fails";
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = lib.getExe alertScript;
+  systemd.services = {
+    restic-backups-server.unitConfig.OnFailure = [ "restic-failure-alert.service" ];
+    restic-failure-alert = {
+      description = "Send an alert when the Restic backup fails";
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = lib.getExe alertScript;
+      };
     };
   };
 }

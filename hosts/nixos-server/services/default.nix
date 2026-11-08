@@ -2,6 +2,7 @@
 {
   imports = [
     ./acme.nix
+    ./forgejo.nix
     ./gokapi.nix
     ./mail.nix
     ./monitoring.nix
@@ -36,6 +37,7 @@
         domains = [
           "files.${config.mainDomain}"
           "vault.${config.mainDomain}"
+          "git.${config.mainDomain}"
         ];
       };
     };
