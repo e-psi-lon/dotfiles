@@ -38,7 +38,7 @@
       accounts.backups.from = "backups@${config.mailing.domain}";
     };
 
-    sops.secrets."mail/smtp-password" = { };
+    sops.secrets."mail/smtp-password".restartUnits = [ "forgejo.service" ];
 
     programs.msmtp = {
       enable = true;

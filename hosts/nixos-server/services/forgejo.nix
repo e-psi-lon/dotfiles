@@ -1,11 +1,18 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   domain = "git.${config.mainDomain}";
   sshPort = 2222;
   localAddress = "${config.services.forgejo.settings.server.HTTP_ADDR}:${toString config.services.forgejo.settings.server.HTTP_PORT}";
 in
 {
-  sops.secrets."forgejo-runner/token" = { };
+  sops.secrets."forgejo-runner/token".restartUnits = [
+    "forgejo-runner-main.service"
+  ];
   services = {
     openssh = {
       ports = [ sshPort ];
@@ -78,12 +85,15 @@ in
           uuid = "38666264-3364-3135-3630-653631363136";
         };
       };
-      secrets.server.connections.default.token_url =
-        config.sops.secrets."forgejo-runner/token".path;
+      secrets.server.connections.default.token_url = config.sops.secrets."forgejo-runner/token".path;
     };
   };
+  systemd.services.forgejo-runner-main = {
+    after = [ "forgejo.service" ];
+    wants = [ "forgejo.service" ];
+  };
   networking.firewall.allowedTCPPorts = [ sshPort ];
-  
+
   environment.systemPackages = [
     (pkgs.writeShellScriptBin "forgejo-admin" ''
       exec sudo -u ${config.services.forgejo.user} env \

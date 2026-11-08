@@ -16,14 +16,17 @@ in
         format = "binary";
       };
     };
-    templates."gokapi-secrets.json".content = builtins.toJSON {
-      Encryption = {
-        Level = 3;
-        Cipher = config.sops.placeholder."gokapi/cipher";
-        Salt = "";
-        Checksum = "";
-        ChecksumSalt = "";
+    templates."gokapi-secrets.json" = {
+      content = builtins.toJSON {
+        Encryption = {
+          Level = 3;
+          Cipher = config.sops.placeholder."gokapi/cipher";
+          Salt = "";
+          Checksum = "";
+          ChecksumSalt = "";
+        };
       };
+      restartUnits = [ "gokapi.service" ];
     };
   };
   services = {

@@ -3,10 +3,13 @@
     secrets = {
       "vaultwarden/admin-token" = { };
     };
-    templates."vaultwarden-env".content = ''
-      ADMIN_TOKEN='${config.sops.placeholder."vaultwarden/admin-token"}'
-      SMTP_PASSWORD=${config.sops.placeholder."mail/smtp-password"}
-    '';
+    templates."vaultwarden-env" = {
+      content = ''
+        ADMIN_TOKEN='${config.sops.placeholder."vaultwarden/admin-token"}'
+        SMTP_PASSWORD=${config.sops.placeholder."mail/smtp-password"}
+      '';
+      restartUnits = [ "vaultwarden.service" ];
+    };
   };
   services = {
     vaultwarden = {

@@ -15,7 +15,10 @@
   ];
 
   config = {
-    sops.secrets."tailscale/auth-key" = { };
+    sops.secrets = {
+      "tailscale/auth-key".restartUnits = [ "tailscaled-autoconnect.service" ];
+      cloudflare-acme-credentials.restartUnits = [ "cloudflare-dyndns.service" ];
+    };
     services = {
       qemuGuest.enable = true;
       tailscale.authKeyFile = config.sops.secrets."tailscale/auth-key".path;
