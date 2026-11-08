@@ -30,7 +30,7 @@
     };
     nginx.virtualHosts."${config.services.vaultwarden.domain}" = {
       useACMEHost = config.mainDomain;
-      locations."/admin".return = "404";
+      locations."^~ /admin".proxyPass = "http://vaultwarden/nonexistent";
     };
   };
 }
