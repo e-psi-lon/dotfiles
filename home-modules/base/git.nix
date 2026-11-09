@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: 
+{ pkgs, lib, config, osConfig ? { }, ... }: 
 {
   programs.git = {
     lfs.enable = true;
@@ -6,7 +6,8 @@
     signing = {
       format = "ssh";
       key = "key::${config.selfKey}";
-      signByDefault = config.services.ssh-agent.enable;
+      signByDefault = config.services.ssh-agent.enable
+          || (osConfig.programs.ssh.startAgent or false);
     };
     settings = {
       gpg.ssh.allowedSignersFile = "${config.xdg.configHome}/git/allowed_signers";
