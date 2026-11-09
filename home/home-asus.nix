@@ -38,7 +38,7 @@
 
   hasNvidiaGpu = true;
   selfKey = config.sshKeys.home-asus;
-  selfKeyPrivPath = "${config.home.homeDirectory}/.ssh/ssh_ed25519_asus";
+  selfKeyPrivPath = "${config.home.homeDirectory}/.ssh/id_ed25519_asus";
 
   programs = {
     tmux = {

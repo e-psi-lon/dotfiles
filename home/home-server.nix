@@ -4,7 +4,7 @@
     (paths.home-modules + "/computer")
   ];
   selfKey = config.sshKeys.server;
-  selfKeyPrivPath = "${config.home.homeDirectory}/.ssh/ssh_ed25519";
+  selfKeyPrivPath = "${config.home.homeDirectory}/.ssh/id_ed25519";
 
   home.persistence."/persist".directories = [
     ".config/atuin"
