@@ -1,6 +1,7 @@
 {
   pkgs,
   paths,
+  config,
   ...
 }:
 
@@ -9,6 +10,8 @@
 
   home.stateVersion = "26.05";
   programs.nixvim.colorschemes.onedark.enable = true;
+  selfKey = config.sshKeys.home-hp;
+  selfKeyPrivPath = "${config.home.homeDirectory}/.ssh/ssh_ed25519_hp";
 
   home.packages = with pkgs; [
     firefox

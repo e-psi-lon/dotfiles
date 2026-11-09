@@ -46,6 +46,7 @@
           home-manager.users.${username} = {
             imports = [ (paths.home + "/home-${machineName}.nix") ];
             paths = {
+              sshToml = paths.resources + "/ssh.toml";
               libDirectory = paths.lib;
               resources = paths.resources;
               hashesToml = paths.resources + "/hashes.toml";
