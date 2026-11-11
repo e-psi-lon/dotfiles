@@ -50,7 +50,7 @@
       description = "The main ssh key.";
     };
     selfKeyPrivPath = lib.mkOption {
-      type = lib.types.path;
+      type = lib.types.strMatching "^/[a-zA-Z0-9._/-]+$";
       description = "The path to the private key file of the main ssh key.";
     };
     hashes = lib.mkOption {
