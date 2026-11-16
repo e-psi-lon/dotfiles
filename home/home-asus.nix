@@ -328,42 +328,6 @@
             }
           }
         '';
-        streamConfig =
-          let
-            useSsl = lib.optionalString hasSsl "ssl";
-            sslTemplate = lib.optionalString hasSsl ''
-              ssl_certificate /run/secrets/localhost/ssl.crt;
-              ssl_certificate_key /run/secrets/localhost/ssl.key;
-            '';
-          in
-          ''
-            upstream postgres_proto {
-              server postgres:5432;
-            }
-
-            upstream redis_proto {
-              server redis:6379;
-            }
-
-            # Postgres Gateway
-            server {
-              listen 5432 ${useSsl};
-              ${sslTemplate}
-              proxy_pass postgres_proto;
-            }
-
-            # Redis Gateway
-            server {
-              listen 6379 ${useSsl};
-              ${sslTemplate}
-              proxy_pass redis_proto;
-            }
-          '';
-
-        extraPorts = [
-          "5432:5432"
-          "6379:6379"
-        ];
       };
 
     bypass-cors = {
@@ -375,17 +339,6 @@
       enable = true;
       jdk = pkgs.jdk25;
       autoStart = false;
-    };
-    postgres = {
-      uidGid = 1000;
-      enable = true;
-      postgresPasswordPath = config.sops.secrets."containers/postgres-password".path;
-    };
-
-    redis = {
-      enable = true;
-      uidGid = 6379;
-      redisRequirepassPath = config.sops.templates."containers/redis-auth.conf".path;
     };
   };
 }

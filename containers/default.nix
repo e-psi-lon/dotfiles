@@ -100,49 +100,6 @@
           };
         };
       };
-
-      postgres = mkContainerOpts {
-        description = "PostgreSQL database server";
-        defaultExpose = !nginxEnabled;
-        defaultRestartPolicy = "always";
-        containerOptions = {
-          package = lib.mkOption {
-            type = lib.types.package;
-            default = pkgs.postgresql_18;
-            description = "PostgreSQL version to run.";
-          };
-          dataDirectory = lib.mkOption {
-            type = lib.types.path;
-            default = config.xdg.dataHome + "/containers/postgres";
-            description = "Host directory to store PostgreSQL data.";
-          };
-
-          postgresPasswordPath = lib.mkOption {
-            type = lib.types.str;
-            default = config.xdg.dataHome + "/containers/postgres-password";
-            description = "Path to the file containing the password for the default 'postgres' user.";
-          };
-        };
-      };
-
-      redis = mkContainerOpts {
-        description = "redis container";
-        defaultExpose = !nginxEnabled;
-        defaultRestartPolicy = "unless-stopped";
-        containerOptions = {
-          dataDirectory = lib.mkOption {
-            type = lib.types.path;
-            default = config.xdg.dataHome + "/containers/redis";
-            description = "Host directory to store Redis data.";
-          };
-
-          redisRequirepassPath = lib.mkOption {
-            type = lib.types.str;
-            default = config.xdg.dataHome + "/containers/redis-auth.conf";
-            description = "Path to the file containing the requirepass <password> for Redis authentication.";
-          };
-        };
-      };
     };
 
   config =

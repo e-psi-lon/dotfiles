@@ -9,20 +9,4 @@
   minecraft-server = {
     sharedDirs = c: [ c.serverDirectory ];
   };
-  postgres = {
-    dataDirs = c: [ c.dataDirectory ];
-    secrets = c: {
-      postgres-password = {
-        file = c.postgresPasswordPath;
-      };
-    };
-  };
-  redis = {
-    sharedDirs = c: [ c.dataDirectory ];
-    secrets = c: {
-      "redis-auth.conf" = {
-        file = c.redisRequirepassPath;
-      };
-    };
-  };
 }
