@@ -56,36 +56,6 @@
     };
   };
 
-  sops.secrets.cloudflare-acme-credentials = {
-    sopsFile = "${config.paths.secretsDir}/cloudflare-dns.asus.txt";
-    format = "binary";
-  };
-
-  security.acme = {
-    acceptTerms = true;
-    defaults = {
-      email = "acme@e-psi-lon.dev";
-      dnsProvider = "cloudflare";
-      credentialFiles = {
-        "CLOUDFLARE_DNS_API_TOKEN_FILE" = config.sops.secrets."cloudflare-acme-credentials".path;
-      };
-    };
-
-    certs = {
-      "e-psi-lon.dev" = {
-        domain = "e-psi-lon.dev";
-        extraDomainNames = [ "*.e-psi-lon.dev" ];
-      };
-
-      "int.e-psi-lon.dev" = {
-        domain = "int.e-psi-lon.dev";
-        extraDomainNames = [
-          "*.int.e-psi-lon.dev"
-          "*.home.int.e-psi-lon.dev"
-        ];
-      };
-    };
-  };
   networking = {
     firewall.allowedTCPPorts = [
       50080
