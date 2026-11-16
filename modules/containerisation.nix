@@ -10,6 +10,6 @@
     };
   };
 
-  users.users.${config.username}.autoSubUidGidRange = true;
+  users.users.${config.username}.deterministicSubUidGidRange = true;
 
 }

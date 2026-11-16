@@ -11,6 +11,7 @@
     ./networking.nix
     ./services.nix
     ./encryption.nix
+    ./users.nix
   ];
 
   options = {

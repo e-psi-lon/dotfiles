@@ -15,7 +15,7 @@ in
       group = username;
       isNormalUser = true;
       description = "User for running podman containers";
-      autoSubUidGidRange = true;
+      deterministicSubUidGidRange = true;
       linger = true;
     };
   };
