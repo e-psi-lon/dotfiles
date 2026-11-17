@@ -1,0 +1,55 @@
+[dynamic]
+# Allocator-assigned for now. Uncomment a name into a band to migrate it.
+users = [
+  "acme", "forgejo", "vaultwarden",
+  "tss", "geoclue", "fwupd-refresh", "flatpak",
+]
+groups = [
+  "acme", "forgejo", "vaultwarden",
+  "tss", "geoclue", "fwupd-refresh", "flatpak",
+  "polkituser", "systemd-coredump", "data", "podman",
+]
+
+[core]
+range = [400, 499]
+[core.ids]
+nscd = 400
+systemd-oom = 401
+# systemd-coredump = 402
+sshd = 403
+# tss = 404
+# polkituser = 405
+wpa_supplicant = 406
+nm-iodine = 407
+
+[hardware]
+range = [500, 599]
+[hardware.ids]
+avahi = 500
+# geoclue = 501
+# fwupd-refresh = 502
+lpadmin = 503
+msr = 504
+uinput = 505
+
+[storage]
+range = [600, 699]
+[storage.ids]
+# podman = 600
+# data = 601
+# flatpak = 602
+
+[services]
+range = [700, 799]
+[services.ids]
+# forgejo = 700
+# vaultwarden = 701
+# acme = 702
+# minecraft = 718
+# satisfactory = 777
+
+[monitoring]
+range = [800, 899]
+[monitoring.ids]
+node-exporter = 800
+fail2ban = 801

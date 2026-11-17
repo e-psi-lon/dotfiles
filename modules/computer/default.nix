@@ -19,6 +19,10 @@
       type = lib.types.path;
       description = "The path to the ssh.toml file.";
     };
+    paths.idsToml = lib.mkOption {
+      type = lib.types.path;
+      description = "The path to the ids.toml file.";
+    };
     sshKeys = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;
       description = "The available ssh keys for evaluation.";

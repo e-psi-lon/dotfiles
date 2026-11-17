@@ -37,6 +37,7 @@
           paths = {
             secretsDir = paths.resources + "/secrets";
             sshToml = paths.resources + "/ssh.toml";
+            idsToml = paths.resources + "/ids.toml";
           };
         }
         home-manager.nixosModules.home-manager
