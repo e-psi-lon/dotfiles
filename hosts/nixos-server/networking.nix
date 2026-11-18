@@ -34,7 +34,6 @@
       interfaces.${config.services.tailscale.interfaceName}.allowedTCPPorts = [
         8080
         4173
-        9100
       ];
       allowedTCPPorts = [
         80
