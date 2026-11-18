@@ -7,18 +7,22 @@ users = [
 groups = [
   "acme", "forgejo", "vaultwarden",
   "tss", "geoclue", "fwupd-refresh", "flatpak",
-  "polkituser", "systemd-coredump", "data", "podman",
+  "data", "podman",
 ]
+
+[upstream]
+range = [1, 399]
+[upstream.ids]
+polkituser = 28
+systemd-coredump = 151
 
 [core]
 range = [400, 499]
 [core.ids]
 nscd = 400
 systemd-oom = 401
-# systemd-coredump = 402
+# tss = 402
 sshd = 403
-# tss = 404
-# polkituser = 405
 wpa_supplicant = 406
 nm-iodine = 407
 
