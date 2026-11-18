@@ -20,6 +20,13 @@
       cloudflare-acme-credentials.restartUnits = [ "cloudflare-dyndns.service" ];
     };
     services = {
+      # Stop HTTP2 traffic for every single nginx virtual host (CVE-2026-123633)
+      nginx.virtualHosts = {
+        "files.${config.mainDomain}".http2 = false;
+        "git.${config.mainDomain}".http2 = false;
+        "vault.${config.mainDomain}".http2 = false;
+        "prometheus.${config.mainInternalDomain}".http2 = false;
+      };
       qemuGuest.enable = true;
       tailscale.authKeyFile = config.sops.secrets."tailscale/auth-key".path;
       openssh = { 
