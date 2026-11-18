@@ -22,6 +22,11 @@ in
       listenAddress = "127.0.0.1";
       port = 9090;
       stateDir = "prometheus";
+      retentionTime = "90d";
+      extraFlags = [
+        "--storage.tsdb.retention.size=20GB"
+      ];
+      
 
       scrapeConfigs = [
         {
@@ -52,6 +57,12 @@ in
           job_name = "restic";
           static_configs = [
             { targets = [ "127.0.0.1:9753" ]; }
+          ];
+        }
+        {
+          job_name = "prometheus";
+          static_configs = [
+            { targets = [ "127.0.0.1:9090" ]; }
           ];
         }
         {
