@@ -25,6 +25,7 @@
         "files.${config.mainDomain}".http2 = false;
         "git.${config.mainDomain}".http2 = false;
         "vault.${config.mainDomain}".http2 = false;
+        "grafana.${config.mainInternalDomain}".http2 = false;
       };
       qemuGuest.enable = true;
       tailscale.authKeyFile = config.sops.secrets."tailscale/auth-key".path;

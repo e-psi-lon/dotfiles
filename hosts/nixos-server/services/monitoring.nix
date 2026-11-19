@@ -14,8 +14,44 @@ let
   '';
 in
 {
+  sops.secrets."grafana/secret-key" = {
+    owner = "grafana";
+    group = "grafana";
+    mode = "0400";
+    restartUnits = [ "grafana.service" ];
+  };
+
   services = {
     nginx.statusPage = true;
+
+    grafana = {
+      enable = true;
+      settings = {
+        server = {
+          http_addr = "127.0.0.1";
+          http_port = 3001;
+          domain = "grafana.${config.mainInternalDomain}";
+          root_url = "https://grafana.${config.mainInternalDomain}/";
+        };
+        security = {
+          disable_gravatar = true;
+          secret_key = "$__file{${config.sops.secrets."grafana/secret-key".path}}";
+        };
+      };
+      provision.datasources.settings = {
+        datasources = [
+          {
+            name = "Prometheus";
+            uid = "prometheus";
+            type = "prometheus";
+            access = "proxy";
+            url = "http://127.0.0.1:9090";
+            isDefault = true;
+            editable = false;
+          }
+        ];
+      };
+    };
 
     prometheus = {
       enable = true;
@@ -139,6 +175,19 @@ in
           listenAddress = "127.0.0.1";
           configFile = blackboxConfig;
         };
+      };
+    };
+
+    nginx.virtualHosts."grafana.${config.mainInternalDomain}" = {
+      useACMEHost = config.mainInternalDomain;
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:3001";
+        extraConfig = ''
+          allow 100.64.0.0/10;
+          allow fd7a:115c:a1e0::/48;
+          deny all;
+        '';
       };
     };
   };

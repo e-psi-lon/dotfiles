@@ -76,6 +76,7 @@ in
       "/var/lib/systemd"
       "/var/lib/vaultwarden"
       "/var/lib/prometheus"
+      "/var/lib/grafana"
       "/var/lib/forgejo"
       "/var/lib/containers"
       "/var/backup/postgresql"
