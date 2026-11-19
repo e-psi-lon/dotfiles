@@ -76,7 +76,12 @@ in
       "/var/lib/systemd"
       "/var/lib/vaultwarden"
       "/var/lib/prometheus"
-      "/var/lib/grafana"
+      {
+        directory = "/var/lib/grafana";
+        user = "grafana";
+        group = "grafana";
+        mode = "0750";
+      }
       "/var/lib/forgejo"
       "/var/lib/containers"
       "/var/backup/postgresql"
