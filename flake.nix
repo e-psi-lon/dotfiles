@@ -116,6 +116,20 @@
       devShells = forAllSystems (pkgs: {
         default = pkgs.callPackage ./shell.nix { };
       });
+      formatter = forAllSystems (
+        pkgs:
+        pkgs.treefmt.withConfig {
+          runtimeInputs = [ pkgs.nixfmt ];
+          settings = {
+            on-unmatched = "info";
+            formatter.nixfmt = {
+              command = "nixfmt";
+              options = [ "--strict" ];
+              includes = [ "*.nix" ];
+            };
+          };
+        }
+      );
       nixosConfigurations = {
         nixos-asus = mkNixosSystem {
           home-manager = home-manager;

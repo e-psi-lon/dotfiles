@@ -1,30 +1,15 @@
-{
-  config,
-  lib,
-  ...
-}:
-{
+{ config, lib, ... }: {
   options.mailing = {
     domain = lib.mkOption {
       type = lib.types.str;
       default = "mail.${config.mainDomain}";
     };
-    host = lib.mkOption {
-      type = lib.types.str;
-    };
-    port = lib.mkOption {
-      type = lib.types.port;
-    };
-    username = lib.mkOption {
-      type = lib.types.str;
-    };
+    host = lib.mkOption { type = lib.types.str; };
+    port = lib.mkOption { type = lib.types.port; };
+    username = lib.mkOption { type = lib.types.str; };
     accounts = lib.mkOption {
       type = lib.types.attrsOf (
-        lib.types.submodule {
-          options.from = lib.mkOption {
-            type = lib.types.str;
-          };
-        }
+        lib.types.submodule { options.from = lib.mkOption { type = lib.types.str; }; }
       );
       default = { };
     };

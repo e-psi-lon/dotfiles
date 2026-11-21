@@ -3,10 +3,10 @@ let
   stateDir = "/var/lib/satisfactory";
 in
 {
-  users.users.satisfactory = { 
-    isSystemUser = true; 
+  users.users.satisfactory = {
+    isSystemUser = true;
     uid = 777;
-    group = "satisfactory"; 
+    group = "satisfactory";
   };
   users.groups.satisfactory.gid = 777;
 

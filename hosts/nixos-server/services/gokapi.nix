@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}:
+{ config, pkgs, ... }:
 let
   url = "files.${config.mainDomain}";
   dataDir = "/var/lib/gokapi/data";

@@ -59,47 +59,32 @@ in
       port = 9090;
       stateDir = "prometheus";
       retentionTime = "90d";
-      extraFlags = [
-        "--storage.tsdb.retention.size=20GB"
-      ];
-      
+      extraFlags = [ "--storage.tsdb.retention.size=20GB" ];
 
       scrapeConfigs = [
         {
           job_name = "node";
-          static_configs = [
-            { targets = [ "127.0.0.1:9100" ]; }
-          ];
+          static_configs = [ { targets = [ "127.0.0.1:9100" ]; } ];
         }
         {
           job_name = "postgres";
-          static_configs = [
-            { targets = [ "127.0.0.1:9187" ]; }
-          ];
+          static_configs = [ { targets = [ "127.0.0.1:9187" ]; } ];
         }
         {
           job_name = "redis";
-          static_configs = [
-            { targets = [ "127.0.0.1:9121" ]; }
-          ];
+          static_configs = [ { targets = [ "127.0.0.1:9121" ]; } ];
         }
         {
           job_name = "nginx";
-          static_configs = [
-            { targets = [ "127.0.0.1:9113" ]; }
-          ];
+          static_configs = [ { targets = [ "127.0.0.1:9113" ]; } ];
         }
         {
           job_name = "restic";
-          static_configs = [
-            { targets = [ "127.0.0.1:9753" ]; }
-          ];
+          static_configs = [ { targets = [ "127.0.0.1:9753" ]; } ];
         }
         {
           job_name = "prometheus";
-          static_configs = [
-            { targets = [ "127.0.0.1:9090" ]; }
-          ];
+          static_configs = [ { targets = [ "127.0.0.1:9090" ]; } ];
         }
         {
           job_name = "blackbox-http";
@@ -150,9 +135,7 @@ in
         redis = {
           enable = true;
           listenAddress = "127.0.0.1";
-          extraFlags = [
-            "--redis.addr=redis://127.0.0.1:6379"
-          ];
+          extraFlags = [ "--redis.addr=redis://127.0.0.1:6379" ];
         };
 
         nginx = {

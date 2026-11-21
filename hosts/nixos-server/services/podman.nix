@@ -25,9 +25,7 @@ in
       inherit username;
       stateVersion = "26.11";
       homeDirectory = "/home/${username}";
-      packages = with pkgs; [
-        podman-compose
-      ];
+      packages = with pkgs; [ podman-compose ];
     };
     home.persistence."/persist".directories = [
       ".config/containers"

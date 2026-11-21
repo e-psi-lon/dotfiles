@@ -1,5 +1,4 @@
-{ config, ... }:
-{
+{ config, ... }: {
   imports = [
     ./acme.nix
     ./forgejo.nix
@@ -29,7 +28,7 @@
       };
       qemuGuest.enable = true;
       tailscale.authKeyFile = config.sops.secrets."tailscale/auth-key".path;
-      openssh = { 
+      openssh = {
         ports = [ 22 ];
         extraConfig = ''
           Match LocalPort 22

@@ -17,9 +17,7 @@
   ];
 
   options = {
-    mainDomain = lib.mkOption {
-      type = lib.types.str;
-    };
+    mainDomain = lib.mkOption { type = lib.types.str; };
     mainInternalDomain = lib.mkOption {
       type = lib.types.str;
       default = "int.${config.mainDomain}";
@@ -38,7 +36,7 @@
         };
       };
     };
-    
+
     users.users.${config.username}.openssh.authorizedKeys.keys = with config.sshKeys; [
       home-hp
       my-phone

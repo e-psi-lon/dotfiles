@@ -1,5 +1,4 @@
-{ lib, ... }:
-{
+{ lib, ... }: {
   virtualisation = {
     vmVariant = {
       virtualisation.sharedDirectories.ssh-host-keys = {
@@ -7,9 +6,7 @@
         target = "/run/future-host-ssh";
       };
 
-      sops.age.sshKeyPaths = lib.mkForce [
-        "/run/future-host-ssh/ssh_host_ed25519_key"
-      ];
+      sops.age.sshKeyPaths = lib.mkForce [ "/run/future-host-ssh/ssh_host_ed25519_key" ];
     };
     vmVariantWithDisko = {
       disko.devices.disk.main = {

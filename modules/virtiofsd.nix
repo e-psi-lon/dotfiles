@@ -1,13 +1,20 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.virtiofsd.users;
 
-  mkVirtiofsd = name:
+  mkVirtiofsd =
+    name:
     let
       u = config.users.users.${name};
       uid = toString u.uid;
       gid = toString config.users.groups.${u.group}.gid;
-    in {
+    in
+    {
       services."virtiofsd-${name}" = {
         description = "virtiofsd for ${name}";
         serviceConfig = {
@@ -32,7 +39,8 @@ let
         };
       };
     };
-in {
+in
+{
   options.virtiofsd.users = lib.mkOption {
     type = lib.types.listOf lib.types.str;
     default = [ ];
@@ -42,7 +50,8 @@ in {
     systemd = lib.mkMerge (map mkVirtiofsd cfg);
 
     assertions = map (name: {
-      assertion = config.users.users.${name}.uid != null
+      assertion =
+        config.users.users.${name}.uid != null
         && config.users.groups.${config.users.users.${name}.group}.gid != null;
       message = "virtiofsd: user ${name} needs a pinned uid and group gid.";
     }) cfg;

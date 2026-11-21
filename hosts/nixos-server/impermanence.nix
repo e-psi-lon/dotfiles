@@ -38,7 +38,11 @@ in
   ];
 
   boot.initrd.systemd = {
-    storePaths = with pkgs; [ wipeScript util-linux btrfs-progs ];
+    storePaths = with pkgs; [
+      wipeScript
+      util-linux
+      btrfs-progs
+    ];
     initrdBin = [
       pkgs.btrfs-progs
       pkgs.util-linux

@@ -16,9 +16,7 @@
       };
 
       ${config.mainInternalDomain} = {
-        extraDomainNames = [
-          "*.${config.mainInternalDomain}"
-        ];
+        extraDomainNames = [ "*.${config.mainInternalDomain}" ];
       };
     };
   };

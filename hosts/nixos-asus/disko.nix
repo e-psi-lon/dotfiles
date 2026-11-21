@@ -11,10 +11,7 @@ let
   ];
 
   luksInfo = partName: {
-    inherit (config.disko.devices.disk.main.content.partitions.${partName}.content)
-      name
-      device
-      ;
+    inherit (config.disko.devices.disk.main.content.partitions.${partName}.content) name device;
     keyFile = config.disko.devices.disk.main.content.partitions.${partName}.content.settings.keyFile;
   };
 
