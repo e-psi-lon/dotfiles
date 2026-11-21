@@ -92,10 +92,10 @@ case "$LANGUAGE" in
       exit 1
     fi
     VARS[JVM_PACKAGE]="${LANGUAGE_ARGS[0]}"
-    apply_template "$FLAKE_DIR/jvm.nix"
+    apply_template "$FLAKE_DIR/jvm.nix.tmpl"
     ;;
   "c")
-    apply_template "$FLAKE_DIR/c.nix"
+    apply_template "$FLAKE_DIR/c.nix.tmpl"
     ;;
   *)
     echo "Error: Unsupported language '$LANGUAGE'. Supported languages are: jvm, c."
