@@ -13,6 +13,15 @@ in
   sops.secrets."forgejo-runner/token".restartUnits = [
     "forgejo-runner-main.service"
   ];
+
+  users.users.forgejo-runner-main = {
+    isSystemUser = true;
+    home = "/var/lib/forgejo-runner-main";
+    group = "forgejo-runner-main";
+    deterministicSubUidGidRange = true;
+    linger = true;
+  };
+  users.groups.forgejo-runner-main = {};
   services = {
     openssh = {
       ports = [ sshPort ];
@@ -79,6 +88,10 @@ in
     forgejo-runner.instances.main = {
       enable = true;
       settings = {
+        container = {
+          docker_host = "unix:///run/user/${toString config.users.users.forgejo-runner-main.uid}/podman/podman.sock";
+          valid_volumes = [ "/run/user/${toString config.users.users.forgejo-runner-main.uid}/podman/podman.sock" ];
+        };
         runner.labels = [ "docker:docker://node:current" ];
         server.connections.default = {
           url = "http://${localAddress}";
@@ -88,9 +101,30 @@ in
       secrets.server.connections.default.token_url = config.sops.secrets."forgejo-runner/token".path;
     };
   };
-  systemd.services.forgejo-runner-main = {
-    after = [ "forgejo.service" ];
-    wants = [ "forgejo.service" ];
+  systemd = {
+    user.sockets.podman.wantedBy = [ "sockets.target" ];
+    services.forgejo-runner-main = {
+      after = [ "forgejo.service" "user@${toString config.users.users.forgejo-runner-main.uid}.service" ];
+      wants = [ "forgejo.service" "user@${toString config.users.users.forgejo-runner-main.uid}.service" ];
+      environment.DOCKER_HOST = "unix:///run/user/${toString config.users.users.forgejo-runner-main.uid}/podman/podman.sock";
+      serviceConfig = {
+      DynamicUser = lib.mkForce false;
+      User = "forgejo-runner-main";
+      SupplementaryGroups = lib.mkForce [ ];
+
+      # hardening that doesn't conflict with the socket
+      NoNewPrivileges = true;
+      PrivateTmp = true;
+      PrivateDevices = true;
+      ProtectSystem = "strict";
+      ProtectKernelTunables = true;
+      ProtectKernelModules = true;
+      ProtectControlGroups = true;
+      RestrictAddressFamilies = [ "AF_UNIX" "AF_INET" "AF_INET6" ];
+      RestrictNamespaces = true;
+      LockPersonality = true;
+    };
+    };
   };
   networking.firewall.allowedTCPPorts = [ sshPort ];
 

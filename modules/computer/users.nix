@@ -51,7 +51,11 @@ in
       config = mkMerge [
         (mkIf (table ? ${name}) { uid = mkDefault table.${name}; })
         (mkIf (config.deterministicSubUidGidRange && config.uid != null) (
-          let start = 100000 + (config.uid - 1000) * 65536; in
+          let 
+            start = if config.uid >= 1000
+              then 100000 + (config.uid - 1000) * 65536
+              else 1879048192 + config.uid * 65536;
+          in
           {
             subUidRanges = [ { startUid = start; count = 65536; } ];
             subGidRanges = [ { startGid = start; count = 65536; } ];

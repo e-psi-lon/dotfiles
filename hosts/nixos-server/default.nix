@@ -46,7 +46,6 @@
       server # Trust itself
     ];
     documentation.enable = false;
-    virtualisation.podman.dockerSocket.enable = true;
 
     nix = {
       optimise.automatic = true;
