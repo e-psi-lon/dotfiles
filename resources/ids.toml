@@ -35,6 +35,7 @@ avahi = 500
 lpadmin = 503
 msr = 504
 uinput = 505
+colord = 506
 
 [storage]
 range = [600, 699]

@@ -130,7 +130,7 @@
         webContextMenus.enable = true;
         userVoiceShow.enable = true;
         fixSpotifyEmbeds.enable = true;
-        fixYoutubeEmbeds.enable = true;
+        # fixYoutubeEmbeds.enable = true;
         vencordToolbox.enable = true;
         viewIcons.enable = true;
         viewRaw.enable = true;
@@ -157,7 +157,7 @@
         volumeBooster.enable = true;
         webKeybinds.enable = true;
         webScreenShareFixes.enable = true;
-        youtubeAdblock.enable = true;
+        # youtubeAdblock.enable = true;
         disableDeepLinks.enable = true;
         fullSearchContext.enable = true;
         shikiCodeblocks = {
