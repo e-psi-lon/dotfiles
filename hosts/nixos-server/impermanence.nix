@@ -86,6 +86,13 @@ in
         group = "grafana";
         mode = "0750";
       }
+
+      {
+        directory = "/var/lib/forgejo-runner";
+        user = "forgejo-runner-main";
+        group = "forgejo-runner-main";
+        mode = "0750";
+      }
       "/var/lib/forgejo"
       "/var/lib/containers"
       "/var/backup/postgresql"
