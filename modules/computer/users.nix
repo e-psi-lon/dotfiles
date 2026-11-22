@@ -143,10 +143,10 @@ in
     message = "gid ${id} is used by multiple groups: ${show names}";
   }) (dupes (g: g.gid) config.users.groups)
   ++ mapAttrsToList (name: u: {
-    assertion = u.uid != null && u.uid >= 1000 && u.uid <= 66533 && !u.autoSubUidGidRange;
+    assertion = u.uid != null && u.uid <= 66533 && !u.autoSubUidGidRange;
     message = ''
       users.users.${name}.deterministicSubUidGidRange requires `uid` to be set
-      (1000..66533) and `autoSubUidGidRange` to be false.
+      (<=66533) and `autoSubUidGidRange` to be false.
     '';
   }) (filterAttrs (_: u: u.deterministicSubUidGidRange) config.users.users);
 }
