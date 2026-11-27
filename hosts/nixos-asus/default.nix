@@ -62,7 +62,6 @@
       50443
     ];
     nftables = {
-      enable = true;
       tables =
         let
           content = ''

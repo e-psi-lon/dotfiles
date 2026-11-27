@@ -11,4 +11,5 @@
       # extraSetFlags = [ "--ssh" ];
     };
   };
+  networking.nftables.enable = true;
 }
