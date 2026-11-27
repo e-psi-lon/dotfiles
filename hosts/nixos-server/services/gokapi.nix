@@ -71,6 +71,28 @@ in
     };
   };
   systemd.services.gokapi.serviceConfig = {
+    CapabilityBoundingSet = "";
+    PrivateDevices = true;
+    PrivateUsers = true;
+    ProtectHome = true;
+    ProtectClock = true;
+    ProtectControlGroups = true;
+    ProtectHostname = true;
+    ProtectKernelLogs = true;
+    ProtectKernelModules = true;
+    ProtectKernelTunables = true;
+    ProtectProc = "invisible";
+    ProcSubset = "pid";
+    LockPersonality = true;
+    MemoryDenyWriteExecute = true;
+    RestrictNamespaces = true;
+    RestrictRealtime = true;
+    RestrictAddressFamilies = [ "AF_UNIX" "AF_INET" "AF_INET6" ];
+    SystemCallArchitectures = "native";
+    SystemCallFilter = [ "@system-service" "~@privileged" ];
+    UMask = "0077";
+    IPAddressDeny = "any";
+    IPAddressAllow = [ "localhost" ];
     ExecStartPre =
       let
         gokapiStart = pkgs.writeShellScript "gokapi-start" ''
