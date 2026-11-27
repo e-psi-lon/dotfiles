@@ -4,6 +4,7 @@
     ./forgejo.nix
     ./gokapi.nix
     ./mail.nix
+    ./minecraft.nix
     ./monitoring.nix
     ./nginx.nix
     ./podman.nix

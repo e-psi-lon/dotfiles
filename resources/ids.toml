@@ -51,7 +51,7 @@ range = [700, 799]
 forgejo-runner-main = 701
 # vaultwarden = 702
 # acme = 703
-# minecraft = 718
+minecraft = 718
 # satisfactory = 777
 
 [monitoring]

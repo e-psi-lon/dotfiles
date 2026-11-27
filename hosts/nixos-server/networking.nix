@@ -38,8 +38,6 @@
         80
         443
       ];
-      # Minecraft server in UDP
-      allowedUDPPorts = [ 25565 ];
     };
   };
 }
