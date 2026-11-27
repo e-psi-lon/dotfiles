@@ -92,7 +92,10 @@ in
             "/run/user/${toString config.users.users.forgejo-runner-main.uid}/podman/podman.sock"
           ];
         };
-        runner.labels = [ "docker:docker://node:current" ];
+        runner.labels = [ 
+          "docker:docker://node:current" "docker:docker://"
+          "ubuntu-latest:docker://ghcr.io/catthehacker/ubuntu:act-22.04"
+        ];
         server.connections.default = {
           url = "http://${localAddress}";
           uuid = "38666264-3364-3135-3630-653631363136";
