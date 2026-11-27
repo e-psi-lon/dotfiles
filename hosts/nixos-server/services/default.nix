@@ -11,6 +11,7 @@
     ./postgres.nix
     ./redis.nix
     ./restic.nix
+    ./satisfactory.nix
     ./vaultwarden.nix
   ];
 

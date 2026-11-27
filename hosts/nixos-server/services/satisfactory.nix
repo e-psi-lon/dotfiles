@@ -3,18 +3,27 @@ let
   stateDir = "/var/lib/satisfactory";
 in
 {
-  users.users.satisfactory = {
-    isSystemUser = true;
-    uid = 777;
-    group = "satisfactory";
+  users = {
+    users.satisfactory = {
+      isSystemUser = true;
+      group = "satisfactory";
+      home = stateDir;
+    };
+    groups.satisfactory = {};
   };
-  users.groups.satisfactory.gid = 777;
+
+  networking.firewall = {
+    allowedTCPPorts = [ 7777 8888 ];
+    allowedUDPPorts = [ 7777 ];
+  };
 
   systemd.services.satisfactory = {
     wantedBy = [ "multi-user.target" ];
     wants = [ "network-online.target" ];
     after = [ "network-online.target" ];
     environment.HOME = stateDir;
+    startLimitIntervalSec = 600; 
+    startLimitBurst = 5;
     serviceConfig = {
       User = "satisfactory";
       StateDirectory = "satisfactory";
