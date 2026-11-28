@@ -88,7 +88,7 @@ in
       }
 
       {
-        directory = "/var/lib/forgejo-runner";
+        directory = "/var/lib/forgejo-runner-main";
         user = "forgejo-runner-main";
         group = "forgejo-runner-main";
         mode = "0750";
