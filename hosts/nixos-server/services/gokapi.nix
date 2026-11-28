@@ -82,14 +82,13 @@ in
     ProtectKernelModules = true;
     ProtectKernelTunables = true;
     ProtectProc = "invisible";
-    ProcSubset = "pid";
     LockPersonality = true;
     MemoryDenyWriteExecute = true;
     RestrictNamespaces = true;
     RestrictRealtime = true;
     RestrictAddressFamilies = [ "AF_UNIX" "AF_INET" "AF_INET6" ];
     SystemCallArchitectures = "native";
-    SystemCallFilter = [ "@system-service" "~@privileged" ];
+    SystemCallFilter = [ "@system-service" "~@privileged" "~@resources" ];
     UMask = "0077";
     IPAddressDeny = "any";
     IPAddressAllow = [ "localhost" ];
