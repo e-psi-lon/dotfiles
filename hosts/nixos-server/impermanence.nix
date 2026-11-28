@@ -86,11 +86,28 @@ in
         group = "grafana";
         mode = "0750";
       }
-
       {
         directory = "/var/lib/forgejo-runner-main";
         user = "forgejo-runner-main";
         group = "forgejo-runner-main";
+        mode = "0750";
+      }
+      {
+        directory = "/var/lib/mc-profiles";
+        user = "minecraft";
+        group = "minecraft";
+        mode = "0750";
+      }
+      {
+        directory = "/var/lib/mc-servers";
+        user = "minecraft";
+        group = "minecraft";
+        mode = "0750";
+      }
+      {
+        directory = "/var/lib/satisfactory";
+        user = "satisfactory";
+        group = "satisfactory";
         mode = "0750";
       }
       "/var/lib/forgejo"
